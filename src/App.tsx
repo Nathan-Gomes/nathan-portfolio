@@ -111,7 +111,7 @@ const stack = [
   { label: 'IT Support', detail: 'systems, users, troubleshooting', icon: MonitorSmartphone },
   { label: 'Cloud Infrastructure', detail: 'AWS, Azure, compute, storage', icon: Cloud },
   { label: 'Infrastructure as Code', detail: 'Terraform, CloudFormation', icon: Server },
-  { label: 'DevOps Automation', detail: 'CI/CD, Bash, PowerShell', icon: Terminal },
+  { label: 'DevOps Automation', detail: 'CI/CD, AWS Amplify, Bash', icon: Terminal },
   { label: 'Software Development', detail: 'Python, Java, C, React', icon: Code2 },
   { label: 'Data & Databases', detail: 'SQL, data structures, storage', icon: Database },
 ]
@@ -354,8 +354,8 @@ function App() {
               <p>core tools</p>
             </div>
             <div>
-              <strong>Cloud</strong>
-              <p>growth track</p>
+              <strong>AWS</strong>
+              <p>Amplify hosted</p>
             </div>
           </div>
         </motion.div>
@@ -389,10 +389,12 @@ function App() {
               My resume backs this portfolio with hands-on AWS, Azure, CI/CD,
               Terraform, and CloudFormation experience from an IT/Cloud Support
               internship, plus customer-facing work that sharpened how I
-              communicate under pressure.
+              communicate under pressure. I also deployed this site with AWS
+              Amplify and GitHub-based CI/CD to show the cloud workflow behind
+              the portfolio itself.
             </p>
             <div className="resume-skill-cloud">
-              {['AWS', 'Azure', 'Terraform', 'CloudFormation', 'Python', 'SQL'].map((skill) => (
+              {['AWS', 'Amplify', 'Azure', 'Terraform', 'CloudFormation', 'CI/CD', 'Python', 'SQL'].map((skill) => (
                 <span key={skill}>{skill}</span>
               ))}
             </div>
@@ -571,7 +573,8 @@ function App() {
           <p className="contact-lede">
             I&apos;m looking for junior software development, IT support, cloud
             infrastructure, and automation opportunities where I can keep
-            learning while contributing quickly.
+            learning while contributing quickly. This portfolio is hosted on
+            AWS Amplify with GitHub-based CI/CD.
           </p>
         </div>
         <div className="contact-actions">
