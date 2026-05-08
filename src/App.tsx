@@ -52,10 +52,10 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: 'Indeed Scraper Tool',
-    eyebrow: 'Automation for job hunting',
+    title: 'Job Finder Automation',
+    eyebrow: 'Career workflow automation',
     summary:
-      'I built this Python workflow to turn a repetitive job search into structured leads, filters, and follow-up data so applications move faster.',
+      'I built this Python workflow to turn repetitive job searching into structured leads, filters, and follow-up data so applications move faster.',
     stack: ['Python', 'BeautifulSoup', 'JSON', 'Automation'],
     highlights: ['URL collection', 'role filtering', 'export-ready data'],
     metric: 'Job-search ops',
@@ -63,7 +63,7 @@ const projects: Project[] = [
     icon: Search,
     visual: 'scraper',
     deepDive:
-      'I treated the job hunt like an operations problem. Instead of manually opening dozens of listings, copying links, and losing track of what is worth applying to, the scraper gathers role data into a cleaner structure that can be filtered and reused.',
+      'I treated the job search like an operations problem. Instead of manually opening dozens of listings, copying links, and losing track of what is worth applying to, this tool gathers role data into a cleaner structure that can be filtered and reused.',
     whyUseful:
       'In today’s market, speed and organization matter. New grads are often applying across many boards while trying to tailor resumes and avoid duplicate effort. A tool like this helps turn scattered listings into a repeatable pipeline.',
     workflow: ['Collect listings', 'Filter by role signals', 'Export useful leads'],
@@ -175,7 +175,7 @@ function BackgroundStory() {
 function ProjectMockup({ project }: { project: Project }) {
   if (project.visual === 'scraper') {
     return (
-      <div className="project-visual scraper-visual" aria-label="Indeed Scraper Tool interface mockup">
+      <div className="project-visual scraper-visual" aria-label="Job Finder Automation interface mockup">
         <div className="browser-frame">
           <div className="browser-dots"><span></span><span></span><span></span></div>
           <div className="search-row">
