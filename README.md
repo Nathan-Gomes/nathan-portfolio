@@ -5,8 +5,8 @@ one sample property, running through a real structured database, a deterministic
 business-logic layer, and a real MCP (Model Context Protocol) server — the same
 protocol Claude uses for custom connectors. All data is fictional/sample data.
 
-Everything below has been built and **tested end-to-end**, including a live
-MCP client talking to the server over both stdio and HTTP transports.
+Everything below has been built, **tested end-to-end**, and deployed to AWS
+Lambda with a public Function URL protected by a shared request header secret.
 
 ## What's in here
 
@@ -46,8 +46,8 @@ portfolio-intel/
 | Phase 3: Document retrieval | ✅ Done (pilot-grade keyword search; semantic/pgvector is the production upgrade) |
 | Phase 4: MCP connector | ✅ Done — 8 tools, stdio + HTTP transports verified locally |
 | Phase 5: Evaluation | ✅ Done — 32/32 checks passing across all required categories |
-| **Deployment** | ✅ Ready — Lambda container image + Function URL, see `deploy/README.md` |
-| Phase 6: Controlled pilot with your brother | **Not started** — needs real documents + you to actually run the deploy steps |
+| **Deployment** | ✅ Done — Lambda container image + Function URL live in AWS |
+| Phase 6: Controlled pilot with your brother | **Not started** — needs real documents + Claude connector registration |
 | Phase 7: Portfolio rollout | Not started |
 
 ## The 8 tools exposed to Claude
@@ -100,7 +100,7 @@ system "avoid silently selecting a value."
 ## How to run it yourself
 
 ```bash
-cd portfolio-intel
+cd nathan-portfolio
 pip install -r requirements.txt --break-system-packages
 
 # Rebuild the sample database any time
@@ -148,13 +148,10 @@ but the next real milestone needs your brother's input, not more of my code:
    records) to replace Cedar Place's fictional data — this is where the
    ingestion pipeline (OCR, classification, field extraction) actually gets
    built and tested against reality instead of clean synthetic data.
-3. **Run the deployment steps.** I built and locally-verified everything in
-   `deploy/` (Dockerfile, IAM role, Lambda function, Function URL, env vars)
-   but I don't have your AWS credentials or Docker, so I can't actually push
-   this to your account — see `deploy/README.md` for the exact commands.
+3. **Register the deployed Function URL in Claude** as a custom connector and
+   configure the same static request header used by the Lambda environment.
 
 Everything above this line is genuinely done and tested. The honest gap is:
-this proves the architecture works end-to-end, including a real simulated
-Lambda invocation, but Phase 6 (his real pilot) can't start until you've run
-the deploy steps yourself, there's a real property, and there are real
-documents.
+this proves the architecture works end-to-end, including a live Lambda endpoint,
+but Phase 6 (his real pilot) can't start until the connector is added to Claude,
+there's a real property, and there are real documents.

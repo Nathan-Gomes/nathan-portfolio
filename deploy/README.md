@@ -32,12 +32,17 @@ aws ecr create-repository --repository-name $REPO_NAME --region $AWS_REGION
 aws ecr get-login-password --region $AWS_REGION \
   | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
-# From the portfolio-intel/ project root (so the Dockerfile's relative
-# COPY paths like server/... and db/... resolve correctly):
-docker build -t $REPO_NAME -f deploy/Dockerfile .
-
-docker tag $REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest
-docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest
+# From the project root (so the Dockerfile's relative COPY paths like
+# server/... and db/... resolve correctly). On Apple silicon, build arm64
+# and create the Lambda function as arm64 below. The provenance/SBOM flags
+# keep the pushed manifest compatible with Lambda container images.
+docker buildx build \
+  --platform linux/arm64 \
+  --provenance=false \
+  --sbom=false \
+  -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest \
+  -f deploy/Dockerfile \
+  --push .
 ```
 
 ## 2. Create the IAM execution role (one-time)
@@ -67,6 +72,7 @@ aws lambda create-function \
   --role arn:aws:iam::$AWS_ACCOUNT_ID:role/portfolio-intelligence-lambda-role \
   --timeout 15 \
   --memory-size 512 \
+  --architectures arm64 \
   --region $AWS_REGION
 ```
 
@@ -93,6 +99,17 @@ aws lambda add-permission \
   --action lambda:InvokeFunctionUrl \
   --principal "*" \
   --function-url-auth-type NONE \
+  --region $AWS_REGION
+
+# New Function URLs also need InvokeFunction permission. Use a current AWS CLI
+# or SDK so --invoked-via-function-url is available; it keeps this permission
+# scoped to Function URL calls.
+aws lambda add-permission \
+  --function-name $FUNCTION_NAME \
+  --statement-id FunctionURLInvokeAllowPublicAccess \
+  --action lambda:InvokeFunction \
+  --principal "*" \
+  --invoked-via-function-url \
   --region $AWS_REGION
 ```
 
@@ -136,9 +153,13 @@ Whenever you change `server/*.py`, rebuild and push a new image, then tell
 Lambda to use it:
 
 ```bash
-docker build -t $REPO_NAME -f deploy/Dockerfile .
-docker tag $REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest
-docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest
+docker buildx build \
+  --platform linux/arm64 \
+  --provenance=false \
+  --sbom=false \
+  -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest \
+  -f deploy/Dockerfile \
+  --push .
 
 aws lambda update-function-code \
   --function-name $FUNCTION_NAME \
