@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Private Portfolio Intelligence Connector — Nathan Gomes</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --green: #00a878;
+    --orange: #ff7a1a;
+    --purple: #7c3aed;
+    --blue: #2563eb;
+    --ink: #0f172a;
+    --ink-soft: #334155;
+    --muted: #475569;
+    --line: rgba(15, 23, 42, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    background:
+      linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+      linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+      #f8fafc;
+    background-size: 42px 42px;
+  }
+
+  .shell {
+    width: min(1000px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 28px 0 80px;
+  }
+
+  a { color: inherit; }
+
+  .topbar {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .brand-mark {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    background: linear-gradient(135deg, #ffffff, #e9fbf4);
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.74);
+    backdrop-filter: blur(16px);
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .back-link:hover { color: var(--ink); background: #dff7ff; }
+
+  .status-pill {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    border: 1px solid rgba(0, 168, 120, 0.24);
+    border-radius: 8px;
+    color: #08634b;
+    background: #e9fbf4;
+    font-size: 0.86rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    margin: 6px 0 16px;
+    color: var(--ink);
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    line-height: 1.06;
+  }
+
+  .hero p.lede {
+    max-width: 720px;
+    color: var(--muted);
+    font-size: 1.06rem;
+    line-height: 1.6;
+  }
+
+  .disclaimer {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 122, 26, 0.28);
+    background: #fff4e9;
+    border-radius: 8px;
+    color: #8a4a0f;
+    font-size: 0.88rem;
+    font-weight: 600;
+    max-width: 720px;
+  }
+
+  section { margin-top: 56px; }
+
+  .section-heading p.eyebrow {
+    margin: 0 0 8px;
+    color: var(--green);
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .section-heading h2 {
+    margin: 0 0 10px;
+    color: var(--ink);
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+
+  .section-heading p.desc {
+    color: var(--muted);
+    max-width: 700px;
+    line-height: 1.6;
+    margin: 0 0 24px;
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.06);
+  }
+
+  /* Architecture layers */
+  .layers { display: flex; flex-direction: column; gap: 10px; }
+
+  .layer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    position: relative;
+  }
+
+  .layer .num {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+
+  .layer .body strong { display: block; color: var(--ink); font-size: 0.98rem; margin-bottom: 2px; }
+  .layer .body span { color: var(--muted); font-size: 0.88rem; }
+
+  .layer-arrow {
+    text-align: center;
+    color: rgba(15, 23, 42, 0.28);
+    font-size: 1.1rem;
+    margin: -2px 0;
+  }
+
+  /* Tool grid */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .tool-card {
+    padding: 16px 18px;
+    border-radius: 10px;
+  }
+
+  .tool-card code {
+    display: inline-block;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--ink);
+    background: #eef2ff;
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  .tool-card p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+  /* Eval / status */
+  .stat-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .stat {
+    flex: 1;
+    min-width: 140px;
+    padding: 18px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .stat strong { display: block; font-size: 1.7rem; color: var(--ink); }
+  .stat span { color: var(--muted); font-size: 0.82rem; }
+
+  .checklist { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+
+  .checklist .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  .checklist .row .badge {
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: #08634b;
+    background: #e9fbf4;
+    border: 1px solid rgba(0, 168, 120, 0.24);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  /* Roadmap table */
+  .roadmap { display: flex; flex-direction: column; gap: 8px; }
+
+  .roadmap .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 140px;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  .roadmap .row strong { color: var(--ink); font-weight: 700; }
+
+  .tag-done { color: #08634b; background: #e9fbf4; border: 1px solid rgba(0,168,120,0.24); }
+  .tag-partial { color: #8a4a0f; background: #fff4e9; border: 1px solid rgba(255,122,26,0.24); }
+  .tag-todo { color: #4c1d95; background: #f3e8ff; border: 1px solid rgba(124,58,237,0.22); }
+
+  .pill-status {
+    justify-self: end;
+    font-size: 0.76rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-align: center;
+  }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+  .chip-row span {
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 70px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  footer a.back-link { text-decoration: none; }
+
+  @media (max-width: 720px) {
+    .tool-grid { grid-template-columns: 1fr; }
+    .roadmap .row { grid-template-columns: 1fr; }
+    .pill-status { justify-self: start; }
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="topbar" aria-label="Primary navigation">
+      <a class="brand-mark" href="/" aria-label="Nathan Gomes home">NG</a>
+      <a class="back-link" href="/">&larr; Back to portfolio</a>
+    </nav>
+
+    <section class="hero">
+      <p class="status-pill">🏗️ Active build — private connector project</p>
+      <h1>Private Real-Estate Portfolio Intelligence Connector</h1>
+      <p class="lede">
+        A private data-and-tools layer that connects directly to Claude, giving
+        it verified, structured knowledge of a real multifamily property
+        portfolio — so a real question about a building gets a correct,
+        source-backed answer without anyone manually locating and uploading
+        documents first.
+      </p>
+      <div class="disclaimer">
+        This project runs on entirely fictional sample data during development.
+        No real client, tenant, or financial information is used or shown here.
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <p class="eyebrow">The problem</p>
+        <h2>Claude is great at answering — the hard part is context</h2>
+        <p class="desc">
+          Claude can already summarize documents, compare files, and answer
+          general real-estate questions. But it depends on someone supplying
+          the right documents and business context every single time. This
+          project removes that step by giving Claude a private, permanent,
+          and verifiable memory of the portfolio behind the scenes.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <p class="eyebrow">Architecture</p>
+        <h2>Six layers between the source files and Claude</h2>
+        <p class="desc">
+          Claude never gets raw database or file-system access — only a small
+          set of controlled, read-only tools that return structured, cited
+          answers.
+        </p>
+      </div>
+      <div class="card layers">
+        <div class="layer">
+          <span class="num" style="background:#64748b">1</span>
+          <div class="body"><strong>Source files</strong><span>Invoices, contracts, work orders, inspection reports, notes</span></div>
+        </div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer">
+          <span class="num" style="background:var(--orange)">2</span>
+          <div class="body"><strong>Ingestion &amp; validation</strong><span>Dedup, OCR, classification, entity resolution, confidence scoring</span></div>
+        </div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer">
+          <span class="num" style="background:var(--green)">3</span>
+          <div class="body"><strong>Structured portfolio database</strong><span>Properties, aliases, vendors, equipment, maintenance, contracts, findings</span></div>
+        </div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer">
+          <span class="num" style="background:var(--blue)">4</span>
+          <div class="body"><strong>Searchable document index</strong><span>Metadata-filtered, property-scoped retrieval over chunked documents</span></div>
+        </div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer">
+          <span class="num" style="background:var(--purple)">5</span>
+          <div class="body"><strong>Business logic &amp; analytics</strong><span>Deterministic calculations — Claude never does the arithmetic itself</span></div>
+        </div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer">
+          <span class="num" style="background:#0f172a">6</span>
+          <div class="body"><strong>Private Claude connector (MCP)</strong><span>Read-only tools, structured JSON, full audit logging</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <p class="eyebrow">The connector</p>
+        <h2>8 read-only tools exposed to Claude</h2>
+        <p class="desc">
+          Built on the Model Context Protocol (MCP) — the same standard Claude
+          uses for any custom connector — and verified with a real MCP client
+          over both stdio and HTTPS transports.
+        </p>
+      </div>
+      <div class="tool-grid">
+        <div class="card tool-card">
+          <code>resolve_property</code>
+          <p>Turns a name, alias, address, ownership entity, or accounting code into a canonical property record.</p>
+        </div>
+        <div class="card tool-card">
+          <code>get_property_summary</code>
+          <p>Full briefing: profile, open findings, recent maintenance, top expenses, upcoming deadlines.</p>
+        </div>
+        <div class="card tool-card">
+          <code>search_property_documents</code>
+          <p>Property-scoped document search — never crosses property boundaries.</p>
+        </div>
+        <div class="card tool-card">
+          <code>get_expense_history</code>
+          <p>Deterministic totals by category and date range, from approved invoices only.</p>
+        </div>
+        <div class="card tool-card">
+          <code>get_maintenance_history</code>
+          <p>Maintenance events with automatic repeat-issue detection and cost totals.</p>
+        </div>
+        <div class="card tool-card">
+          <code>get_open_anomalies</code>
+          <p>Open findings — utility anomalies, repeat repairs, conflicting records.</p>
+        </div>
+        <div class="card tool-card">
+          <code>get_contract_deadlines</code>
+          <p>Contracts with a termination-notice or expiry deadline inside a given window.</p>
+        </div>
+        <div class="card tool-card">
+          <code>get_utility_anomalies</code>
+          <p>Flags billing periods above a trailing baseline, with estimated annual cost exposure.</p>
+        </div>
+      </div>
+      <div class="chip-row">
+        <span>Python</span>
+        <span>SQLite → PostgreSQL</span>
+        <span>pgvector (planned)</span>
+        <span>MCP (Model Context Protocol)</span>
+        <span>Claude custom connector</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <p class="eyebrow">Testing</p>
+        <h2>Evaluated against every required test category</h2>
+        <p class="desc">
+          A 32-question evaluation suite covering property identity, expense
+          totals, maintenance history, document retrieval, contract dates,
+          missing information, conflicting records, and cross-property data
+          isolation — all currently passing.
+        </p>
+      </div>
+      <div class="stat-row">
+        <div class="card stat"><strong>32 / 32</strong><span>Eval checks passing</span></div>
+        <div class="card stat"><strong>9</strong><span>Test categories covered</span></div>
+        <div class="card stat"><strong>2</strong><span>Transports verified (stdio + HTTPS)</span></div>
+      </div>
+      <div class="checklist">
+        <div class="card row"><span>Property identity resolution (names, aliases, accounting codes)</span><span class="badge">8/8</span></div>
+        <div class="card row"><span>Ambiguous / unverified property names correctly flagged</span><span class="badge">2/2</span></div>
+        <div class="card row"><span>Expense totals — category &amp; date-range filters</span><span class="badge">6/6</span></div>
+        <div class="card row"><span>Maintenance history &amp; repeat-repair detection</span><span class="badge">3/3</span></div>
+        <div class="card row"><span>Document retrieval &amp; filtering</span><span class="badge">3/3</span></div>
+        <div class="card row"><span>Contract deadline logic</span><span class="badge">2/2</span></div>
+        <div class="card row"><span>Missing-information handling (no fabricated numbers)</span><span class="badge">3/3</span></div>
+        <div class="card row"><span>Conflicting-records disclosure</span><span class="badge">2/2</span></div>
+        <div class="card row"><span>Cross-property data isolation</span><span class="badge">3/3</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <p class="eyebrow">Roadmap</p>
+        <h2>Where this stands right now</h2>
+      </div>
+      <div class="roadmap">
+        <div class="card row"><strong>Phase 2 — Curated database pilot</strong><span class="pill-status tag-done">Done</span></div>
+        <div class="card row"><strong>Phase 3 — Document retrieval</strong><span class="pill-status tag-done">Done (pilot-grade)</span></div>
+        <div class="card row"><strong>Phase 4 — MCP connector</strong><span class="pill-status tag-done">Done</span></div>
+        <div class="card row"><strong>Phase 5 — Evaluation (32 checks)</strong><span class="pill-status tag-done">Done</span></div>
+        <div class="card row"><strong>Phase 0 — Discovery with real questions</strong><span class="pill-status tag-todo">Next</span></div>
+        <div class="card row"><strong>Phase 6 — Controlled pilot, real documents</strong><span class="pill-status tag-todo">Planned</span></div>
+        <div class="card row"><strong>Phase 7 — Portfolio-wide rollout</strong><span class="pill-status tag-todo">Planned</span></div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Private connector project — built with Claude · sample data only</span>
+      <a class="back-link" href="/">&larr; Back to portfolio</a>
+    </footer>
+  </div>
+</body>
+</html>

@@ -263,6 +263,7 @@ function App() {
           <a href="#projects">Projects</a>
           <a href="#experience">Experience</a>
           <a href="#cloud">Cloud</a>
+          <a href="/connector.html" target="_blank" rel="noreferrer">AI Connector</a>
           <a href={resumePath} target="_blank" rel="noreferrer">Resume</a>
           <a href="#contact">Contact</a>
         </div>
