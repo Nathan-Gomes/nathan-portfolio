@@ -133,6 +133,20 @@ aws lambda update-function-configuration \
 
 Replace `abc123xyz.lambda-url.us-east-1.on.aws` with your actual Function URL host from step 4.
 
+## 5a. If you set MCP_SHARED_SECRET
+
+Claude's custom connector screen accepts a URL plus optional OAuth Client
+ID/Secret, but does not expose a field for a custom request header. If you set
+`MCP_SHARED_SECRET`, put the same value in the connector URL as a query
+parameter when registering with Claude:
+
+```text
+https://abc123xyz.lambda-url.us-east-1.on.aws/?secret=YOUR_SECRET_HERE
+```
+
+The Lambda handler accepts the secret from either the `x-mcp-secret` header
+for curl/testing or the `?secret=...` query parameter for Claude.
+
 ## 6. Test it
 
 ```bash
@@ -179,6 +193,21 @@ aws lambda update-function-code \
 - **Persistent audit log across cold starts** -- audit entries write to
   `/tmp`, which Lambda wipes on a cold start. Fine for a personal pilot;
   swap in DynamoDB later if you want it to persist.
+
+## Registering this as a custom connector in Claude
+
+1. Go to **Settings > Connectors**.
+2. Click **Add custom connector**.
+3. Paste your Function URL:
+   - No shared secret: `https://abc123xyz.lambda-url.us-east-1.on.aws/`
+   - Shared secret set: `https://abc123xyz.lambda-url.us-east-1.on.aws/?secret=YOUR_SECRET`
+4. Leave the OAuth fields blank; this pilot does not use OAuth.
+5. Click **Add**, then **Connect** next to it in the connectors list.
+6. In a chat, open **Connectors** from the `+` menu and toggle it on.
+7. Try: "Use the portfolio intelligence connector to give me an update on Cedar Place."
+
+Claude connects from Anthropic's cloud infrastructure, not from your laptop,
+so the Lambda Function URL needs to remain publicly reachable.
 
 ## Cost reality check
 

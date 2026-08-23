@@ -12,15 +12,16 @@ os.environ["MCP_ALLOWED_HOSTS"] = "mcp.nathan-gomes.com,localhost,127.0.0.1"
 from lambda_handler import handler
 
 
-def make_event(body, host="mcp.nathan-gomes.com"):
+def make_event(body, host="mcp.nathan-gomes.com", query=None):
     return {
         "headers": {"host": host, "content-type": "application/json"},
+        "queryStringParameters": query,
         "body": json.dumps(body),
     }
 
 
-def call(body, host="mcp.nathan-gomes.com"):
-    return handler(make_event(body, host), None)
+def call(body, host="mcp.nathan-gomes.com", query=None):
+    return handler(make_event(body, host, query), None)
 
 
 print("=== initialize ===")
@@ -84,6 +85,21 @@ print("=== unknown method -> JSON-RPC method-not-found ===")
 resp = call({"jsonrpc": "2.0", "id": 7, "method": "resources/list"})
 body = json.loads(resp["body"])
 assert body["error"]["code"] == -32601
+print("OK\n")
+
+print("=== shared secret accepted from query parameter for Claude connector URL ===")
+os.environ["MCP_SHARED_SECRET"] = "test-secret"
+resp = call({"jsonrpc": "2.0", "id": 8, "method": "tools/list", "params": {}},
+            query={"secret": "test-secret"})
+assert resp["statusCode"] == 200
+body = json.loads(resp["body"])
+assert len(body["result"]["tools"]) == 8
+print("OK\n")
+
+print("=== shared secret rejects missing credential ===")
+resp = call({"jsonrpc": "2.0", "id": 9, "method": "tools/list", "params": {}})
+assert resp["statusCode"] == 403
+os.environ.pop("MCP_SHARED_SECRET", None)
 print("OK\n")
 
 print("ALL LAMBDA HANDLER CHECKS PASSED")

@@ -46,7 +46,7 @@ portfolio-intel/
 | Phase 3: Document retrieval | ✅ Done (pilot-grade keyword search; semantic/pgvector is the production upgrade) |
 | Phase 4: MCP connector | ✅ Done — 8 tools, stdio + HTTP transports verified locally |
 | Phase 5: Evaluation | ✅ Done — 32/32 checks passing across all required categories |
-| **Deployment** | ✅ Done — Lambda container image + Function URL live in AWS |
+| **Deployment** | ✅ Live — Lambda Function URL returns all 8 MCP tools |
 | Phase 6: Controlled pilot with your brother | **Not started** — needs real documents + Claude connector registration |
 | Phase 7: Portfolio rollout | Not started |
 

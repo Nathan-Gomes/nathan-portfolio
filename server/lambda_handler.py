@@ -109,14 +109,17 @@ async def _handle_rpc(body: dict):
 
 def handler(event, context):
     headers = {k.lower(): v for k, v in (event.get("headers") or {}).items()}
+    query = event.get("queryStringParameters") or {}
 
-    # Optional shared-secret check. Since this Function URL is public with
-    # no other auth in front of it, set MCP_SHARED_SECRET as a Lambda
-    # environment variable and requests must send it back as a header.
-    # Leave MCP_SHARED_SECRET unset while first testing if that's easier.
+    # Optional shared-secret check. Claude's custom connector UI accepts a
+    # URL and OAuth fields, but does not expose a fixed custom-header field,
+    # so accept the secret from either x-mcp-secret (curl/testing) or
+    # ?secret=... (Claude connector URL).
     required_secret = os.environ.get("MCP_SHARED_SECRET")
-    if required_secret and headers.get("x-mcp-secret") != required_secret:
-        return _json_response(403, {"error": "Forbidden"})
+    if required_secret:
+        provided = headers.get("x-mcp-secret") or query.get("secret")
+        if provided != required_secret:
+            return _json_response(403, {"error": "Forbidden"})
 
     # Minimal DNS-rebinding guard: only accept requests for the real domain
     # (or localhost while testing), same intent as the SDK's transport
