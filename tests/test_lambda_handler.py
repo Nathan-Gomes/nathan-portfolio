@@ -12,16 +12,17 @@ os.environ["MCP_ALLOWED_HOSTS"] = "mcp.nathan-gomes.com,localhost,127.0.0.1"
 from lambda_handler import handler
 
 
-def make_event(body, host="mcp.nathan-gomes.com", query=None):
+def make_event(body, host="mcp.nathan-gomes.com", query=None, method="POST"):
     return {
         "headers": {"host": host, "content-type": "application/json"},
         "queryStringParameters": query,
-        "body": json.dumps(body),
+        "requestContext": {"http": {"method": method}},
+        "body": None if body is None else json.dumps(body),
     }
 
 
-def call(body, host="mcp.nathan-gomes.com", query=None):
-    return handler(make_event(body, host, query), None)
+def call(body, host="mcp.nathan-gomes.com", query=None, method="POST"):
+    return handler(make_event(body, host, query, method), None)
 
 
 print("=== initialize ===")
@@ -94,6 +95,13 @@ resp = call({"jsonrpc": "2.0", "id": 8, "method": "tools/list", "params": {}},
 assert resp["statusCode"] == 200
 body = json.loads(resp["body"])
 assert len(body["result"]["tools"]) == 8
+print("OK\n")
+
+print("=== browser GET with query secret returns health message ===")
+resp = call(None, query={"secret": "test-secret"}, method="GET")
+assert resp["statusCode"] == 200
+body = json.loads(resp["body"])
+assert body["ok"] and body["service"] == "portfolio-intelligence"
 print("OK\n")
 
 print("=== shared secret rejects missing credential ===")

@@ -110,6 +110,11 @@ async def _handle_rpc(body: dict):
 def handler(event, context):
     headers = {k.lower(): v for k, v in (event.get("headers") or {}).items()}
     query = event.get("queryStringParameters") or {}
+    request_method = (
+        ((event.get("requestContext") or {}).get("http") or {}).get("method")
+        or event.get("httpMethod")
+        or "POST"
+    )
 
     # Optional shared-secret check. Claude's custom connector UI accepts a
     # URL and OAuth fields, but does not expose a fixed custom-header field,
@@ -127,6 +132,14 @@ def handler(event, context):
     host = headers.get("host", "").split(":")[0]
     if host and host not in ALLOWED_HOSTS:
         return _json_response(421, {"error": f"Invalid Host header: {host}"})
+
+    if request_method == "GET" and not event.get("body"):
+        return _json_response(200, {
+            "ok": True,
+            "service": "portfolio-intelligence",
+            "protocol": "MCP JSON-RPC over HTTPS",
+            "message": "Connector is live. Claude should register this URL and call it with JSON-RPC POST requests.",
+        })
 
     try:
         body = json.loads(event.get("body") or "{}")
