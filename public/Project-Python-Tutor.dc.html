@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Mobile Python Tutor | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A Nathan Gomes software project case study.">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fbfaf8; color: #16181a; font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4, p { margin: 0; text-wrap: pretty; }
+  a { color: #16181a; }
+  a:hover { color: #1a6f57; }
+  ::selection { background: #cfe3da; }
+</style>
+</helmet>
+
+<div style="max-width:1160px;margin:0 auto;padding:0 40px">
+
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:28px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <a href="/" style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:#7a7e83" style-hover="color:#16181a">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      All projects
+    </a>
+  </header>
+
+  <section style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:64px;padding:88px 0 72px;align-items:start">
+    <div>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#1a6f57;margin-bottom:28px">Project 05 — Mobile app</p>
+      <h1 style="font-size:clamp(36px,4.8vw,64px);line-height:1.04;letter-spacing:-0.03em;font-weight:600;max-width:18ch">Mobile Python Tutor</h1>
+      <p style="margin-top:32px;max-width:62ch;font-size:19px;line-height:1.62;color:#3d4145">A phone-first Python course built out of five-minute lessons, tiny runnable challenges, and immediate feedback — programming practice shaped like a daily habit instead of a textbook.</p>
+    </div>
+    <dl style="margin:0;display:grid;gap:22px;font-family:'IBM Plex Mono', monospace;font-size:12px;line-height:1.55">
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Role</dt><dd style="margin:0;color:#16181a">Design, curriculum structure, build</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Stack</dt><dd style="margin:0;color:#16181a">React Native · Python · Cloud sync</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Status</dt><dd style="margin:0;color:#16181a">Shipped</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Audience</dt><dd style="margin:0;color:#16181a">School-age beginners and adult first-timers</dd></div>
+    </dl>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #16181a">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">The idea</h2>
+    <div style="max-width:64ch;display:grid;gap:22px;font-size:18px;line-height:1.65;color:#3d4145">
+      <p style="font-size:26px;line-height:1.25;letter-spacing:-0.015em;color:#16181a;font-weight:500">Most beginner programming material is written for adults who already know how to learn technical topics.</p>
+      <p>It assumes you'll set up an environment, sit at a desk for an hour, and push through a chapter. That's a fine model for someone in a CS program. It's a wall for a fourteen-year-old with a phone and fifteen spare minutes.</p>
+      <p>This app moves the entry point to where beginners already are. Short sessions, visible progress, instant feedback, and small wins — so the intimidating part of code becomes a routine rather than an event.</p>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">The loop</h2>
+    <div style="display:grid;gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+      <div style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:24px">
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">01</span>
+        <div><p style="font-size:18px;font-weight:500">Pick a path</p><p style="margin-top:6px;font-size:16px;line-height:1.6;color:#3d4145">Lessons are grouped into short tracks — variables, loops, conditionals, functions, collections — each one finishable in a sitting.</p></div>
+      </div>
+      <div style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:24px">
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">02</span>
+        <div><p style="font-size:18px;font-weight:500">Solve something tiny</p><p style="margin-top:6px;font-size:16px;line-height:1.6;color:#3d4145">Every lesson ends in real Python — a few lines, typed on a phone keyboard, checked against expected output.</p></div>
+      </div>
+      <div style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:24px">
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">03</span>
+        <div><p style="font-size:18px;font-weight:500">See what went wrong</p><p style="margin-top:6px;font-size:16px;line-height:1.6;color:#3d4145">Wrong answers explain themselves in plain language instead of showing a traceback, then queue the same concept back up later.</p></div>
+      </div>
+      <div style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:24px">
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">04</span>
+        <div><p style="font-size:18px;font-weight:500">Keep the streak</p><p style="margin-top:6px;font-size:16px;line-height:1.6;color:#3d4145">Progress and streaks sync across devices so picking it up on a different phone doesn't reset the reason to keep going.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Decisions</h2>
+    <div style="display:grid;gap:32px;max-width:64ch">
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:12px">Real code, not multiple choice</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">Tapping the right answer out of four options teaches you to recognise Python, not write it. Typing is slower on a phone and it's the part that transfers, so the challenges stayed text entry — with a custom key row for the characters phone keyboards bury.</p>
+      </div>
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:12px">Errors are a teaching surface</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">A raw <code style="font-family:'IBM Plex Mono', monospace;font-size:15px;color:#1a6f57">IndentationError</code> teaches a beginner nothing except that they failed. Mapping common failures to plain-language explanations was more valuable to the learning curve than any amount of extra content.</p>
+      </div>
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:12px">Streaks that forgive</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">Gamification turns hostile the moment missing one day erases a month. Progress is cumulative and streaks are recoverable, because the goal is to come back, not to feel punished.</p>
+      </div>
+    </div>
+  </section>
+
+  <nav style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e6e2db;border:1px solid #e6e2db;margin:56px 0 72px">
+    <a href="Project-Autofill-CoPilot.dc.html" style="background:#fbfaf8;padding:28px 26px;text-decoration:none;color:#16181a" style-hover="background:#f0f4f2">
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a7e83;margin-bottom:10px">Previous — 04</p>
+      <p style="font-size:20px;font-weight:500">Autofill CoPilot</p>
+    </a>
+    <a href="/" style="background:#fbfaf8;padding:28px 26px;text-decoration:none;color:#16181a;text-align:right" style-hover="background:#f0f4f2">
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a7e83;margin-bottom:10px">Index</p>
+      <p style="font-size:20px;font-weight:500">All projects</p>
+    </a>
+  </nav>
+</div>
+</x-dc>
+</body>
+</html>

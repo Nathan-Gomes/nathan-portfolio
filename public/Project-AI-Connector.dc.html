@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>AI Connector | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A Nathan Gomes software project case study.">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fbfaf8; color: #16181a; font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4, p { margin: 0; text-wrap: pretty; }
+  a { color: #16181a; }
+  a:hover { color: #1a6f57; }
+  ::selection { background: #cfe3da; }
+</style>
+</helmet>
+
+<div style="max-width:1160px;margin:0 auto;padding:0 40px">
+
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:28px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <a href="/" style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:#7a7e83" style-hover="color:#16181a">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      All projects
+    </a>
+  </header>
+
+  <section style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:64px;padding:88px 0 72px;align-items:start">
+    <div>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#1a6f57;margin-bottom:28px">Project 01 — AI Connector</p>
+      <h1 style="font-size:clamp(36px,4.8vw,64px);line-height:1.04;letter-spacing:-0.03em;font-weight:600;max-width:20ch">Private Real-Estate Portfolio Intelligence Connector</h1>
+      <p style="margin-top:32px;max-width:62ch;font-size:19px;line-height:1.62;color:#3d4145">A private data-and-tools layer that connects directly to Claude, giving it verified, structured knowledge of a multifamily property portfolio — so a real question about a building gets a correct, source-backed answer without anyone locating and uploading documents first.</p>
+      <div style="margin-top:32px;padding:16px 18px;border-left:2px solid #1a6f57;background:#f0f4f2;max-width:62ch;font-size:15px;line-height:1.55;color:#3d4145">This pilot runs entirely on fictional sample data. No real client, tenant, or financial information is used or shown.</div>
+    </div>
+    <dl style="margin:0;display:grid;gap:22px;font-family:'IBM Plex Mono', monospace;font-size:12px;line-height:1.55">
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Role</dt><dd style="margin:0;color:#16181a">Sole builder — schema, logic, connector, deploy</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Stack</dt><dd style="margin:0;color:#16181a">Python · MCP · SQLite → PostgreSQL · AWS Lambda · Docker</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Status</dt><dd style="margin:0;color:#1a6f57">Live pilot — Lambda Function URL serving all 8 tools</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Verified</dt><dd style="margin:0;color:#16181a">32 / 32 evaluation checks passing</dd></div>
+    </dl>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#e6e2db;border:1px solid #e6e2db;margin-bottom:96px">
+    <div style="background:#fbfaf8;padding:28px 24px">
+      <p style="font-size:38px;line-height:1;letter-spacing:-0.03em;font-weight:600">8</p>
+      <p style="margin-top:10px;font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">Read-only tools</p>
+    </div>
+    <div style="background:#fbfaf8;padding:28px 24px">
+      <p style="font-size:38px;line-height:1;letter-spacing:-0.03em;font-weight:600">32/32</p>
+      <p style="margin-top:10px;font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">Eval checks passing</p>
+    </div>
+    <div style="background:#fbfaf8;padding:28px 24px">
+      <p style="font-size:38px;line-height:1;letter-spacing:-0.03em;font-weight:600">9</p>
+      <p style="margin-top:10px;font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">Test categories</p>
+    </div>
+    <div style="background:#fbfaf8;padding:28px 24px">
+      <p style="font-size:38px;line-height:1;letter-spacing:-0.03em;font-weight:600">$0</p>
+      <p style="margin-top:10px;font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">Monthly hosting cost</p>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #16181a">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">The problem</h2>
+    <div style="max-width:64ch;display:grid;gap:22px;font-size:18px;line-height:1.65;color:#3d4145">
+      <p style="font-size:26px;line-height:1.25;letter-spacing:-0.015em;color:#16181a;font-weight:500">Claude is already good at answering. The hard part is context.</p>
+      <p>Claude can summarize documents, compare files, and answer general real-estate questions. But it depends on someone supplying the right documents and business context every single time — which means the answer is only as good as whoever went looking for the files.</p>
+      <p>This project removes that step. It gives Claude a private, permanent, verifiable memory of the portfolio behind the scenes, so the question "what's going on with Cedar Place?" returns a real briefing instead of a request for attachments.</p>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Architecture</h2>
+    <div>
+      <p style="max-width:64ch;font-size:18px;line-height:1.65;color:#3d4145;margin-bottom:36px">Six layers sit between the source files and Claude. Claude never gets raw database or file-system access — only a small set of controlled, read-only tools that return structured, cited answers.</p>
+      <ol style="margin:0;padding:0;list-style:none;display:grid;gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+        <li style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:4px">01</span>
+          <div><p style="font-size:17px;font-weight:500">Source files</p><p style="margin-top:5px;font-size:15px;color:#7a7e83">Invoices, contracts, work orders, inspection reports, notes</p></div>
+        </li>
+        <li style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:4px">02</span>
+          <div><p style="font-size:17px;font-weight:500">Ingestion &amp; validation</p><p style="margin-top:5px;font-size:15px;color:#7a7e83">Deduplication, OCR, classification, entity resolution, confidence scoring</p></div>
+        </li>
+        <li style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:4px">03</span>
+          <div><p style="font-size:17px;font-weight:500">Structured portfolio database</p><p style="margin-top:5px;font-size:15px;color:#7a7e83">Properties, aliases, vendors, equipment, maintenance, contracts, invoices, utility readings, findings, audit log</p></div>
+        </li>
+        <li style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:4px">04</span>
+          <div><p style="font-size:17px;font-weight:500">Searchable document index</p><p style="margin-top:5px;font-size:15px;color:#7a7e83">Metadata-filtered, property-scoped retrieval over chunked documents</p></div>
+        </li>
+        <li style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:4px">05</span>
+          <div><p style="font-size:17px;font-weight:500">Business logic &amp; analytics</p><p style="margin-top:5px;font-size:15px;color:#7a7e83">Deterministic calculations — Claude never does the arithmetic itself</p></div>
+        </li>
+        <li style="background:#f0f4f2;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">06</span>
+          <div><p style="font-size:17px;font-weight:500">Private Claude connector (MCP)</p><p style="margin-top:5px;font-size:15px;color:#3d4145">Read-only tools, structured JSON responses, full audit logging</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">The connector</h2>
+    <div>
+      <p style="font-size:26px;line-height:1.25;letter-spacing:-0.015em;font-weight:500;margin-bottom:14px">Eight read-only tools exposed to Claude</p>
+      <p style="max-width:64ch;font-size:18px;line-height:1.65;color:#3d4145;margin-bottom:36px">Built on the Model Context Protocol — the same standard Claude uses for any custom connector — and verified with a real MCP client over both stdio and HTTPS transports. Every call is written to an audit log table.</p>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">resolve_property</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Turns a name, alias, address, ownership entity, accounting code, or utility account into a canonical property record.</p>
+        </div>
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">get_property_summary</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Full briefing: profile, open findings, recent maintenance, top expenses, upcoming deadlines.</p>
+        </div>
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">search_property_documents</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Property-scoped document search that never crosses property boundaries.</p>
+        </div>
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">get_expense_history</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Deterministic totals by category and date range, from approved invoices only.</p>
+        </div>
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">get_maintenance_history</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Maintenance events with automatic repeat-issue detection and cost totals.</p>
+        </div>
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">get_open_anomalies</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Open findings — utility anomalies, repeat repairs, conflicting records.</p>
+        </div>
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">get_contract_deadlines</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Contracts with a termination-notice or expiry deadline inside a given window.</p>
+        </div>
+        <div style="background:#fbfaf8;padding:22px 24px">
+          <code style="font-family:'IBM Plex Mono', monospace;font-size:13px;color:#1a6f57">get_utility_anomalies</code>
+          <p style="margin-top:10px;font-size:15px;line-height:1.55;color:#3d4145">Flags billing periods above a trailing baseline, with estimated annual cost exposure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Testing</h2>
+    <div>
+      <p style="font-size:26px;line-height:1.25;letter-spacing:-0.015em;font-weight:500;margin-bottom:14px">Evaluated against every required test category</p>
+      <p style="max-width:64ch;font-size:18px;line-height:1.65;color:#3d4145;margin-bottom:36px">A 32-question suite covering identity resolution, expense totals, maintenance history, document retrieval, contract dates, missing information, conflicting records, and cross-property isolation.</p>
+      <div style="display:grid;gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Property identity resolution — names, aliases, accounting codes</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">8/8</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Ambiguous or unverified property names correctly flagged</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">2/2</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Expense totals — category and date-range filters</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">6/6</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Maintenance history and repeat-repair detection</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">3/3</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Document retrieval and type filtering</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">3/3</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Contract deadline window logic</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">2/2</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Missing-information handling — no fabricated numbers</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">3/3</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Conflicting-records disclosure</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">2/2</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#3d4145">Cross-property data isolation</span><span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;flex:none">3/3</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Two real snags</h2>
+    <div style="display:grid;gap:36px;max-width:64ch">
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:14px">A resolver that trusted the wrong alias</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">The original resolver treated an exact match on <em>any</em> alias as high confidence — including an unverified one like a loose folder name. Writing the evaluation suite surfaced it. Now unverified matches return <code style="font-family:'IBM Plex Mono', monospace;font-size:15px;color:#1a6f57">confidence: "low"</code> with an explicit warning instead of resolving silently, which is exactly what the spec required: never quietly select a value.</p>
+      </div>
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:14px">The MCP SDK's HTTP app doesn't fit Lambda</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">The SDK's built-in streamable-HTTP app runs a session manager designed for a long-lived server process; it can't be re-entered per invocation and raised a <code style="font-family:'IBM Plex Mono', monospace;font-size:15px;color:#1a6f57">RuntimeError</code> on the second call. Rather than force the mismatch, the Lambda handler talks directly to the same registered tools and implements only the JSON-RPC methods a client actually needs — verified against simulated cold starts and a read-only filesystem, with audit logs falling back to <code style="font-family:'IBM Plex Mono', monospace;font-size:15px;color:#1a6f57">/tmp</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Where it stands</h2>
+    <div>
+      <div style="display:grid;gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px">Curated database pilot</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;flex:none">Done</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px">Document retrieval</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;flex:none">Done — pilot-grade</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px">MCP connector — 8 tools, stdio + HTTP</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;flex:none">Done</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px">Evaluation suite — 32 checks</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;flex:none">Done</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px">AWS Lambda deployment</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;flex:none">Live</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#7a7e83">Discovery with real questions</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#a2a5a8;flex:none">Next</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#7a7e83">Controlled pilot on real documents</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#a2a5a8;flex:none">Planned</span></div>
+        <div style="background:#fbfaf8;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px"><span style="font-size:16px;color:#7a7e83">Portfolio-wide rollout</span><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#a2a5a8;flex:none">Planned</span></div>
+      </div>
+      <p style="margin-top:24px;max-width:64ch;font-size:16px;line-height:1.6;color:#7a7e83">The architecture is proven end to end, including a live endpoint. The honest gap: the real pilot can't start until the connector is registered in Claude and there's a real property with real documents behind it.</p>
+    </div>
+  </section>
+
+  <nav style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e6e2db;border:1px solid #e6e2db;margin:56px 0 72px">
+    <a href="/" style="background:#fbfaf8;padding:28px 26px;text-decoration:none;color:#16181a" style-hover="background:#f0f4f2">
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a7e83;margin-bottom:10px">Index</p>
+      <p style="font-size:20px;font-weight:500">All projects</p>
+    </a>
+    <a href="Project-Invoice-App.dc.html" style="background:#fbfaf8;padding:28px 26px;text-decoration:none;color:#16181a;text-align:right" style-hover="background:#f0f4f2">
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a7e83;margin-bottom:10px">Next — 02</p>
+      <p style="font-size:20px;font-weight:500">Invoice Review Platform</p>
+    </a>
+  </nav>
+</div>
+</x-dc>
+</body>
+</html>

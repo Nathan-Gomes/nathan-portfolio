@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Invoice Review Platform | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A Nathan Gomes software project case study.">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fbfaf8; color: #16181a; font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4, p { margin: 0; text-wrap: pretty; }
+  a { color: #16181a; }
+  a:hover { color: #1a6f57; }
+  ::selection { background: #cfe3da; }
+</style>
+</helmet>
+
+<div style="max-width:1160px;margin:0 auto;padding:0 40px">
+
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:28px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <a href="/" style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:#7a7e83" style-hover="color:#16181a">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      All projects
+    </a>
+  </header>
+
+  <section style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:64px;padding:88px 0 72px;align-items:start">
+    <div>
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#1a6f57;margin-bottom:28px">Project 02 — Real-estate expense intelligence</p>
+      <h1 style="font-size:clamp(36px,4.8vw,64px);line-height:1.04;letter-spacing:-0.03em;font-weight:600;max-width:18ch">Invoice Review Platform</h1>
+      <p style="margin-top:32px;max-width:62ch;font-size:19px;line-height:1.62;color:#3d4145">A full-stack review workspace that turns property invoices into validated records, portfolio trends, explainable anomalies, analyst findings, and assigned follow-up actions. Built around a real analyst workflow rather than a passive chart dashboard.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:36px">
+        <a href="https://nathan-invoice-review.onrender.com/overview" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;background:#16181a;color:#fbfaf8;text-decoration:none;font-size:15px;font-weight:500;border:1px solid #16181a" style-hover="background:#1a6f57;border-color:#1a6f57">Open the live app
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+        </a>
+        <a href="#walkthrough" style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;background:transparent;color:#16181a;text-decoration:none;font-size:15px;font-weight:500;border:1px solid #d5d0c7" style-hover="border-color:#16181a">Read the walkthrough</a>
+      </div>
+      <p style="margin-top:16px;font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8">nathan-invoice-review.onrender.com — free-tier instance, first load may take a moment to wake.</p>
+    </div>
+    <dl style="margin:0;display:grid;gap:22px;font-family:'IBM Plex Mono', monospace;font-size:12px;line-height:1.55">
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Role</dt><dd style="margin:0;color:#16181a">Full stack — schema, API, interface, deploy</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Stack</dt><dd style="margin:0;color:#16181a">Next.js · TypeScript · FastAPI · Python · SQLite</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Status</dt><dd style="margin:0;color:#1a6f57">Live on Render</dd></div>
+      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Demo data</dt><dd style="margin:0;color:#16181a">565 sample invoices across a fictional portfolio</dd></div>
+    </dl>
+  </section>
+
+  <section style="margin-bottom:96px">
+    <a href="https://nathan-invoice-review.onrender.com/overview" target="_blank" rel="noreferrer" style="display:block;border:1px solid #e6e2db;background:#fff;text-decoration:none;color:inherit" style-hover="border-color:#16181a">
+      <div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid #e6e2db;background:#f4f2ee">
+        <span style="width:9px;height:9px;border-radius:99px;background:#d5d0c7"></span>
+        <span style="width:9px;height:9px;border-radius:99px;background:#d5d0c7"></span>
+        <span style="width:9px;height:9px;border-radius:99px;background:#d5d0c7"></span>
+        <span style="margin-left:14px;font-family:'IBM Plex Mono', monospace;font-size:12px;color:#7a7e83">nathan-invoice-review.onrender.com/overview</span>
+      </div>
+      <div style="display:grid;grid-template-columns:180px minmax(0,1fr)">
+        <aside style="border-right:1px solid #e6e2db;padding:22px 18px;display:grid;gap:4px;align-content:start;background:#fbfaf8">
+          <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a7e83;margin-bottom:14px">Invoice Review</p>
+          <span style="padding:9px 12px;font-size:14px;font-weight:500;color:#1a6f57;background:#f0f4f2">Overview</span>
+          <span style="padding:9px 12px;font-size:14px;color:#7a7e83">Triage</span>
+          <span style="padding:9px 12px;font-size:14px;color:#7a7e83">Properties</span>
+          <span style="padding:9px 12px;font-size:14px;color:#7a7e83">Invoices</span>
+          <span style="padding:9px 12px;font-size:14px;color:#7a7e83">Analysis</span>
+        </aside>
+        <div style="padding:26px 28px 32px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:24px">
+            <p style="font-size:20px;font-weight:500">Overview</p>
+            <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#a2a5a8">Demo portfolio</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#e6e2db;border:1px solid #e6e2db;margin-bottom:26px">
+            <div style="background:#fbfaf8;padding:20px"><p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">Monthly spend</p><p style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.02em">$37,371</p></div>
+            <div style="background:#fbfaf8;padding:20px"><p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">Annual excess</p><p style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.02em">$60,571</p></div>
+            <div style="background:#fbfaf8;padding:20px"><p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">Needs review</p><p style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.02em">10</p></div>
+          </div>
+          <div style="border:1px solid #e6e2db">
+            <div style="display:grid;grid-template-columns:1.1fr 1.3fr 0.6fr;gap:16px;padding:12px 18px;border-bottom:1px solid #e6e2db;background:#f4f2ee;font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7e83">
+              <span>Property</span><span>Issue</span><span style="text-align:right">Impact</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1.3fr 0.6fr;gap:16px;padding:14px 18px;border-bottom:1px solid #e6e2db;font-size:15px">
+              <span>Cedar Place</span><span style="color:#3d4145">Water usage</span><span style="text-align:right;font-weight:500">$17.6K</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1.3fr 0.6fr;gap:16px;padding:14px 18px;border-bottom:1px solid #e6e2db;font-size:15px">
+              <span>Riverside</span><span style="color:#3d4145">Electricity rate</span><span style="text-align:right;font-weight:500">$19.3K</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1.3fr 0.6fr;gap:16px;padding:14px 18px;font-size:15px">
+              <span>Harbour View</span><span style="color:#3d4145">Gas usage</span><span style="text-align:right;font-weight:500">$5.1K</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #16181a">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">The problem</h2>
+    <div style="max-width:64ch;display:grid;gap:22px;font-size:18px;line-height:1.65;color:#3d4145">
+      <p style="font-size:26px;line-height:1.25;letter-spacing:-0.015em;color:#16181a;font-weight:500">Property operators already have the data. It's scattered across PDFs and spreadsheets.</p>
+      <p>The information needed to catch a water leak or a mispriced electricity contract is usually sitting in a folder of invoices nobody reads line by line. By the time it surfaces, it's been leaking money for months.</p>
+      <p>This platform creates a repeatable path from document intake to investigation, recommendation, ownership, and measured resolution — without hiding the calculation behind an unexplained score.</p>
+    </div>
+  </section>
+
+  <section id="walkthrough" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">The workflow</h2>
+    <div>
+      <p style="max-width:64ch;font-size:18px;line-height:1.65;color:#3d4145;margin-bottom:36px">Three stages, each gated by a person. Records don't enter analysis until someone has looked at them, and findings don't become actions until someone owns them.</p>
+      <div style="display:grid;gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+        <div style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">01</span>
+          <div><p style="font-size:18px;font-weight:500">Review and approve invoices</p><p style="margin-top:6px;font-size:16px;line-height:1.6;color:#3d4145">The source invoice sits beside its extracted fields, so a reviewer can confirm the numbers against the document instead of trusting an extraction pass. Nothing reaches analysis unreviewed.</p></div>
+        </div>
+        <div style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">02</span>
+          <div><p style="font-size:18px;font-weight:500">Investigate ranked incidents</p><p style="margin-top:6px;font-size:16px;line-height:1.6;color:#3d4145">Utility activity is normalised by occupancy and billing days before anything is compared, then potential issues are ranked by confidence and financial impact — so triage starts with the item most worth an hour.</p></div>
+        </div>
+        <div style="background:#fbfaf8;display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:24px">
+          <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:4px">03</span>
+          <div><p style="font-size:18px;font-weight:500">Publish findings and actions</p><p style="margin-top:6px;font-size:16px;line-height:1.6;color:#3d4145">An investigation ends in a written finding with an assigned follow-up action and an owner. The evidence and audit history stay attached, so the next review can see what was decided and why.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Decisions</h2>
+    <div style="display:grid;gap:32px;max-width:64ch">
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:12px">Normalise before you compare</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">A building's water bill going up 30% means nothing until you account for occupancy and how many days the period covered. Comparing raw totals produces a dashboard full of false alarms, and a tool that cries wolf gets ignored inside a week.</p>
+      </div>
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:12px">No unexplained scores</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">Every ranked incident shows the inputs behind its confidence and its dollar impact. An analyst has to be able to disagree with the system, and that requires seeing the arithmetic — not a number between one and a hundred.</p>
+      </div>
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:12px">A workflow, not a chart dashboard</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">Charts tell you something changed. They don't tell you who is looking into it or what happened last time. Modelling findings, owners, and actions as first-class records is what makes the tool usable on a recurring review cycle instead of once.</p>
+      </div>
+      <div>
+        <p style="font-size:20px;line-height:1.35;font-weight:500;margin-bottom:12px">Keep the evidence attached</p>
+        <p style="font-size:18px;line-height:1.65;color:#3d4145">Approvals, edits, and findings all preserve their source documents and history. If a number in a report gets challenged six months later, the answer to "where did this come from" is a link, not a search.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:44px 0;border-top:1px solid #e6e2db">
+    <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500">Try it</h2>
+    <div>
+      <p style="max-width:64ch;font-size:18px;line-height:1.65;color:#3d4145;margin-bottom:28px">The live instance is loaded with 565 demo invoices across a fictional portfolio — all sample data, no real client or tenant information. Start on Overview, then open Triage to see the ranked incidents.</p>
+      <a href="https://nathan-invoice-review.onrender.com/overview" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;background:#16181a;color:#fbfaf8;text-decoration:none;font-size:15px;font-weight:500;border:1px solid #16181a" style-hover="background:#1a6f57;border-color:#1a6f57">Open the live app
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+      </a>
+    </div>
+  </section>
+
+  <nav style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e6e2db;border:1px solid #e6e2db;margin:56px 0 72px">
+    <a href="Project-AI-Connector.dc.html" style="background:#fbfaf8;padding:28px 26px;text-decoration:none;color:#16181a" style-hover="background:#f0f4f2">
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a7e83;margin-bottom:10px">Previous — 01</p>
+      <p style="font-size:20px;font-weight:500">AI Connector</p>
+    </a>
+    <a href="Project-Job-Finder.dc.html" style="background:#fbfaf8;padding:28px 26px;text-decoration:none;color:#16181a;text-align:right" style-hover="background:#f0f4f2">
+      <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7a7e83;margin-bottom:10px">Next — 03</p>
+      <p style="font-size:20px;font-weight:500">Job Finder Automation</p>
+    </a>
+  </nav>
+</div>
+</x-dc>
+</body>
+</html>
