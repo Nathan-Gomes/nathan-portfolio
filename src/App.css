@@ -701,6 +701,29 @@
   font-weight: 900;
 }
 
+.project-live-action {
+  width: fit-content;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 0 15px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: var(--project-accent);
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--project-accent) 24%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-live-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px color-mix(in srgb, var(--project-accent) 30%, transparent);
+}
+
 .project-visual {
   min-height: 350px;
   border: 1px solid color-mix(in srgb, var(--project-accent) 36%, transparent);
@@ -717,6 +740,146 @@
 .phone-shell {
   position: relative;
   height: 100%;
+}
+
+.invoice-app-frame {
+  min-height: 350px;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  color: #1e293b;
+  background: #f4f6f8;
+}
+
+.invoice-mini-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  padding: 14px 10px;
+  border-right: 1px solid rgba(15, 23, 42, 0.1);
+  background: #ffffff;
+}
+
+.invoice-mini-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 11px;
+  color: #0f172a;
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.invoice-mini-sidebar > span {
+  padding: 7px 8px;
+  border-radius: 5px;
+  color: #64748b;
+  font-size: 0.64rem;
+  font-weight: 800;
+}
+
+.invoice-mini-sidebar > span.active {
+  color: #1d4ed8;
+  background: #e8efff;
+}
+
+.invoice-mini-main {
+  min-width: 0;
+  padding: 18px;
+}
+
+.invoice-mini-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.invoice-mini-heading > span {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.invoice-mini-heading small,
+.invoice-mini-metrics small {
+  color: #64748b;
+  font-size: 0.59rem;
+  font-weight: 800;
+}
+
+.invoice-mini-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.invoice-mini-metrics > div {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.invoice-mini-metrics small,
+.invoice-mini-metrics strong {
+  display: block;
+}
+
+.invoice-mini-metrics strong {
+  margin-top: 6px;
+  color: #0f172a;
+  font-size: 0.88rem;
+}
+
+.invoice-mini-table {
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.invoice-mini-row {
+  display: grid;
+  grid-template-columns: 0.95fr 1.2fr 0.6fr;
+  gap: 8px;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 10px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  font-size: 0.64rem;
+}
+
+.invoice-mini-row.heading {
+  min-height: 34px;
+  border-top: 0;
+  color: #64748b;
+  background: #f8fafc;
+  font-weight: 900;
+}
+
+.invoice-mini-row strong {
+  color: #0f172a;
+  text-align: right;
+}
+
+.issue-critical,
+.issue-watch {
+  width: fit-content;
+  padding: 4px 6px;
+  border-radius: 5px;
+  font-weight: 900;
+}
+
+.issue-critical {
+  color: #b42318;
+  background: #fff0ee;
+}
+
+.issue-watch {
+  color: #9a6700;
+  background: #fff7d6;
 }
 
 .browser-frame {

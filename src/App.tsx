@@ -19,6 +19,7 @@ import {
   MapPin,
   MonitorSmartphone,
   Phone,
+  ReceiptText,
   Rocket,
   Search,
   Server,
@@ -31,8 +32,9 @@ import {
 import './App.css'
 
 const resumePath = '/Nathan-Gomes-Resume-April-2026.pdf'
+const invoiceAppUrl = 'https://nathan-invoice-review.onrender.com/overview'
 
-type ProjectVisual = 'scraper' | 'copilot' | 'tutor'
+type ProjectVisual = 'invoice' | 'scraper' | 'copilot' | 'tutor'
 
 type Project = {
   title: string
@@ -48,9 +50,29 @@ type Project = {
   whyUseful: string
   workflow: string[]
   today: string[]
+  liveUrl?: string
 }
 
 const projects: Project[] = [
+  {
+    title: 'Invoice Review Platform',
+    eyebrow: 'Real-estate expense intelligence',
+    summary:
+      'I built a full-stack review workspace that turns property invoices into validated records, portfolio trends, explainable anomalies, analyst findings, and assigned follow-up actions.',
+    stack: ['Next.js', 'TypeScript', 'FastAPI', 'Python', 'SQLite'],
+    highlights: ['invoice review', 'anomaly triage', 'analyst workflow'],
+    metric: '565 demo invoices',
+    accent: '#2563eb',
+    icon: ReceiptText,
+    visual: 'invoice',
+    liveUrl: invoiceAppUrl,
+    deepDive:
+      'The platform keeps source invoices beside extracted fields, requires review before records enter analysis, normalizes utility activity by occupancy and billing days, and ranks potential issues by confidence and financial impact. I designed it around a real analyst workflow rather than a passive chart dashboard.',
+    whyUseful:
+      'Property operators often have the data already, but it is scattered across PDFs and spreadsheets. This system creates a repeatable path from document intake to investigation, recommendation, ownership, and measured resolution without hiding the calculation behind an unexplained score.',
+    workflow: ['Review and approve invoices', 'Investigate ranked incidents', 'Publish findings and actions'],
+    today: ['Explains cost and usage changes', 'Preserves evidence and audit history', 'Supports recurring analyst review'],
+  },
   {
     title: 'Job Finder Automation',
     eyebrow: 'Career workflow automation',
@@ -173,6 +195,38 @@ function BackgroundStory() {
 }
 
 function ProjectMockup({ project }: { project: Project }) {
+  if (project.visual === 'invoice') {
+    return (
+      <div className="project-visual invoice-visual" aria-label="Invoice Review Platform dashboard mockup">
+        <div className="invoice-app-frame">
+          <aside className="invoice-mini-sidebar">
+            <div className="invoice-mini-brand"><ReceiptText size={15} /><span>Invoice Review</span></div>
+            {['Overview', 'Triage', 'Properties', 'Invoices', 'Analysis'].map((item, index) => (
+              <span className={index === 0 ? 'active' : ''} key={item}>{item}</span>
+            ))}
+          </aside>
+          <div className="invoice-mini-main">
+            <div className="invoice-mini-heading">
+              <span>Overview</span>
+              <small>Demo portfolio</small>
+            </div>
+            <div className="invoice-mini-metrics">
+              <div><small>Monthly spend</small><strong>$37,371</strong></div>
+              <div><small>Annual excess</small><strong>$60,571</strong></div>
+              <div><small>Needs review</small><strong>10</strong></div>
+            </div>
+            <div className="invoice-mini-table">
+              <div className="invoice-mini-row heading"><span>Property</span><span>Issue</span><span>Impact</span></div>
+              <div className="invoice-mini-row"><span>Cedar Place</span><span className="issue-critical">Water usage</span><strong>$17.6K</strong></div>
+              <div className="invoice-mini-row"><span>Riverside</span><span className="issue-watch">Electricity rate</span><strong>$19.3K</strong></div>
+              <div className="invoice-mini-row"><span>Harbour View</span><span>Gas usage</span><strong>$5.1K</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (project.visual === 'scraper') {
     return (
       <div className="project-visual scraper-visual" aria-label="Job Finder Automation interface mockup">
@@ -264,6 +318,7 @@ function App() {
           <a href="#experience">Experience</a>
           <a href="#cloud">Cloud</a>
           <a href="/connector.html" target="_blank" rel="noreferrer">AI Connector</a>
+          <a href={invoiceAppUrl} target="_blank" rel="noreferrer">Invoice App</a>
           <a href={resumePath} target="_blank" rel="noreferrer">Resume</a>
           <a href="#contact">Contact</a>
         </div>
@@ -485,6 +540,11 @@ function App() {
                     <span key={item}>{item}</span>
                   ))}
                 </div>
+                {selectedProject.liveUrl && (
+                  <a className="project-live-action" href={selectedProject.liveUrl} target="_blank" rel="noreferrer">
+                    Open Invoice App <ArrowUpRight size={17} />
+                  </a>
+                )}
               </div>
               <ProjectMockup project={selectedProject} />
             </div>
