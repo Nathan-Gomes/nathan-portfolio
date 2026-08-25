@@ -319,13 +319,18 @@ button:focus-visible {
   }
 
   .quant-metrics,
-  .quant-workflow {
+  .quant-workflow,
+  .research-findings {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 
   .quant-metrics > div {
     border-right: 0 !important;
     border-bottom: 1px solid #e6e2db;
+  }
+
+  .research-pdf-frame {
+    height: 560px !important;
   }
 
   [style*="grid-template-columns:56px"],
