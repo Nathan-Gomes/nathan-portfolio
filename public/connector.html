@@ -325,12 +325,12 @@
     </nav>
 
     <section class="hero">
-      <p class="status-pill">🏗️ Active build — private connector project</p>
+      <p class="status-pill">🏗️ Active build - private connector project</p>
       <h1>Private Claude MCP Portfolio Connector</h1>
       <p class="lede">
         A private data-and-tools layer that connects directly to Claude, giving
         it verified, structured knowledge of a real multifamily property
-        portfolio — so a real question about a building gets a correct,
+        portfolio - so a real question about a building gets a correct,
         source-backed answer without anyone manually locating and uploading
         documents first.
       </p>
@@ -343,7 +343,7 @@
     <section>
       <div class="section-heading">
         <p class="eyebrow">The problem</p>
-        <h2>Claude is great at answering — the hard part is context</h2>
+        <h2>Claude is great at answering - the hard part is context</h2>
         <p class="desc">
           Claude can already summarize documents, compare files, and answer
           general real-estate questions. But it depends on someone supplying
@@ -359,7 +359,7 @@
         <p class="eyebrow">Architecture</p>
         <h2>Six layers between the source files and Claude</h2>
         <p class="desc">
-          Claude never gets raw database or file-system access — only a small
+          Claude never gets raw database or file-system access - only a small
           set of controlled, read-only tools that return structured, cited
           answers.
         </p>
@@ -387,7 +387,7 @@
         <div class="layer-arrow">↓</div>
         <div class="layer">
           <span class="num" style="background:var(--purple)">5</span>
-          <div class="body"><strong>Business logic &amp; analytics</strong><span>Deterministic calculations — Claude never does the arithmetic itself</span></div>
+          <div class="body"><strong>Business logic &amp; analytics</strong><span>Deterministic calculations - Claude never does the arithmetic itself</span></div>
         </div>
         <div class="layer-arrow">↓</div>
         <div class="layer">
@@ -402,8 +402,8 @@
         <p class="eyebrow">The connector</p>
         <h2>8 read-only tools exposed to Claude</h2>
         <p class="desc">
-          Built on the Model Context Protocol (MCP) — the same standard Claude
-          uses for any custom connector — and verified with a real MCP client
+          Built on the Model Context Protocol (MCP) - the same standard Claude
+          uses for any custom connector - and verified with a real MCP client
           over both stdio and HTTPS transports.
         </p>
       </div>
@@ -418,7 +418,7 @@
         </div>
         <div class="card tool-card">
           <code>search_property_documents</code>
-          <p>Property-scoped document search — never crosses property boundaries.</p>
+          <p>Property-scoped document search - never crosses property boundaries.</p>
         </div>
         <div class="card tool-card">
           <code>get_expense_history</code>
@@ -430,7 +430,7 @@
         </div>
         <div class="card tool-card">
           <code>get_open_anomalies</code>
-          <p>Open findings — utility anomalies, repeat repairs, conflicting records.</p>
+          <p>Open findings - utility anomalies, repeat repairs, conflicting records.</p>
         </div>
         <div class="card tool-card">
           <code>get_contract_deadlines</code>
@@ -458,7 +458,7 @@
           A 32-question evaluation suite covering property identity, expense
           totals, maintenance history, document retrieval, contract dates,
           missing information, conflicting records, and cross-property data
-          isolation — all currently passing.
+          isolation - all currently passing.
         </p>
       </div>
       <div class="stat-row">
@@ -469,7 +469,7 @@
       <div class="checklist">
         <div class="card row"><span>Property identity resolution (names, aliases, accounting codes)</span><span class="badge">8/8</span></div>
         <div class="card row"><span>Ambiguous / unverified property names correctly flagged</span><span class="badge">2/2</span></div>
-        <div class="card row"><span>Expense totals — category &amp; date-range filters</span><span class="badge">6/6</span></div>
+        <div class="card row"><span>Expense totals - category &amp; date-range filters</span><span class="badge">6/6</span></div>
         <div class="card row"><span>Maintenance history &amp; repeat-repair detection</span><span class="badge">3/3</span></div>
         <div class="card row"><span>Document retrieval &amp; filtering</span><span class="badge">3/3</span></div>
         <div class="card row"><span>Contract deadline logic</span><span class="badge">2/2</span></div>
@@ -485,18 +485,18 @@
         <h2>Where this stands right now</h2>
       </div>
       <div class="roadmap">
-        <div class="card row"><strong>Phase 2 — Curated database pilot</strong><span class="pill-status tag-done">Done</span></div>
-        <div class="card row"><strong>Phase 3 — Document retrieval</strong><span class="pill-status tag-done">Done (pilot-grade)</span></div>
-        <div class="card row"><strong>Phase 4 — MCP connector</strong><span class="pill-status tag-done">Done</span></div>
-        <div class="card row"><strong>Phase 5 — Evaluation (32 checks)</strong><span class="pill-status tag-done">Done</span></div>
-        <div class="card row"><strong>Phase 0 — Discovery with real questions</strong><span class="pill-status tag-todo">Next</span></div>
-        <div class="card row"><strong>Phase 6 — Controlled pilot, real documents</strong><span class="pill-status tag-todo">Planned</span></div>
-        <div class="card row"><strong>Phase 7 — Portfolio-wide rollout</strong><span class="pill-status tag-todo">Planned</span></div>
+        <div class="card row"><strong>Phase 2 - Curated database pilot</strong><span class="pill-status tag-done">Done</span></div>
+        <div class="card row"><strong>Phase 3 - Document retrieval</strong><span class="pill-status tag-done">Done (pilot-grade)</span></div>
+        <div class="card row"><strong>Phase 4 - MCP connector</strong><span class="pill-status tag-done">Done</span></div>
+        <div class="card row"><strong>Phase 5 - Evaluation (32 checks)</strong><span class="pill-status tag-done">Done</span></div>
+        <div class="card row"><strong>Phase 0 - Discovery with real questions</strong><span class="pill-status tag-todo">Next</span></div>
+        <div class="card row"><strong>Phase 6 - Controlled pilot, real documents</strong><span class="pill-status tag-todo">Planned</span></div>
+        <div class="card row"><strong>Phase 7 - Portfolio-wide rollout</strong><span class="pill-status tag-todo">Planned</span></div>
       </div>
     </section>
 
     <footer>
-      <span>Private connector project — built with Claude · sample data only</span>
+      <span>Private connector project - built with Claude · sample data only</span>
       <a class="back-link" href="/">&larr; Back to portfolio</a>
     </footer>
   </div>
