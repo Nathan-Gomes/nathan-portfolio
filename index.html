@@ -55,14 +55,26 @@
         </a>
       </div>
     </div>
-    <dl style="margin:0;display:grid;gap:22px;font-family:'IBM Plex Mono', monospace;font-size:12px;line-height:1.5">
-      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Education</dt><dd style="margin:0;color:#16181a">BSc Computer Science</dd></div>
-      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Cloud</dt><dd style="margin:0;color:#16181a">AWS · Azure · Terraform</dd></div>
-      <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Languages</dt><dd style="margin:0;color:#16181a">Python · TypeScript · Java · C</dd></div>
+    <aside class="hero-profile" aria-label="Professional profile">
+      <p class="hero-profile-title">At a glance</p>
+      <dl>
+        <div class="hero-profile-row">
+          <dt>Education</dt>
+          <dd><strong>BSc Computer Science</strong><span>Wilfrid Laurier University</span></dd>
+        </div>
+        <div class="hero-profile-row">
+          <dt>Based in</dt>
+          <dd><strong>Toronto, Canada</strong><span>English &amp; French</span></dd>
+        </div>
+        <div class="hero-profile-row">
+          <dt>Focus</dt>
+          <dd><strong>Software, cloud &amp; automation</strong><span>Building reliable tools from data to deployment</span></dd>
+        </div>
+      </dl>
       <sc-if value="{{ available }}" hint-placeholder-val="{{ true }}">
-        <div><dt style="color:#a2a5a8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Status</dt><dd style="margin:0;color:#1a6f57;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:99px;background:#1a6f57;flex:none"></span>Open to junior dev, cloud &amp; automation roles</dd></div>
+        <div class="hero-availability"><span aria-hidden="true"></span><p><strong>Available for opportunities</strong>Junior software, cloud, automation, and data roles</p></div>
       </sc-if>
-    </dl>
+    </aside>
   </section>
 
   <section id="projects" style="padding:24px 0 96px;border-top:1px solid #e6e2db">
