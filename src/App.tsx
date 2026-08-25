@@ -31,7 +31,7 @@ import {
 } from 'lucide-react'
 import './App.css'
 
-const resumePath = '/Nathan-Gomes-Resume-April-2026.pdf'
+const resumePath = '/Nathan-Gomes-Resume.pdf'
 const invoiceAppUrl = 'https://nathan-invoice-review.onrender.com/overview'
 
 type ProjectVisual = 'invoice' | 'scraper' | 'copilot' | 'tutor'
