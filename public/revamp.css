@@ -2,6 +2,12 @@ html {
   scroll-behavior: smooth;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   overflow-x: hidden;
 }
@@ -310,6 +316,16 @@ button:focus-visible {
 
   .hero-profile-row {
     grid-template-columns: 92px minmax(0, 1fr);
+  }
+
+  .quant-metrics,
+  .quant-workflow {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .quant-metrics > div {
+    border-right: 0 !important;
+    border-bottom: 1px solid #e6e2db;
   }
 
   [style*="grid-template-columns:56px"],

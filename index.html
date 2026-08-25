@@ -80,33 +80,48 @@
   <section id="projects" style="padding:24px 0 96px;border-top:1px solid #e6e2db">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:28px 0 44px">
       <h2 style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#16181a">Projects</h2>
-      <p style="font-size:15px;color:#7a7e83;max-width:38ch;text-align:right">Four builds. Each one opens its own page with the full write-up.</p>
+      <p style="font-size:15px;color:#7a7e83;max-width:38ch;text-align:right">Five builds. Each one opens its own page with the full write-up.</p>
     </div>
 
-    <a href="Project-AI-Connector.dc.html" style="display:grid;grid-template-columns:56px minmax(0,1fr) 240px;gap:32px;padding:40px 0;border-top:1px solid #16181a;text-decoration:none;color:inherit;align-items:start" style-hover="background:#f4f2ee">
+    <a href="Project-Quant-Portfolio.dc.html" style="display:grid;grid-template-columns:56px minmax(0,1fr) 240px;gap:32px;padding:40px 0;border-top:1px solid #16181a;text-decoration:none;color:inherit;align-items:start" style-hover="background:#f4f2ee">
       <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#1a6f57;padding-top:6px">01</span>
       <div>
-        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:14px">AI Connector · Flagship</p>
-        <h3 style="font-size:clamp(28px,3.4vw,40px);line-height:1.08;letter-spacing:-0.02em;font-weight:600;max-width:24ch">Private Claude MCP Portfolio Connector</h3>
-        <p style="margin-top:16px;max-width:62ch;font-size:17px;line-height:1.6;color:#3d4145">A private MCP connector that gives Claude verified, structured access to a property portfolio - eight read-only tools, deterministic business logic so the model never does arithmetic, and a full audit log. Deployed to AWS Lambda and passing all 32 evaluation checks.</p>
+        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:14px">Quantitative finance · Featured</p>
+        <h3 style="font-size:clamp(28px,3.4vw,40px);line-height:1.08;letter-spacing:-0.02em;font-weight:600;max-width:24ch">Quantitative Portfolio Research Pipeline</h3>
+        <p style="margin-top:16px;max-width:62ch;font-size:17px;line-height:1.6;color:#3d4145">A reproducible ETF research pipeline using Python, pandas, SQL, constrained optimization, and transaction-cost-aware walk-forward testing. Includes an interactive report, MATLAB implementation, and six automated tests.</p>
         <sc-if value="{{ showStack }}" hint-placeholder-val="{{ true }}">
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#3d4145">
             <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">Python</span>
-            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">MCP</span>
-            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">SQLite</span>
-            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">AWS Lambda</span>
-            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">Docker</span>
+            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">pandas</span>
+            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">SciPy</span>
+            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">SQL</span>
+            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">MATLAB</span>
           </div>
         </sc-if>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:18px;padding-top:4px">
-        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;padding:5px 10px;border:1px solid #bfd8cd;background:#f0f4f2">Live pilot</span>
+        <span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;padding:5px 10px;border:1px solid #bfd8cd;background:#f0f4f2">Live report</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16181a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
       </div>
     </a>
 
-    <a href="Project-Invoice-App.dc.html" style="display:grid;grid-template-columns:56px minmax(0,1fr) 240px;gap:32px;padding:34px 0;border-top:1px solid #e6e2db;text-decoration:none;color:inherit;align-items:start" style-hover="background:#f4f2ee">
+    <a href="Project-AI-Connector.dc.html" style="display:grid;grid-template-columns:56px minmax(0,1fr) 240px;gap:32px;padding:34px 0;border-top:1px solid #e6e2db;text-decoration:none;color:inherit;align-items:start" style-hover="background:#f4f2ee">
       <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:5px">02</span>
+      <div>
+        <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:12px">AI Connector</p>
+        <h3 style="font-size:26px;line-height:1.14;letter-spacing:-0.015em;font-weight:600">Private Claude MCP Portfolio Connector</h3>
+        <p style="margin-top:12px;max-width:62ch;font-size:16px;line-height:1.6;color:#3d4145">A private MCP connector that gives Claude verified, structured access to a property portfolio with eight read-only tools, deterministic business logic, and a full audit log. Deployed to AWS Lambda and passing all 32 evaluation checks.</p>
+        <sc-if value="{{ showStack }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#3d4145">
+            <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">Python</span><span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">MCP</span><span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">SQLite</span><span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">AWS Lambda</span><span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">Docker</span>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:16px;padding-top:2px"><span style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#1a6f57;padding:5px 10px;border:1px solid #bfd8cd;background:#f0f4f2">Live pilot</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16181a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></div>
+    </a>
+
+    <a href="Project-Invoice-App.dc.html" style="display:grid;grid-template-columns:56px minmax(0,1fr) 240px;gap:32px;padding:34px 0;border-top:1px solid #e6e2db;text-decoration:none;color:inherit;align-items:start" style-hover="background:#f4f2ee">
+      <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:5px">03</span>
       <div>
         <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:12px">Real-estate expense intelligence</p>
         <h3 style="font-size:26px;line-height:1.14;letter-spacing:-0.015em;font-weight:600">Financial Expense Analytics Dashboard</h3>
@@ -128,7 +143,7 @@
     </a>
 
     <a href="Project-Autofill-CoPilot.dc.html" style="display:grid;grid-template-columns:56px minmax(0,1fr) 240px;gap:32px;padding:34px 0;border-top:1px solid #e6e2db;text-decoration:none;color:inherit;align-items:start" style-hover="background:#f4f2ee">
-      <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:5px">03</span>
+      <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:5px">04</span>
       <div>
         <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:12px">macOS utility</p>
         <h3 style="font-size:26px;line-height:1.14;letter-spacing:-0.015em;font-weight:600">Autofill CoPilot</h3>
@@ -148,7 +163,7 @@
     </a>
 
     <a href="Project-Python-Tutor.dc.html" style="display:grid;grid-template-columns:56px minmax(0,1fr) 240px;gap:32px;padding:34px 0;border-top:1px solid #e6e2db;border-bottom:1px solid #e6e2db;text-decoration:none;color:inherit;align-items:start" style-hover="background:#f4f2ee">
-      <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:5px">04</span>
+      <span style="font-family:'IBM Plex Mono', monospace;font-size:12px;color:#a2a5a8;padding-top:5px">05</span>
       <div>
         <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:12px">Mobile app</p>
         <h3 style="font-size:26px;line-height:1.14;letter-spacing:-0.015em;font-weight:600">Mobile Python Tutor</h3>

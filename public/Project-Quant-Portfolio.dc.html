@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Quantitative Portfolio Research Pipeline | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A reproducible quantitative portfolio optimization and walk-forward backtesting pipeline built with Python, pandas, SQL, SciPy, and MATLAB.">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<script src="./support.js"></script>
+</head>
+<body>
+<div style="max-width:1160px;margin:0 auto;padding:0 40px">
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:28px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <nav style="display:flex;gap:26px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase"><a href="/#projects" style="text-decoration:none;color:#7a7e83">Projects</a><a href="quant-portfolio-report.html" style="text-decoration:none;color:#1a6f57">Live report</a><a href="https://github.com/Nathan-Gomes/quant-portfolio-research" target="_blank" rel="noreferrer" style="text-decoration:none;color:#7a7e83">GitHub</a></nav>
+  </header>
+
+  <main>
+    <section style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:64px;padding:88px 0 72px;align-items:end">
+      <div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#1a6f57;margin-bottom:28px">Project 01 | Quantitative finance</p>
+        <h1 style="font-size:clamp(36px,4.8vw,64px);line-height:1.04;letter-spacing:0;font-weight:600;max-width:17ch">Quantitative Portfolio Research Pipeline</h1>
+        <p style="margin-top:32px;max-width:64ch;font-size:19px;line-height:1.62;color:#3d4145">A research-to-production workflow that loads frozen ETF prices into SQL, estimates constrained allocations using Python and pandas, and evaluates them with transaction-cost-aware walk-forward testing.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px"><a href="quant-portfolio-report.html" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;background:#16181a;color:#fff;text-decoration:none;font-weight:500">Open live report</a><a href="https://github.com/Nathan-Gomes/quant-portfolio-research" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View source</a></div>
+      </div>
+      <dl style="margin:0;display:grid;gap:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.5">
+        <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Role</dt><dd style="margin:0">Research, engineering, testing, report</dd></div>
+        <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Dataset</dt><dd style="margin:0">12,066 ETF price records</dd></div>
+        <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Status</dt><dd style="margin:0;color:#1a6f57">Live research report</dd></div>
+      </dl>
+    </section>
+
+    <section class="quant-metrics" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #16181a;border-bottom:1px solid #e6e2db;background:#fff">
+      <div style="padding:22px;border-right:1px solid #e6e2db"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Annual return</span><strong style="display:block;margin-top:7px;font-size:26px">12.2%</strong></div>
+      <div style="padding:22px;border-right:1px solid #e6e2db"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Volatility</span><strong style="display:block;margin-top:7px;font-size:26px">11.7%</strong></div>
+      <div style="padding:22px;border-right:1px solid #e6e2db"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Sharpe ratio</span><strong style="display:block;margin-top:7px;font-size:26px">0.79</strong></div>
+      <div style="padding:22px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Automated tests</span><strong style="display:block;margin-top:7px;font-size:26px">6/6</strong></div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;padding:80px 0;border-bottom:1px solid #e6e2db">
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Research question</p><h2 style="margin-top:12px;font-size:28px">Can constraints improve risk-adjusted outcomes?</h2></div>
+      <div style="max-width:70ch;font-size:18px;line-height:1.68;color:#3d4145"><p>The experiment tests a six-ETF portfolio covering Canadian equities, US equities, developed international equities, emerging markets, aggregate bonds, and gold.</p><p style="margin-top:20px">The strategy maximizes expected Sharpe ratio subject to long-only weights, full investment, and a 30% cap per asset. It is compared with SPY using only information available before each rebalance date.</p></div>
+    </section>
+
+    <section style="padding:80px 0;border-bottom:1px solid #e6e2db">
+      <div style="display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:34px"><h2 style="font-size:32px">Research-to-production workflow</h2><p style="max-width:44ch;color:#7a7e83;text-align:right">A configuration change reruns the complete experiment and regenerates every output.</p></div>
+      <div class="quant-workflow" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">01</span><h3 style="margin-top:14px;font-size:18px">Ingest</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Freeze adjusted prices and load normalized observations into SQLite.</p></div>
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">02</span><h3 style="margin-top:14px;font-size:18px">Analyze</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Calculate returns, covariance, correlation, volatility, drawdown, Sharpe, and VaR.</p></div>
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">03</span><h3 style="margin-top:14px;font-size:18px">Optimize</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Solve minimum-variance and maximum-Sharpe allocations with explicit constraints.</p></div>
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">04</span><h3 style="margin-top:14px;font-size:18px">Validate</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Walk forward, charge turnover costs, run tests, and publish the research report.</p></div>
+      </div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:1fr 1fr;gap:64px;padding:80px 0;border-bottom:1px solid #e6e2db">
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Result</p><h2 style="margin-top:12px;font-size:32px">Better risk-adjusted performance, not a manufactured win</h2><p style="margin-top:20px;font-size:17px;line-height:1.65;color:#3d4145">SPY produced the higher raw return in this sample. The optimized portfolio produced lower volatility, a smaller maximum drawdown, and a higher Sharpe ratio after modeled transaction costs. The report presents that trade-off directly.</p></div>
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Engineering controls</p><ul style="margin:18px 0 0;padding-left:20px;color:#3d4145;font-size:17px;line-height:1.8"><li>No look-ahead in the rebalance loop</li><li>Frozen, reproducible market snapshot</li><li>SQL CTEs, joins, and window functions</li><li>Weight and chronology tests with pytest</li><li>MATLAB quadprog implementation included</li></ul></div>
+    </section>
+
+    <section style="padding:72px 0;text-align:center"><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Explore the evidence</p><h2 style="margin:14px auto 24px;max-width:18ch;font-size:36px">Open the interactive research report</h2><a href="quant-portfolio-report.html" style="display:inline-flex;align-items:center;height:48px;padding:0 22px;background:#16181a;color:#fff;text-decoration:none;font-weight:500">View report</a></section>
+  </main>
+  <footer style="display:flex;justify-content:space-between;gap:24px;padding:28px 0;border-top:1px solid #e6e2db;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7a7e83"><span>Nathan Gomes | 2026</span><a href="Project-AI-Connector.dc.html" style="color:#16181a;text-decoration:none">Next project | 02</a></footer>
+</div>
+</body>
+</html>

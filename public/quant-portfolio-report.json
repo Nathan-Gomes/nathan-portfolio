@@ -1,0 +1,37 @@
+{
+  "metrics": [
+    {
+      "label": "Annual return",
+      "value": "12.2%",
+      "detail": "geometric"
+    },
+    {
+      "label": "Annual volatility",
+      "value": "11.7%",
+      "detail": "daily observations"
+    },
+    {
+      "label": "Sharpe ratio",
+      "value": "0.79",
+      "detail": "3% risk-free rate"
+    },
+    {
+      "label": "Maximum drawdown",
+      "value": "-18.3%",
+      "detail": "peak to trough"
+    },
+    {
+      "label": "Rebalances",
+      "value": "20",
+      "detail": "walk-forward"
+    }
+  ],
+  "latest_weights": {
+    "AGG": 0.3,
+    "GLD": 0.3,
+    "SPY": 0.2999999999999999,
+    "EFA": 0.06829735062496733,
+    "EEM": 0.03170264937503284,
+    "EWC": 0.0
+  }
+}
