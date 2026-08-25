@@ -55,7 +55,7 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: 'Invoice Review Platform',
+    title: 'Financial Expense Analytics Dashboard',
     eyebrow: 'Real-estate expense intelligence',
     summary:
       'I built a full-stack review workspace that turns property invoices into validated records, portfolio trends, explainable anomalies, analyst findings, and assigned follow-up actions.',
@@ -179,7 +179,7 @@ function BackgroundStory() {
 function ProjectMockup({ project }: { project: Project }) {
   if (project.visual === 'invoice') {
     return (
-      <div className="project-visual invoice-visual" aria-label="Invoice Review Platform dashboard mockup">
+      <div className="project-visual invoice-visual" aria-label="Financial Expense Analytics Dashboard mockup">
         <div className="invoice-app-frame">
           <aside className="invoice-mini-sidebar">
             <div className="invoice-mini-brand"><ReceiptText size={15} /><span>Invoice Review</span></div>
