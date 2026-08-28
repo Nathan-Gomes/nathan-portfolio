@@ -321,6 +321,12 @@ button:focus-visible {
   transform: scale(1.025);
 }
 
+.certification-card:last-child:nth-child(odd) {
+  width: calc(50% - 10px);
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
 .experience-card {
   padding: 42px 0;
   border-top: 1px solid #e6e2db;
@@ -511,6 +517,10 @@ button:focus-visible {
 
   .certification-card {
     min-height: 0;
+  }
+
+  .certification-card:last-child:nth-child(odd) {
+    width: 100%;
   }
 
   .certification-preview {
