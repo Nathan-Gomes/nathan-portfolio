@@ -1,0 +1,1099 @@
+{
+  "meta": {
+    "generated_at": "2026-08-28T16:11:49.600565+00:00",
+    "mode": "demo",
+    "period": "August 2026"
+  },
+  "summary": {
+    "current_month_cost": 9704.67,
+    "forecast_cost": 10550.36,
+    "monthly_budget": 10000,
+    "change_pct": 1.4,
+    "potential_savings": 1914.26,
+    "active_findings": 6,
+    "monitored_resources": 9
+  },
+  "cost_series": [
+    {
+      "date": "2026-05-31",
+      "total": 310.21,
+      "compute": 154.74,
+      "storage": 63.42,
+      "database": 68.97,
+      "network": 23.08,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-01",
+      "total": 352.42,
+      "compute": 182.79,
+      "storage": 69.61,
+      "database": 76.77,
+      "network": 23.25,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-02",
+      "total": 311.71,
+      "compute": 136.49,
+      "storage": 72.23,
+      "database": 79.58,
+      "network": 23.41,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-03",
+      "total": 353.47,
+      "compute": 179.65,
+      "storage": 73.7,
+      "database": 76.09,
+      "network": 24.03,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-04",
+      "total": 369.18,
+      "compute": 190.03,
+      "storage": 69.61,
+      "database": 83.37,
+      "network": 26.17,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-05",
+      "total": 372.67,
+      "compute": 182.36,
+      "storage": 73.91,
+      "database": 91.98,
+      "network": 24.42,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-06",
+      "total": 343.56,
+      "compute": 168.32,
+      "storage": 68.7,
+      "database": 82.79,
+      "network": 23.75,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-07",
+      "total": 301.33,
+      "compute": 138.12,
+      "storage": 64.99,
+      "database": 76.63,
+      "network": 21.59,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-08",
+      "total": 356.33,
+      "compute": 175.16,
+      "storage": 71.98,
+      "database": 85.02,
+      "network": 24.17,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-09",
+      "total": 360.85,
+      "compute": 174.48,
+      "storage": 72.37,
+      "database": 90.23,
+      "network": 23.77,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-10",
+      "total": 385.98,
+      "compute": 194.73,
+      "storage": 73.92,
+      "database": 90.84,
+      "network": 26.49,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-11",
+      "total": 325.57,
+      "compute": 151.98,
+      "storage": 71.78,
+      "database": 77.9,
+      "network": 23.91,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-12",
+      "total": 370.45,
+      "compute": 186.76,
+      "storage": 73.38,
+      "database": 83.64,
+      "network": 26.67,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-13",
+      "total": 305.98,
+      "compute": 140.75,
+      "storage": 66.61,
+      "database": 75.38,
+      "network": 23.24,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-14",
+      "total": 309.52,
+      "compute": 145.03,
+      "storage": 68.61,
+      "database": 74.54,
+      "network": 21.34,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-15",
+      "total": 326.83,
+      "compute": 141.64,
+      "storage": 73.13,
+      "database": 89.09,
+      "network": 22.97,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-16",
+      "total": 374.48,
+      "compute": 190.74,
+      "storage": 74.51,
+      "database": 86.58,
+      "network": 22.65,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-17",
+      "total": 351.36,
+      "compute": 171.63,
+      "storage": 70.57,
+      "database": 86.25,
+      "network": 22.91,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-18",
+      "total": 347.9,
+      "compute": 157.51,
+      "storage": 71.88,
+      "database": 94.23,
+      "network": 24.28,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-19",
+      "total": 367.81,
+      "compute": 181.42,
+      "storage": 69.85,
+      "database": 91.98,
+      "network": 24.56,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-20",
+      "total": 322.71,
+      "compute": 158.88,
+      "storage": 65.53,
+      "database": 77.99,
+      "network": 20.31,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-21",
+      "total": 292.89,
+      "compute": 120.69,
+      "storage": 66.17,
+      "database": 84.75,
+      "network": 21.28,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-22",
+      "total": 359.8,
+      "compute": 178.16,
+      "storage": 67.5,
+      "database": 92.03,
+      "network": 22.11,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-23",
+      "total": 338.84,
+      "compute": 171.72,
+      "storage": 68.98,
+      "database": 75.38,
+      "network": 22.76,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-24",
+      "total": 320.2,
+      "compute": 151.58,
+      "storage": 69.4,
+      "database": 76.78,
+      "network": 22.44,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-25",
+      "total": 356.94,
+      "compute": 181.26,
+      "storage": 68.36,
+      "database": 85.24,
+      "network": 22.08,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-26",
+      "total": 319.85,
+      "compute": 147.31,
+      "storage": 66.76,
+      "database": 83.91,
+      "network": 21.87,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-27",
+      "total": 297.37,
+      "compute": 130.27,
+      "storage": 63.48,
+      "database": 82.93,
+      "network": 20.69,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-28",
+      "total": 285.26,
+      "compute": 129.94,
+      "storage": 64.83,
+      "database": 68.97,
+      "network": 21.52,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-29",
+      "total": 338.54,
+      "compute": 172.17,
+      "storage": 66.85,
+      "database": 76.27,
+      "network": 23.25,
+      "other": 0.0
+    },
+    {
+      "date": "2026-06-30",
+      "total": 347.57,
+      "compute": 168.23,
+      "storage": 70.0,
+      "database": 86.09,
+      "network": 23.25,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-01",
+      "total": 345.02,
+      "compute": 175.85,
+      "storage": 67.76,
+      "database": 77.99,
+      "network": 23.42,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-02",
+      "total": 329.39,
+      "compute": 143.37,
+      "storage": 70.09,
+      "database": 91.9,
+      "network": 24.03,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-03",
+      "total": 373.79,
+      "compute": 184.94,
+      "storage": 72.86,
+      "database": 90.68,
+      "network": 25.31,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-04",
+      "total": 305.11,
+      "compute": 147.51,
+      "storage": 63.46,
+      "database": 72.37,
+      "network": 21.77,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-05",
+      "total": 309.92,
+      "compute": 137.47,
+      "storage": 64.87,
+      "database": 83.59,
+      "network": 23.99,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-06",
+      "total": 351.36,
+      "compute": 165.44,
+      "storage": 69.45,
+      "database": 90.16,
+      "network": 26.31,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-07",
+      "total": 352.92,
+      "compute": 166.61,
+      "storage": 70.2,
+      "database": 91.44,
+      "network": 24.67,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-08",
+      "total": 337.49,
+      "compute": 145.85,
+      "storage": 69.89,
+      "database": 96.54,
+      "network": 25.21,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-09",
+      "total": 330.08,
+      "compute": 151.09,
+      "storage": 74.05,
+      "database": 79.55,
+      "network": 25.39,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-10",
+      "total": 351.15,
+      "compute": 162.76,
+      "storage": 74.54,
+      "database": 89.87,
+      "network": 23.98,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-11",
+      "total": 311.56,
+      "compute": 141.25,
+      "storage": 68.21,
+      "database": 79.49,
+      "network": 22.61,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-12",
+      "total": 306.27,
+      "compute": 131.9,
+      "storage": 71.42,
+      "database": 81.13,
+      "network": 21.82,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-13",
+      "total": 355.89,
+      "compute": 154.92,
+      "storage": 77.17,
+      "database": 98.77,
+      "network": 25.03,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-14",
+      "total": 384.75,
+      "compute": 187.85,
+      "storage": 76.47,
+      "database": 94.15,
+      "network": 26.28,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-15",
+      "total": 374.24,
+      "compute": 187.62,
+      "storage": 76.77,
+      "database": 85.65,
+      "network": 24.2,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-16",
+      "total": 339.17,
+      "compute": 146.98,
+      "storage": 74.3,
+      "database": 91.25,
+      "network": 26.64,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-17",
+      "total": 365.45,
+      "compute": 177.25,
+      "storage": 76.02,
+      "database": 85.01,
+      "network": 27.17,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-18",
+      "total": 322.3,
+      "compute": 152.14,
+      "storage": 67.57,
+      "database": 78.4,
+      "network": 24.19,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-19",
+      "total": 343.56,
+      "compute": 170.29,
+      "storage": 67.53,
+      "database": 83.72,
+      "network": 22.02,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-20",
+      "total": 383.09,
+      "compute": 191.93,
+      "storage": 76.38,
+      "database": 90.61,
+      "network": 24.17,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-21",
+      "total": 358.84,
+      "compute": 157.25,
+      "storage": 76.6,
+      "database": 97.85,
+      "network": 27.14,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-22",
+      "total": 336.0,
+      "compute": 154.3,
+      "storage": 76.25,
+      "database": 80.43,
+      "network": 25.02,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-23",
+      "total": 349.37,
+      "compute": 148.81,
+      "storage": 76.45,
+      "database": 97.58,
+      "network": 26.53,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-24",
+      "total": 333.49,
+      "compute": 140.6,
+      "storage": 73.58,
+      "database": 92.96,
+      "network": 26.35,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-25",
+      "total": 336.92,
+      "compute": 169.24,
+      "storage": 67.37,
+      "database": 75.95,
+      "network": 24.36,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-26",
+      "total": 312.51,
+      "compute": 136.46,
+      "storage": 66.07,
+      "database": 86.05,
+      "network": 23.93,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-27",
+      "total": 315.22,
+      "compute": 136.54,
+      "storage": 72.1,
+      "database": 80.05,
+      "network": 26.53,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-28",
+      "total": 353.32,
+      "compute": 169.45,
+      "storage": 73.75,
+      "database": 83.85,
+      "network": 26.27,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-29",
+      "total": 361.86,
+      "compute": 187.44,
+      "storage": 72.66,
+      "database": 78.87,
+      "network": 22.89,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-30",
+      "total": 350.15,
+      "compute": 173.69,
+      "storage": 71.36,
+      "database": 81.25,
+      "network": 23.85,
+      "other": 0.0
+    },
+    {
+      "date": "2026-07-31",
+      "total": 330.31,
+      "compute": 147.55,
+      "storage": 69.45,
+      "database": 88.96,
+      "network": 24.35,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-01",
+      "total": 325.73,
+      "compute": 158.75,
+      "storage": 63.33,
+      "database": 80.87,
+      "network": 22.78,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-02",
+      "total": 307.78,
+      "compute": 137.26,
+      "storage": 65.05,
+      "database": 84.0,
+      "network": 21.47,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-03",
+      "total": 328.71,
+      "compute": 154.51,
+      "storage": 68.4,
+      "database": 80.05,
+      "network": 25.75,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-04",
+      "total": 358.7,
+      "compute": 180.62,
+      "storage": 69.43,
+      "database": 86.52,
+      "network": 22.13,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-05",
+      "total": 335.62,
+      "compute": 155.03,
+      "storage": 70.82,
+      "database": 85.91,
+      "network": 23.86,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-06",
+      "total": 344.61,
+      "compute": 158.52,
+      "storage": 70.92,
+      "database": 92.63,
+      "network": 22.54,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-07",
+      "total": 345.92,
+      "compute": 167.03,
+      "storage": 72.57,
+      "database": 81.43,
+      "network": 24.89,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-08",
+      "total": 289.45,
+      "compute": 132.15,
+      "storage": 64.25,
+      "database": 69.41,
+      "network": 23.64,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-09",
+      "total": 312.72,
+      "compute": 144.16,
+      "storage": 64.85,
+      "database": 81.22,
+      "network": 22.49,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-10",
+      "total": 343.97,
+      "compute": 171.51,
+      "storage": 73.48,
+      "database": 75.92,
+      "network": 23.06,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-11",
+      "total": 338.32,
+      "compute": 146.98,
+      "storage": 71.31,
+      "database": 96.25,
+      "network": 23.78,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-12",
+      "total": 357.67,
+      "compute": 164.04,
+      "storage": 74.65,
+      "database": 93.65,
+      "network": 25.33,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-13",
+      "total": 379.85,
+      "compute": 188.77,
+      "storage": 74.28,
+      "database": 90.34,
+      "network": 26.46,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-14",
+      "total": 381.96,
+      "compute": 190.72,
+      "storage": 73.16,
+      "database": 93.79,
+      "network": 24.29,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-15",
+      "total": 341.74,
+      "compute": 168.91,
+      "storage": 68.44,
+      "database": 82.52,
+      "network": 21.87,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-16",
+      "total": 314.77,
+      "compute": 144.82,
+      "storage": 68.26,
+      "database": 79.09,
+      "network": 22.6,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-17",
+      "total": 363.85,
+      "compute": 182.36,
+      "storage": 75.03,
+      "database": 80.97,
+      "network": 25.49,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-18",
+      "total": 372.06,
+      "compute": 168.19,
+      "storage": 76.64,
+      "database": 99.77,
+      "network": 27.46,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-19",
+      "total": 351.42,
+      "compute": 167.19,
+      "storage": 76.09,
+      "database": 80.55,
+      "network": 27.59,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-20",
+      "total": 367.29,
+      "compute": 168.12,
+      "storage": 76.93,
+      "database": 97.2,
+      "network": 25.04,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-21",
+      "total": 353.39,
+      "compute": 169.49,
+      "storage": 76.38,
+      "database": 81.63,
+      "network": 25.89,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-22",
+      "total": 330.21,
+      "compute": 158.97,
+      "storage": 70.15,
+      "database": 77.26,
+      "network": 23.83,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-23",
+      "total": 314.11,
+      "compute": 134.62,
+      "storage": 69.14,
+      "database": 87.83,
+      "network": 22.52,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-24",
+      "total": 352.24,
+      "compute": 158.52,
+      "storage": 77.83,
+      "database": 88.46,
+      "network": 27.43,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-25",
+      "total": 345.51,
+      "compute": 159.41,
+      "storage": 74.71,
+      "database": 82.94,
+      "network": 28.45,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-26",
+      "total": 386.57,
+      "compute": 182.19,
+      "storage": 77.99,
+      "database": 98.21,
+      "network": 28.18,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-27",
+      "total": 330.21,
+      "compute": 144.55,
+      "storage": 75.13,
+      "database": 84.06,
+      "network": 26.47,
+      "other": 0.0
+    },
+    {
+      "date": "2026-08-28",
+      "total": 430.29,
+      "compute": 183.58,
+      "storage": 74.87,
+      "database": 97.21,
+      "network": 74.63,
+      "other": 0.0
+    }
+  ],
+  "service_breakdown": [
+    {
+      "service": "Amazon EC2",
+      "cost": 4285.69,
+      "share": 44.2
+    },
+    {
+      "service": "Amazon RDS",
+      "cost": 2409.69,
+      "share": 24.8
+    },
+    {
+      "service": "Amazon EBS",
+      "cost": 1207.42,
+      "share": 12.4
+    },
+    {
+      "service": "Amazon S3",
+      "cost": 806.67,
+      "share": 8.3
+    },
+    {
+      "service": "AWS Data Transfer",
+      "cost": 739.92,
+      "share": 7.6
+    },
+    {
+      "service": "AWS Lambda",
+      "cost": 255.28,
+      "share": 2.6
+    }
+  ],
+  "findings": [
+    {
+      "id": "fin-9de641ce40",
+      "severity": "critical",
+      "finding_type": "cost_spike",
+      "title": "Unusual AWS Data Transfer cost increase",
+      "resource_id": null,
+      "service": "AWS Data Transfer",
+      "region": "global",
+      "detected_at": "2026-08-28T16:11:49.599851Z",
+      "monthly_impact": 1468.2,
+      "evidence": "Latest daily spend was $74.63, 191% above the trailing 14-day median of $25.69.",
+      "recommendation": "Review service usage, recent deployments, and cost-allocation tags before the next billing cycle.",
+      "status": "open"
+    },
+    {
+      "id": "fin-b0b5d6c7f6",
+      "severity": "high",
+      "finding_type": "idle_compute",
+      "title": "Idle compute instance: qa-loadtest-old",
+      "resource_id": "i-0c41a6e9",
+      "service": "Amazon EC2",
+      "region": "us-east-1",
+      "detected_at": "2026-08-28T16:11:49.599763Z",
+      "monthly_impact": 186.3,
+      "evidence": "Average CPU was 1.8% over 7 days while the instance remained running. Estimated monthly cost is $186.",
+      "recommendation": "Confirm ownership, then schedule or stop the instance during unused periods.",
+      "status": "open"
+    },
+    {
+      "id": "fin-5804a270ba",
+      "severity": "high",
+      "finding_type": "unattached_storage",
+      "title": "Unattached storage volume: legacy-backup-volume",
+      "resource_id": "vol-09a71ce4",
+      "service": "Amazon EBS",
+      "region": "us-east-1",
+      "detected_at": "2026-08-28T16:11:49.599763Z",
+      "monthly_impact": 64.0,
+      "evidence": "The volume has been unattached for 63 days and continues to cost approximately $64 per month.",
+      "recommendation": "Verify backup and retention requirements, snapshot if required, then remove the volume.",
+      "status": "open"
+    },
+    {
+      "id": "fin-7528a13980",
+      "severity": "medium",
+      "finding_type": "oversized_resource",
+      "title": "Rightsizing candidate: reporting-postgres",
+      "resource_id": "db-reporting-1",
+      "service": "Amazon RDS",
+      "region": "ca-central-1",
+      "detected_at": "2026-08-28T16:11:49.599763Z",
+      "monthly_impact": 124.8,
+      "evidence": "Average utilization was 9.4% over 14 days. Current monthly run rate is $312.",
+      "recommendation": "Compare p95 utilization with the next smaller instance class before resizing.",
+      "status": "open"
+    },
+    {
+      "id": "fin-a3b42fdbae",
+      "severity": "medium",
+      "finding_type": "oversized_resource",
+      "title": "Rightsizing candidate: batch-worker-02",
+      "resource_id": "i-0b72e8c1",
+      "service": "Amazon EC2",
+      "region": "ca-central-1",
+      "detected_at": "2026-08-28T16:11:49.599763Z",
+      "monthly_impact": 48.56,
+      "evidence": "Average utilization was 11.8% over 14 days. Current monthly run rate is $121.",
+      "recommendation": "Compare p95 utilization with the next smaller instance class before resizing.",
+      "status": "open"
+    },
+    {
+      "id": "fin-d79344265a",
+      "severity": "low",
+      "finding_type": "stale_snapshot",
+      "title": "Snapshot exceeds retention window: pre-migration-snapshot",
+      "resource_id": "snap-0318bc44",
+      "service": "Amazon EBS",
+      "region": "us-east-1",
+      "detected_at": "2026-08-28T16:11:49.599763Z",
+      "monthly_impact": 22.4,
+      "evidence": "Snapshot age is 184 days with no retention tag.",
+      "recommendation": "Confirm the recovery policy and expire the snapshot if it is no longer required.",
+      "status": "open"
+    }
+  ],
+  "resources": [
+    {
+      "resource_id": "i-0a91f3d2",
+      "name": "prod-api-01",
+      "resource_type": "EC2 instance",
+      "service": "Amazon EC2",
+      "region": "ca-central-1",
+      "state": "running",
+      "monthly_cost": 184.2,
+      "utilization_pct": 42.6,
+      "attached_to": null,
+      "age_days": 241,
+      "tags": {
+        "Environment": "production",
+        "Owner": "platform"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "i-0b72e8c1",
+      "name": "batch-worker-02",
+      "resource_type": "EC2 instance",
+      "service": "Amazon EC2",
+      "region": "ca-central-1",
+      "state": "running",
+      "monthly_cost": 121.4,
+      "utilization_pct": 11.8,
+      "attached_to": null,
+      "age_days": 153,
+      "tags": {
+        "Environment": "production",
+        "Owner": "data"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "i-0c41a6e9",
+      "name": "qa-loadtest-old",
+      "resource_type": "EC2 instance",
+      "service": "Amazon EC2",
+      "region": "us-east-1",
+      "state": "running",
+      "monthly_cost": 186.3,
+      "utilization_pct": 1.8,
+      "attached_to": null,
+      "age_days": 47,
+      "tags": {
+        "Environment": "qa",
+        "Owner": "unknown"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "db-reporting-1",
+      "name": "reporting-postgres",
+      "resource_type": "RDS database",
+      "service": "Amazon RDS",
+      "region": "ca-central-1",
+      "state": "available",
+      "monthly_cost": 312.0,
+      "utilization_pct": 9.4,
+      "attached_to": null,
+      "age_days": 389,
+      "tags": {
+        "Environment": "production",
+        "Owner": "analytics"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "db-orders-1",
+      "name": "orders-postgres",
+      "resource_type": "RDS database",
+      "service": "Amazon RDS",
+      "region": "ca-central-1",
+      "state": "available",
+      "monthly_cost": 428.0,
+      "utilization_pct": 58.3,
+      "attached_to": null,
+      "age_days": 510,
+      "tags": {
+        "Environment": "production",
+        "Owner": "platform"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "vol-04f39bd1",
+      "name": "prod-api-root",
+      "resource_type": "EBS volume",
+      "service": "Amazon EBS",
+      "region": "ca-central-1",
+      "state": "in-use",
+      "monthly_cost": 18.6,
+      "utilization_pct": null,
+      "attached_to": "i-0a91f3d2",
+      "age_days": 241,
+      "tags": {
+        "Environment": "production"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "vol-09a71ce4",
+      "name": "legacy-backup-volume",
+      "resource_type": "EBS volume",
+      "service": "Amazon EBS",
+      "region": "us-east-1",
+      "state": "available",
+      "monthly_cost": 64.0,
+      "utilization_pct": null,
+      "attached_to": null,
+      "age_days": 63,
+      "tags": {
+        "Environment": "unknown",
+        "Owner": "unknown"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "snap-0318bc44",
+      "name": "pre-migration-snapshot",
+      "resource_type": "EBS snapshot",
+      "service": "Amazon EBS",
+      "region": "us-east-1",
+      "state": "completed",
+      "monthly_cost": 22.4,
+      "utilization_pct": null,
+      "attached_to": null,
+      "age_days": 184,
+      "tags": {
+        "Environment": "legacy"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    },
+    {
+      "resource_id": "bucket-finops-logs",
+      "name": "central-log-archive",
+      "resource_type": "S3 bucket",
+      "service": "Amazon S3",
+      "region": "ca-central-1",
+      "state": "active",
+      "monthly_cost": 74.8,
+      "utilization_pct": null,
+      "attached_to": null,
+      "age_days": 622,
+      "tags": {
+        "Environment": "shared",
+        "Owner": "security"
+      },
+      "collected_at": "2026-08-28T16:11:49.599609Z"
+    }
+  ]
+}
