@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Quantitative Portfolio Research Pipeline</title>
-  <meta name="description" content="Walk-forward ETF portfolio optimization research by Nathan Gomes.">
+  <meta name="description" content="A quant developer style ETF portfolio research report using Python, pandas, SQL, MATLAB comparison, tests, and walk-forward optimization.">
   <link rel="icon" href="data:,">
   <style>
     :root{--ink:#151719;--muted:#6f7479;--line:#dfe2e1;--green:#176b55;--green-soft:#eaf2ef;--paper:#f7f8f7;--white:#fff}
@@ -20,7 +20,7 @@
 <body><div class="shell">
   <header class="topbar"><strong>Nathan Gomes / Quant Research</strong><a href="Project-Quant-Portfolio.dc.html">Read the case study</a></header>
   <main>
-    <div class="hero"><div class="eyebrow">Research-to-production portfolio analytics</div><h1>Quantitative Portfolio Research Pipeline</h1><p>A reproducible ETF research workflow using Python, pandas, SQL, constrained optimization, transaction-cost-aware walk-forward testing, and automated validation.</p><div class="notice"><i></i>Historical research only / no live trading</div></div>
+    <div class="hero"><div class="eyebrow">Research-to-production portfolio analytics</div><h1>Quantitative Portfolio Research Pipeline</h1><p>A reproducible ETF research workflow built around quant developer practices: SQL market data, Python and pandas analytics, constrained portfolio optimization, MATLAB model comparison, walk-forward testing, and documented financial calculations.</p><div class="notice"><i></i>Historical research only / no live trading</div></div>
     <div class="metrics">
       <div class="metric"><span>Annual return</span><strong>12.2%</strong><small>geometric</small></div><div class="metric"><span>Annual volatility</span><strong>11.7%</strong><small>daily observations</small></div><div class="metric"><span>Sharpe ratio</span><strong>0.79</strong><small>3% risk-free rate</small></div><div class="metric"><span>Maximum drawdown</span><strong>-18.3%</strong><small>peak to trough</small></div><div class="metric"><span>Rebalances</span><strong>20</strong><small>walk-forward</small></div>
     </div>
@@ -74,10 +74,10 @@
       <article class="formula-card"><h3>Turnover and transaction costs</h3><p class="formula-main">Trading cost = amount traded multiplied by the transaction cost rate</p><code class="formula-technical"><span>Technical notation</span>turnover = total absolute change in weights; cost = turnover x cost rate</code><p>Subtracts a realistic cost whenever the portfolio rebalances, so the backtest does not overstate performance.</p></article>
     </div></section>
     <section><div class="section-head"><h2>Research controls</h2><p>The configuration file controls the experiment, so changing an assumption reruns the complete pipeline and report.</p></div><div class="method">
-      <div><span>01</span><h3>Frozen inputs</h3><p>Six ETF histories from 2018-01-01 through 2025-12-31 are stored locally and loaded into SQLite.</p></div>
-      <div><span>02</span><h3>No look-ahead</h3><p>Each rebalance uses only observations available on or before that date.</p></div>
-      <div><span>03</span><h3>Trading friction</h3><p>10 basis points are charged against portfolio turnover at every rebalance.</p></div>
-      <div><span>04</span><h3>Reproducible checks</h3><p>Pytest verifies returns, weights, drawdowns, constraints, and backtest chronology.</p></div>
+      <div><span>01</span><h3>SQL data layer</h3><p>Six ETF histories from 2018-01-01 through 2025-12-31 are stored locally, validated, and queried from SQLite.</p></div>
+      <div><span>02</span><h3>Python analytics</h3><p>Pandas and NumPy calculate returns, covariance, volatility, drawdown, Sharpe ratio, VaR, and turnover.</p></div>
+      <div><span>03</span><h3>MATLAB comparison</h3><p>The minimum-variance optimization is reproduced in MATLAB so model logic can be checked across tools.</p></div>
+      <div><span>04</span><h3>Testing discipline</h3><p>Pytest verifies returns, weights, constraints, drawdowns, transaction costs, and backtest chronology.</p></div>
     </div></section>
   </main><footer class="footer">Generated from a frozen historical dataset. Results are educational and are not investment advice.</footer>
 </div></body></html>
