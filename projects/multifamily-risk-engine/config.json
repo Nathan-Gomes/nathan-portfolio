@@ -1,0 +1,47 @@
+{
+  "as_of_month": "2026-08",
+  "property_count": 24,
+  "months": 48,
+  "capital_budget": 2000000,
+  "risk_score_weights": {
+    "dscr": 0.25,
+    "ltv": 0.2,
+    "occupancy_deterioration": 0.15,
+    "noi_deterioration": 0.15,
+    "expense_growth": 0.1,
+    "refinancing_exposure": 0.1,
+    "concentration": 0.05
+  },
+  "scenarios": {
+    "base": {
+      "occupancy_shock": 0,
+      "expense_shock": 0,
+      "rate_shock_bps": 0,
+      "cap_rate_shock_bps": 0
+    },
+    "occupancy_downside": {
+      "occupancy_shock": -0.05,
+      "expense_shock": 0,
+      "rate_shock_bps": 0,
+      "cap_rate_shock_bps": 0
+    },
+    "expense_pressure": {
+      "occupancy_shock": 0,
+      "expense_shock": 0.1,
+      "rate_shock_bps": 0,
+      "cap_rate_shock_bps": 0
+    },
+    "refinancing_shock": {
+      "occupancy_shock": 0,
+      "expense_shock": 0,
+      "rate_shock_bps": 200,
+      "cap_rate_shock_bps": 0
+    },
+    "combined_downside": {
+      "occupancy_shock": -0.05,
+      "expense_shock": 0.1,
+      "rate_shock_bps": 200,
+      "cap_rate_shock_bps": 100
+    }
+  }
+}

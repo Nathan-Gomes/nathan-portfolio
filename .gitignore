@@ -11,6 +11,7 @@ lerna-debug.log*
 __pycache__/
 *.py[cod]
 .venv
+projects/multifamily-risk-engine/output/
 
 node_modules
 dist

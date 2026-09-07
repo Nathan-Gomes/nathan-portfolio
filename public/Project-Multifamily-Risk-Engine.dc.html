@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Multifamily Portfolio Risk &amp; Capital Allocation Engine | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A property portfolio risk engine built with Python, pandas, SQL, financial modeling, stress testing, and capital allocation analysis.">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<script src="./support.js"></script>
+</head>
+<body>
+<div style="max-width:1160px;margin:0 auto;padding:0 40px">
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:28px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <nav style="display:flex;gap:26px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase"><a href="/#projects" style="text-decoration:none;color:#7a7e83">Projects</a><a href="multifamily-risk-report.html" style="text-decoration:none;color:#1a6f57">Live report</a><a href="multifamily-risk-report.json" style="text-decoration:none;color:#7a7e83">JSON</a><a href="multifamily-risk-engine/data/monthly_financials.csv" style="text-decoration:none;color:#7a7e83">Data</a></nav>
+  </header>
+
+  <main>
+    <section style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:64px;padding:88px 0 72px;align-items:end">
+      <div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#1a6f57;margin-bottom:28px">Project 02 | Real-estate portfolio risk</p>
+        <h1 style="font-size:clamp(36px,4.8vw,64px);line-height:1.04;letter-spacing:0;font-weight:600;max-width:18ch">Multifamily Portfolio Risk &amp; Capital Allocation Engine</h1>
+        <p style="margin-top:32px;max-width:66ch;font-size:19px;line-height:1.62;color:#3d4145">A portfolio risk system for analyzing multifamily property performance, stress-testing financial exposures, identifying concentration and refinancing risk, and prioritizing capital deployment across a real-estate portfolio.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px"><a href="multifamily-risk-report.html" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;background:#16181a;color:#fff;text-decoration:none;font-weight:500">Open live report</a><a href="multifamily-risk-engine/data/monthly_financials.csv" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View sample data</a></div>
+      </div>
+      <dl style="margin:0;display:grid;gap:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.5">
+        <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Focus</dt><dd style="margin:0">Property risk, stress testing, capital allocation</dd></div>
+        <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Dataset</dt><dd style="margin:0">24 properties, 48 months</dd></div>
+        <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Status</dt><dd style="margin:0;color:#1a6f57">Live sample report</dd></div>
+      </dl>
+    </section>
+
+    <section class="quant-metrics" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #16181a;border-bottom:1px solid #e6e2db;background:#fff">
+      <div style="padding:22px;border-right:1px solid #e6e2db"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Portfolio value</span><strong style="display:block;margin-top:7px;font-size:26px">$482.6M</strong></div>
+      <div style="padding:22px;border-right:1px solid #e6e2db"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Units</span><strong style="display:block;margin-top:7px;font-size:26px">2,359</strong></div>
+      <div style="padding:22px;border-right:1px solid #e6e2db"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Weighted DSCR</span><strong style="display:block;margin-top:7px;font-size:26px">1.40x</strong></div>
+      <div style="padding:22px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a7e83;text-transform:uppercase">Automated tests</span><strong style="display:block;margin-top:7px;font-size:26px">7/7</strong></div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;padding:80px 0;border-bottom:1px solid #e6e2db">
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Business question</p><h2 style="margin-top:12px;font-size:30px">Which properties need attention first?</h2></div>
+      <div style="max-width:72ch;font-size:18px;line-height:1.68;color:#3d4145"><p>The project looks at a simulated multifamily portfolio the way an operator or analyst would: not as a static list of buildings, but as a set of changing revenue, expense, debt, occupancy, and valuation exposures.</p><p style="margin-top:20px">The goal is to identify where financial risk is building, understand what happens when operating conditions worsen, and recommend where limited capital should be deployed first.</p></div>
+    </section>
+
+    <section style="padding:80px 0;border-bottom:1px solid #e6e2db">
+      <div style="display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:34px"><h2 style="font-size:32px">System architecture</h2><p style="max-width:44ch;color:#7a7e83;text-align:right">The project uses a database-style workflow instead of one giant spreadsheet.</p></div>
+      <div class="quant-workflow" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#e6e2db;border:1px solid #e6e2db">
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">01</span><h3 style="margin-top:14px;font-size:18px">Data model</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Properties, financials, debt, valuations, and capital projects are separate tables.</p></div>
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">02</span><h3 style="margin-top:14px;font-size:18px">SQL assembly</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Joins, CTEs, aggregations, and window functions build the analysis dataset.</p></div>
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">03</span><h3 style="margin-top:14px;font-size:18px">Risk engine</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Python and pandas calculate NOI, DSCR, LTV, trends, concentration, and risk scores.</p></div>
+        <div style="padding:25px;background:#fbfaf8"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57">04</span><h3 style="margin-top:14px;font-size:18px">Decision report</h3><p style="margin-top:8px;color:#7a7e83;line-height:1.55">Stress tests and capital recommendations are published in a reviewable report.</p></div>
+      </div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:1fr 1fr;gap:64px;padding:80px 0;border-bottom:1px solid #e6e2db">
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Financial model</p><h2 style="margin-top:12px;font-size:30px">Standardized property risk measures</h2><ul style="margin:18px 0 0;padding-left:20px;color:#3d4145;font-size:17px;line-height:1.8"><li>NOI = revenue minus operating expenses</li><li>NOI margin = NOI divided by revenue</li><li>Cap rate = annual NOI divided by property value</li><li>DSCR = NOI divided by debt service</li><li>LTV = debt balance divided by property value</li><li>Revenue, OpEx, and NOI per unit</li></ul></div>
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Stress engine</p><h2 style="margin-top:12px;font-size:30px">Scenario-driven downside analysis</h2><p style="margin-top:20px;font-size:17px;line-height:1.65;color:#3d4145">The live report recalculates each property under occupancy pressure, expense pressure, refinancing shock, cap-rate expansion, and a combined downside case. That shows which properties become vulnerable first rather than only reporting what happened historically.</p></div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:1fr 1fr;gap:64px;padding:80px 0;border-bottom:1px solid #e6e2db">
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Capital allocation</p><h2 style="margin-top:12px;font-size:30px">A budget-aware recommendation layer</h2><p style="margin-top:20px;font-size:17px;line-height:1.65;color:#3d4145">The project does not pretend properties can be traded like liquid securities. Instead, it asks a more realistic real-estate question: given a fixed capital budget, which renovations, building systems work, debt paydowns, or efficiency projects should be prioritized?</p></div>
+      <div><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Validation</p><h2 style="margin-top:12px;font-size:30px">Built so the numbers can be checked</h2><ul style="margin:18px 0 0;padding-left:20px;color:#3d4145;font-size:17px;line-height:1.8"><li>Formula tests for NOI and debt service</li><li>Scenario tests for occupancy and cap-rate shocks</li><li>Risk score bounds and banding checks</li><li>Capital selection must stay within budget</li><li>Portfolio exposure must sum to 100%</li></ul></div>
+    </section>
+
+    <section style="padding:72px 0;text-align:center"><p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Explore the output</p><h2 style="margin:14px auto 16px;max-width:21ch;font-size:36px">Open the live property risk report</h2><p style="margin:0 auto 24px;max-width:60ch;color:#7a7e83;font-size:17px;line-height:1.6">The report shows the risk matrix, highest-risk properties, stress scenarios, concentration exposure, debt maturities, and capital allocation recommendations.</p><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px"><a href="multifamily-risk-report.html" style="display:inline-flex;align-items:center;height:48px;padding:0 22px;background:#16181a;color:#fff;text-decoration:none;font-weight:500">View report</a><a href="multifamily-risk-report.json" style="display:inline-flex;align-items:center;height:48px;padding:0 22px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View JSON</a><a href="multifamily-risk-engine/data/properties.csv" style="display:inline-flex;align-items:center;height:48px;padding:0 22px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View data</a></div></section>
+  </main>
+  <footer style="display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:20px 0 72px;background:#e6e2db;border:1px solid #e6e2db"><a href="Project-Quant-Portfolio.dc.html" style="padding:26px;background:#fbfaf8;text-decoration:none;color:#16181a"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7a7e83;text-transform:uppercase">Previous | 01</span><strong style="display:block;margin-top:9px;font-size:19px">Quantitative Portfolio Research Pipeline</strong></a><a href="Project-Cloud-Cost-Monitor.dc.html" style="padding:26px;background:#fbfaf8;text-decoration:none;color:#16181a;text-align:right"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7a7e83;text-transform:uppercase">Next | 03</span><strong style="display:block;margin-top:9px;font-size:19px">Cloud FinOps Monitoring Platform</strong></a></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+{
+  "summary": {
+    "portfolio_value": 482584681.98999995,
+    "property_count": 24,
+    "unit_count": 2359,
+    "annual_noi": 26309227.799999997,
+    "weighted_ltv": 0.5810616223326597,
+    "weighted_dscr": 1.3967131157201922,
+    "elevated_or_high": 5,
+    "debt_maturing_24m": 92926646.55000001,
+    "largest_market": "Toronto",
+    "largest_market_exposure": 0.21277657682082782,
+    "capital_budget": 2000000,
+    "selected_capital": 1971776.0
+  },
+  "top_risk": [
+    {
+      "property_name": "Huron House",
+      "market": "Kitchener",
+      "risk_score": 70.2,
+      "risk_band": "Elevated",
+      "dscr": 1.041330992002661,
+      "ltv": 0.7759276626040664,
+      "noi_yoy": -0.1007956274125347
+    },
+    {
+      "property_name": "Albion Gardens",
+      "market": "London",
+      "risk_score": 65.9,
+      "risk_band": "Elevated",
+      "dscr": 0.9709689579179545,
+      "ltv": 0.8010626251120828,
+      "noi_yoy": -0.07052615469259776
+    },
+    {
+      "property_name": "Queenston Court",
+      "market": "Toronto",
+      "risk_score": 64.8,
+      "risk_band": "Elevated",
+      "dscr": 0.9597420936997639,
+      "ltv": 0.764554454760982,
+      "noi_yoy": -0.08514850369923328
+    },
+    {
+      "property_name": "Barton Square",
+      "market": "London",
+      "risk_score": 62.2,
+      "risk_band": "Elevated",
+      "dscr": 1.1276869137407382,
+      "ltv": 0.846989328815437,
+      "noi_yoy": -0.12371143340842404
+    },
+    {
+      "property_name": "Elm Street Flats",
+      "market": "Ottawa",
+      "risk_score": 61.7,
+      "risk_band": "Elevated",
+      "dscr": 0.9683088843261943,
+      "ltv": 0.8531822744118824,
+      "noi_yoy": -0.10980398333326095
+    },
+    {
+      "property_name": "Front Street Lofts",
+      "market": "Kitchener",
+      "risk_score": 56.0,
+      "risk_band": "Moderate",
+      "dscr": 1.0699665257365198,
+      "ltv": 0.7419458631500151,
+      "noi_yoy": -0.005664743892071148
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "Base",
+      "portfolio_value": 482665000.0526724,
+      "annual_noi": 26309227.799999997,
+      "value_change_pct": 0.00016643309593100675,
+      "noi_change_pct": 0.0,
+      "properties_below_1_10_dscr": 5
+    },
+    {
+      "scenario": "Occupancy Downside",
+      "portfolio_value": 429512673.398793,
+      "annual_noi": 23410602.986399185,
+      "value_change_pct": -0.10997449892598687,
+      "noi_change_pct": -0.11017521440142053,
+      "properties_below_1_10_dscr": 8
+    },
+    {
+      "scenario": "Expense Pressure",
+      "portfolio_value": 432380052.90656775,
+      "annual_noi": 23566690.452,
+      "value_change_pct": -0.10403278627992696,
+      "noi_change_pct": -0.10424241140213164,
+      "properties_below_1_10_dscr": 8
+    },
+    {
+      "scenario": "Refinancing Shock",
+      "portfolio_value": 482665000.0526724,
+      "annual_noi": 26309227.799999997,
+      "value_change_pct": 0.00016643309593100675,
+      "noi_change_pct": 0.0,
+      "properties_below_1_10_dscr": 12
+    },
+    {
+      "scenario": "Combined Downside",
+      "portfolio_value": 320296748.39424753,
+      "annual_noi": 20668065.638399184,
+      "value_change_pct": -0.3362890279205243,
+      "noi_change_pct": -0.21441762580355228,
+      "properties_below_1_10_dscr": 20
+    }
+  ],
+  "capital": [
+    {
+      "project_id": "CAP-P017-1",
+      "property_id": "P017",
+      "project_type": "Debt paydown",
+      "capital_required": 712425.0,
+      "expected_noi_lift": 44395.82,
+      "expected_value_lift": 846912.79,
+      "risk_reduction_points": 11.6,
+      "priority_note": "Debt paydown expected to improve NOI and reduce operating risk.",
+      "property_name": "Huron House",
+      "risk_score": 70.2,
+      "dscr": 1.041330992002661,
+      "ltv": 0.7759276626040664,
+      "expected_return_on_capital": 0.06231648243674773,
+      "priority_score": 46.98164824367477,
+      "selected_order": 1
+    },
+    {
+      "project_id": "CAP-P018-1",
+      "property_id": "P018",
+      "project_type": "Debt paydown",
+      "capital_required": 527370.0,
+      "expected_noi_lift": 52465.66,
+      "expected_value_lift": 902722.72,
+      "risk_reduction_points": 10.31,
+      "priority_note": "Debt paydown expected to improve NOI and reduce operating risk.",
+      "property_name": "Elm Street Flats",
+      "risk_score": 61.7,
+      "dscr": 0.9683088843261943,
+      "ltv": 0.8531822744118824,
+      "expected_return_on_capital": 0.09948548457439749,
+      "priority_score": 45.99354845743975,
+      "selected_order": 2
+    },
+    {
+      "project_id": "CAP-P007-2",
+      "property_id": "P007",
+      "project_type": "Unit renovation",
+      "capital_required": 547993.0,
+      "expected_noi_lift": 61318.47,
+      "expected_value_lift": 1177958.38,
+      "risk_reduction_points": 11.42,
+      "priority_note": "Unit renovation expected to improve NOI and reduce operating risk.",
+      "property_name": "King West Lofts",
+      "risk_score": 31.1,
+      "dscr": 1.3149966510892692,
+      "ltv": 0.5223937890593685,
+      "expected_return_on_capital": 0.11189644758235963,
+      "priority_score": 41.80464475823596,
+      "selected_order": 3
+    },
+    {
+      "project_id": "CAP-P010-1",
+      "property_id": "P010",
+      "project_type": "Building systems",
+      "capital_required": 183988.0,
+      "expected_noi_lift": 16650.07,
+      "expected_value_lift": 303683.9,
+      "risk_reduction_points": 4.24,
+      "priority_note": "Building systems expected to improve NOI and reduce operating risk.",
+      "property_name": "Victoria Gardens",
+      "risk_score": 48.9,
+      "dscr": 1.1831944353469106,
+      "ltv": 0.6344358706900836,
+      "expected_return_on_capital": 0.0904954127443094,
+      "priority_score": 29.75454127443094,
+      "selected_order": 4
+    }
+  ]
+}

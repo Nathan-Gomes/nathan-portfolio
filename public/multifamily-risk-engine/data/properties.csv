@@ -1,0 +1,25 @@
+property_id,property_name,market,asset_class,units,acquisition_price,acquisition_date
+P001,Cedar Place,Toronto,Garden apartments,126,25350472.34,2017-01-15
+P002,Riverside Towers,Hamilton,Mid-rise,101,22889483.89,2018-02-15
+P003,Maple Court,London,Mixed-use,83,19919216.59,2019-03-15
+P004,Harbour View,Windsor,Student housing,108,21158360.61,2020-04-15
+P005,Park Lane,Kitchener,Garden apartments,121,23979612.25,2021-05-15
+P006,Oakridge Manor,Ottawa,Mid-rise,60,15651589.1,2022-06-15
+P007,King West Lofts,Toronto,Mixed-use,146,34453831.7,2023-07-15
+P008,Lakeside House,Hamilton,Student housing,62,14244767.35,2017-08-15
+P009,Barton Square,London,Garden apartments,126,21947554.05,2018-09-15
+P010,Victoria Gardens,Windsor,Mid-rise,138,26329834.82,2019-01-15
+P011,Mason Heights,Kitchener,Mixed-use,84,19730556.12,2020-02-15
+P012,York Mills Residences,Ottawa,Student housing,148,35966272.91,2021-03-15
+P013,Queenston Court,Toronto,Garden apartments,63,19918113.26,2022-04-15
+P014,Forest Hill Apartments,Hamilton,Mid-rise,106,21826635.33,2023-05-15
+P015,Bayview Terrace,London,Mixed-use,113,21946214.05,2017-06-15
+P016,Dundas Commons,Windsor,Student housing,71,13013103.92,2018-07-15
+P017,Huron House,Kitchener,Garden apartments,134,31264134.02,2019-08-15
+P018,Elm Street Flats,Ottawa,Mid-rise,54,8955396.76,2020-09-15
+P019,Stonebridge Place,Toronto,Mixed-use,141,31379534.64,2021-01-15
+P020,Mill Road Residences,Hamilton,Student housing,91,19637404.93,2022-02-15
+P021,Albion Gardens,London,Garden apartments,50,10912753.65,2023-03-15
+P022,Willow Creek,Windsor,Mid-rise,103,27378763.0,2017-04-15
+P023,Front Street Lofts,Kitchener,Mixed-use,72,18164030.14,2018-05-15
+P024,Meadowbrook Court,Ottawa,Student housing,58,13450276.86,2019-06-15
