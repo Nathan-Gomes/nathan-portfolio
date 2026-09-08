@@ -22,6 +22,8 @@ WITH latest AS (
     d.loan_balance,
     d.interest_rate,
     d.maturity_year,
+    d.amortization_years,
+    d.loan_type,
     d.rate_type,
     v.property_value,
     v.cap_rate,
@@ -71,6 +73,34 @@ def monthly_debt_service(loan_balance: float, annual_rate: float, amortization_y
     return loan_balance * monthly_rate * (1 + monthly_rate) ** periods / ((1 + monthly_rate) ** periods - 1)
 
 
+def rate_shock_multiplier(row: pd.Series) -> float:
+    multiplier = 1.0
+    if row.get("rate_type") == "Variable":
+        multiplier *= 1.0
+    elif row.get("maturity_year", 2032) <= 2028:
+        multiplier *= 0.85
+    else:
+        multiplier *= 0.20
+
+    loan_type = row.get("loan_type", "Conventional")
+    if loan_type == "CMHC-insured":
+        multiplier *= 0.65
+    elif loan_type == "Bridge/private":
+        multiplier *= 1.25
+    elif loan_type == "Construction":
+        multiplier *= 1.35
+    return multiplier
+
+
+def financing_risk_multiplier(loan_type: str) -> float:
+    return {
+        "CMHC-insured": 0.65,
+        "Conventional": 1.0,
+        "Bridge/private": 1.35,
+        "Construction": 1.50,
+    }.get(loan_type, 1.0)
+
+
 def generate_sample_data(property_count: int = 24, months: int = 48, seed: int = 17) -> dict[str, pd.DataFrame]:
     rng = np.random.default_rng(seed)
     month_index = pd.period_range(end=CONFIG["as_of_month"], periods=months, freq="M").astype(str)
@@ -90,17 +120,26 @@ def generate_sample_data(property_count: int = 24, months: int = 48, seed: int =
     debt_rows = []
     valuation_rows = []
     project_rows = []
+    raw_units = rng.integers(85, 175, size=property_count)
+    scaled_units = np.maximum(55, np.round(raw_units / raw_units.sum() * 3000).astype(int))
+    unit_difference = int(3000 - scaled_units.sum())
+    for offset in range(abs(unit_difference)):
+        index = offset % property_count
+        if unit_difference > 0:
+            scaled_units[index] += 1
+        elif scaled_units[index] > 55:
+            scaled_units[index] -= 1
 
     stress_names = {"Queenston Court", "Albion Gardens", "Elm Street Flats", "Barton Square", "Huron House"}
     for i in range(property_count):
         property_id = f"P{i + 1:03d}"
-        units = int(rng.integers(42, 156))
+        units = int(scaled_units[i])
         market = markets[i % len(markets)]
         asset_class = classes[i % len(classes)]
-        avg_rent = rng.uniform(1450, 2350)
-        expense_ratio = rng.uniform(0.38, 0.48)
+        avg_rent = rng.uniform(1850, 2850)
+        expense_ratio = rng.uniform(0.34, 0.43)
         stabilized_noi = units * avg_rent * 12 * rng.uniform(0.91, 0.98) * (1 - expense_ratio)
-        acquisition_price = stabilized_noi / rng.uniform(0.047, 0.062)
+        acquisition_price = stabilized_noi / rng.uniform(0.043, 0.052)
         properties.append({
             "property_id": property_id,
             "property_name": names[i],
@@ -111,22 +150,54 @@ def generate_sample_data(property_count: int = 24, months: int = 48, seed: int =
             "acquisition_date": f"{2017 + i % 7}-0{1 + i % 9}-15",
         })
 
-        leverage = rng.uniform(0.46, 0.62)
+        loan_types = ["CMHC-insured", "Conventional", "Bridge/private", "Construction"]
+        loan_probs = [0.68, 0.24, 0.06, 0.02]
+        if names[i] in stress_names:
+            loan_probs = [0.40, 0.42, 0.13, 0.05]
+        loan_type = str(rng.choice(loan_types, p=loan_probs))
+        if loan_type == "CMHC-insured":
+            leverage = rng.uniform(0.60, 0.74)
+            interest_rate = rng.uniform(0.036, 0.047)
+            amortization_years = int(rng.choice([30, 35, 40], p=[0.25, 0.55, 0.20]))
+            rate_type = "Fixed"
+            maturity_choices = [2028, 2029, 2030, 2031, 2032]
+            maturity_probs = [0.12, 0.18, 0.25, 0.25, 0.20]
+        elif loan_type == "Conventional":
+            leverage = rng.uniform(0.48, 0.64)
+            interest_rate = rng.uniform(0.047, 0.063)
+            amortization_years = 25
+            rate_type = "Variable" if rng.random() < 0.32 else "Fixed"
+            maturity_choices = [2027, 2028, 2029, 2030, 2031, 2032]
+            maturity_probs = [0.22, 0.24, 0.18, 0.14, 0.12, 0.10]
+        elif loan_type == "Bridge/private":
+            leverage = rng.uniform(0.55, 0.70)
+            interest_rate = rng.uniform(0.074, 0.095)
+            amortization_years = 20
+            rate_type = "Variable"
+            maturity_choices = [2027, 2028, 2029]
+            maturity_probs = [0.45, 0.40, 0.15]
+        else:
+            leverage = rng.uniform(0.50, 0.68)
+            interest_rate = rng.uniform(0.066, 0.088)
+            amortization_years = 20
+            rate_type = "Variable"
+            maturity_choices = [2027, 2028, 2029, 2030]
+            maturity_probs = [0.32, 0.34, 0.22, 0.12]
         if names[i] in stress_names:
             leverage += rng.uniform(0.03, 0.08)
-        interest_rate = rng.uniform(0.039, 0.061)
-        maturity_year = int(rng.choice([2027, 2028, 2029, 2030, 2031, 2032], p=[0.22, 0.24, 0.18, 0.14, 0.12, 0.10]))
+        maturity_year = int(rng.choice(maturity_choices, p=maturity_probs))
         debt_rows.append({
             "property_id": property_id,
             "loan_balance": round(acquisition_price * leverage, 2),
             "interest_rate": round(interest_rate, 4),
             "maturity_year": maturity_year,
-            "amortization_years": 25,
-            "rate_type": "Variable" if rng.random() < 0.32 else "Fixed",
+            "amortization_years": amortization_years,
+            "loan_type": loan_type,
+            "rate_type": rate_type,
         })
 
         occupancy = rng.uniform(0.90, 0.985)
-        cap_rate = rng.uniform(0.047, 0.061)
+        cap_rate = rng.uniform(0.043, 0.052)
         rent_growth = rng.uniform(0.001, 0.004)
         expense_growth = rng.uniform(0.0015, 0.005)
         for month_number, month in enumerate(month_index):
@@ -199,7 +270,8 @@ def analytical_dataset(db_path: Path) -> pd.DataFrame:
     with sqlite3.connect(db_path) as conn:
         frame = pd.read_sql_query(ANALYTICAL_SQL, conn)
     frame["debt_service"] = frame.apply(
-        lambda row: monthly_debt_service(row["loan_balance"], row["interest_rate"]), axis=1
+        lambda row: monthly_debt_service(row["loan_balance"], row["interest_rate"], int(row["amortization_years"])),
+        axis=1,
     )
     frame["noi_margin"] = frame["noi"] / frame["revenue"]
     frame["cap_rate_actual"] = (frame["noi"] * 12) / frame["property_value"]
@@ -228,7 +300,10 @@ def score_properties(frame: pd.DataFrame, weights: dict[str, float] | None = Non
     scored["occupancy_deterioration_risk"] = normalize_risk(-scored["occupancy_change"], 0.00, 0.08)
     scored["noi_deterioration_risk"] = normalize_risk(-scored["noi_yoy"], 0.00, 0.18)
     scored["expense_growth_risk"] = normalize_risk(scored["expense_yoy"], 0.02, 0.20)
-    scored["refinancing_exposure_risk"] = normalize_risk(2032 - scored["maturity_year"], 0, 5)
+    scored["refinancing_exposure_risk"] = (
+        normalize_risk(2032 - scored["maturity_year"], 0, 5)
+        * scored["loan_type"].map(financing_risk_multiplier)
+    ).clip(0, 100)
     scored["concentration_risk"] = normalize_risk(scored["property_value"] / scored["property_value"].sum(), 0.02, 0.08)
     scored["risk_score"] = (
         scored["dscr_risk"] * weights["dscr"]
@@ -254,11 +329,14 @@ def apply_scenario(frame: pd.DataFrame, scenario: dict[str, float]) -> pd.DataFr
     stressed["revenue"] = stressed["units"] * stressed["occupancy"] * original_revenue_per_occupied_unit
     stressed["operating_expenses"] = stressed["operating_expenses"] * (1 + scenario["expense_shock"])
     stressed["noi"] = stressed["revenue"] - stressed["operating_expenses"]
-    stressed["interest_rate"] = stressed["interest_rate"] + scenario["rate_shock_bps"] / 10000
+    stressed["interest_rate"] = stressed["interest_rate"] + (
+        scenario["rate_shock_bps"] * stressed.apply(rate_shock_multiplier, axis=1) / 10000
+    )
     stressed["cap_rate"] = stressed["cap_rate"] + scenario["cap_rate_shock_bps"] / 10000
     stressed["property_value"] = (stressed["noi"] * 12) / stressed["cap_rate"]
     stressed["debt_service"] = stressed.apply(
-        lambda row: monthly_debt_service(row["loan_balance"], row["interest_rate"]), axis=1
+        lambda row: monthly_debt_service(row["loan_balance"], row["interest_rate"], int(row["amortization_years"])),
+        axis=1,
     )
     stressed["dscr"] = stressed["noi"] / stressed["debt_service"]
     stressed["ltv"] = stressed["loan_balance"] / stressed["property_value"]
@@ -289,10 +367,13 @@ def concentration_summary(frame: pd.DataFrame) -> dict[str, pd.DataFrame]:
     by_maturity = frame.groupby("maturity_year", as_index=False)["loan_balance"].sum()
     by_rate_type = frame.groupby("rate_type", as_index=False)["loan_balance"].sum()
     by_rate_type["exposure_pct"] = by_rate_type["loan_balance"] / by_rate_type["loan_balance"].sum()
+    by_loan_type = frame.groupby("loan_type", as_index=False)["loan_balance"].sum()
+    by_loan_type["exposure_pct"] = by_loan_type["loan_balance"] / by_loan_type["loan_balance"].sum()
     return {
         "market": by_market.sort_values("property_value", ascending=False),
         "maturity": by_maturity.sort_values("maturity_year"),
         "rate_type": by_rate_type.sort_values("loan_balance", ascending=False),
+        "loan_type": by_loan_type.sort_values("loan_balance", ascending=False),
     }
 
 
@@ -344,6 +425,11 @@ def run_pipeline(output_dir: Path | None = None) -> dict[str, object]:
         "weighted_dscr": float((scored["dscr"] * scored["property_value"]).sum() / scored["property_value"].sum()),
         "elevated_or_high": int(scored["risk_band"].isin(["Elevated", "High"]).sum()),
         "debt_maturing_24m": float(scored.loc[scored["maturity_year"].le(2028), "loan_balance"].sum()),
+        "cmhc_debt": float(scored.loc[scored["loan_type"].eq("CMHC-insured"), "loan_balance"].sum()),
+        "cmhc_debt_share": float(
+            scored.loc[scored["loan_type"].eq("CMHC-insured"), "loan_balance"].sum()
+            / scored["loan_balance"].sum()
+        ),
         "largest_market": concentration["market"].iloc[0]["market"],
         "largest_market_exposure": float(concentration["market"].iloc[0]["exposure_pct"]),
         "capital_budget": CONFIG["capital_budget"],

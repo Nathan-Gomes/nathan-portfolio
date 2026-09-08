@@ -24,6 +24,7 @@ CREATE TABLE debt (
   interest_rate REAL NOT NULL,
   maturity_year INTEGER NOT NULL,
   amortization_years INTEGER NOT NULL,
+  loan_type TEXT NOT NULL,
   rate_type TEXT NOT NULL,
   FOREIGN KEY (property_id) REFERENCES properties(property_id)
 );
