@@ -14,11 +14,11 @@
 <nav class="jump" aria-label="Case study sections"><a href="#findings">Findings</a><a href="#construction">Holdings</a><a href="#methods">Calculations</a><a href="#engineering">ETL &amp; SQL</a><a href="#models">Model validation</a><a href="#assurance">Quality controls</a><a href="#limitations">Limitations</a></nav>
 <section class="section" id="findings"><p class="eyebrow">01 / Research findings</p><h2>Higher returns came with different risks.</h2><p>The experiment asks two questions: how does portfolio construction affect realized risk and return, and does regularized regression improve a simple forecast of future volatility? Portfolio performance and forecast accuracy are evaluated separately.</p>
 <div class="columns"><ul class="findings"><li><strong>Growth: 27.80% annualized return, 48.72% maximum drawdown.</strong><p>A 65% technology target produced the highest historical return and volatility. The large peak-to-trough loss matters as much as the ending value.</p></li><li><strong>Balanced: the highest sample Sharpe ratio, 0.97.</strong><p>Its 19.12% annualized return exceeded XIC's 16.22%, with similar volatility and a smaller maximum drawdown. This is an observed comparison, not evidence of persistent alpha.</p></li></ul><ul class="findings"><li><strong>Low volatility: 15.29% realized annualized volatility.</strong><p>The lowest among the four constructed portfolios, compared with 16.37% for XIC. Inverse-volatility weighting is a heuristic; it does not solve for minimum portfolio variance.</p></li><li><strong>Forecasting: improvements were mixed.</strong><p>The CV-selected Ridge model beat trailing-volatility persistence on test RMSE for three portfolios. All four selected models had negative test R², so predictive usefulness remains unproven.</p></li></ul></div>
-<div class="table-wrap" tabindex="0" role="region" aria-label="Portfolio performance comparison"><table><caption>Net results, 3 January 2019 to 31 August 2026. CAD 100,000 starting value; 252-session annualization.</caption><thead><tr><th scope="col">Portfolio</th><th scope="col">Cumulative return</th><th scope="col">Annualized return</th><th scope="col">Volatility</th><th scope="col">Sharpe</th><th scope="col">Max drawdown</th><th scope="col">Trading costs</th></tr></thead><tbody><tr><td>Balanced</td><td>279.82%</td><td>19.12%</td><td>16.29%</td><td>0.97</td><td>-28.73%</td><td>$776.61</td></tr><tr><td>XIC benchmark</td><td>214.75%</td><td>16.22%</td><td>16.37%</td><td>0.82</td><td>-37.21%</td><td>$0.00</td></tr><tr><td>Growth</td><td>549.20%</td><td>27.80%</td><td>28.60%</td><td>0.90</td><td>-48.72%</td><td>$1,856.88</td></tr><tr><td>Income</td><td>212.94%</td><td>16.13%</td><td>16.06%</td><td>0.83</td><td>-33.06%</td><td>$395.51</td></tr><tr><td>Low volatility</td><td>243.59%</td><td>17.57%</td><td>15.29%</td><td>0.94</td><td>-29.71%</td><td>$573.68</td></tr></tbody></table></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Portfolio performance comparison"><table><caption>Net results, 3 January 2019 to 31 August 2026. CAD 100,000 starting value; 252-session annualization.</caption><thead><tr><th scope="col">Portfolio</th><th scope="col">Cumulative return</th><th scope="col">Annualized return</th><th scope="col">Volatility</th><th scope="col">Sharpe</th><th scope="col">Max drawdown</th><th scope="col">Trading costs</th></tr></thead><tbody>{{PERFORMANCE_ROWS}}</tbody></table></div>
 <figure><img src="/investment-analytics/performance.png" alt="Portfolio value and drawdown histories for four Canadian equity portfolios and XIC"><figcaption>Actual saved research output. Cumulative performance includes modeled rebalancing costs. Drawdown measures loss from the previous portfolio peak.</figcaption></figure>
 <p><a href="/investment-analytics/output/portfolio_summary.csv">Download the complete performance metrics</a></p></section>
 <section class="section" id="construction"><p class="eyebrow">02 / Portfolio design</p><h2>Eight securities, four allocation policies.</h2><p>Growth, Income and Balanced use manually specified target weights. Low volatility uses inverse sample volatility estimated from the first 252 return observations, then freezes those targets. All portfolios are long-only equities; Balanced has no bond allocation, and Income does not separately model dividend cash payments.</p>
-<div class="table-wrap" tabindex="0" role="region" aria-label="Portfolio target allocations"><table><caption>Rebalancing targets. Low-volatility percentages are rounded; full-precision targets sum to 100%.</caption><thead><tr><th>Security</th><th>Sector</th><th>Growth</th><th>Income</th><th>Balanced</th><th>Low volatility</th></tr></thead><tbody><tr><td>RY.TO · Royal Bank of Canada</td><td>Financials</td><td>15.00%</td><td>25.00%</td><td>15.00%</td><td>18.75%</td></tr><tr><td>TD.TO · Toronto-Dominion Bank</td><td>Financials</td><td>0.00%</td><td>20.00%</td><td>10.00%</td><td>19.72%</td></tr><tr><td>SHOP.TO · Shopify</td><td>Technology</td><td>35.00%</td><td>0.00%</td><td>10.00%</td><td>4.04%</td></tr><tr><td>CSU.TO · Constellation Software</td><td>Technology</td><td>30.00%</td><td>0.00%</td><td>10.00%</td><td>7.85%</td></tr><tr><td>ENB.TO · Enbridge</td><td>Energy</td><td>0.00%</td><td>20.00%</td><td>15.00%</td><td>8.82%</td></tr><tr><td>FTS.TO · Fortis</td><td>Utilities</td><td>0.00%</td><td>20.00%</td><td>15.00%</td><td>16.14%</td></tr><tr><td>EMA.TO · Emera</td><td>Utilities</td><td>0.00%</td><td>15.00%</td><td>10.00%</td><td>13.66%</td></tr><tr><td>CNR.TO · Canadian National Railway</td><td>Industrials</td><td>20.00%</td><td>0.00%</td><td>15.00%</td><td>11.03%</td></tr></tbody></table></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Portfolio target allocations"><table><caption>Rebalancing targets. Low-volatility percentages are rounded; full-precision targets sum to 100%.</caption><thead><tr><th>Security</th><th>Sector</th><th>Growth</th><th>Income</th><th>Balanced</th><th>Low volatility</th></tr></thead><tbody>{{HOLDING_ROWS}}</tbody></table></div>
 <h3>Why XIC?</h3><p>XIC.TO, the iShares Core S&amp;P/TSX Capped Composite ETF, supplies a broad Canadian equity reference in the same currency. It answers whether these selected allocations improved on holding the Canadian market. The portfolios' sector concentrations differ from XIC, so return differences combine market exposure and security selection; they are not isolated manager skill.</p><p>VFV could be a useful secondary opportunity-cost comparison with US equities. It is not included in this experiment. A sector-matched benchmark would further help distinguish allocation effects from security selection.</p>
 <p><a href="/investment-analytics/output/target_weights.csv">Download exact target weights</a></p></section>
 <section class="section" id="methods"><p class="eyebrow">03 / Financial methodology</p><h2>Make the accounting conventions explicit.</h2><p>Historical adjusted closes approximate dividend-reinvested returns. Position quantities are adjusted-price accounting units, not actual broker share balances. Portfolios start at the calibration close; the first measured return is the following trading session.</p>
@@ -32,257 +32,19 @@
 </div><div class="note"><p><strong>Rebalance timing:</strong> weights drift daily and reset at the close of the first observed session of each month. XIC is held without rebalancing. Initial entry costs, taxes and additional market impact are excluded. The recorded costs are cumulative cash charges, not the full compounded performance drag.</p></div></section>
 <section class="section" id="engineering"><p class="eyebrow">04 / Data engineering</p><h2>A traceable path from inputs to outputs.</h2><ol class="steps"><li><h3>Extract</h3><p>Read prices, target holdings and the security master. Download adjusted prices through yfinance or reuse a checksum-verified frozen CSV.</p></li><li><h3>Clean and validate</h3><p>Parse dates and numbers, count exact duplicates, reject conflicting records and missing prices, and verify the security universe and target weights.</p></li><li><h3>Calculate</h3><p>Pandas and NumPy calculate asset returns and rolling statistics, then simulate portfolio value, drifting allocations and transaction costs.</p></li><li><h3>Evaluate models</h3><p>Construct forward volatility labels, purge overlapping training labels, tune models chronologically and retain held-out predictions.</p></li><li><h3>Publish the data mart</h3><p>Replace the SQLite snapshot atomically after integrity checks. Preserve successful run history and reconcile positions to portfolio NAV.</p></li><li><h3>Review</h3><p>Export CSVs, interactive charts and a notebook with saved figures. Configuration, input hashes and package versions identify the research run.</p></li></ol>
 <h3>SQL data model</h3><div class="table-wrap" tabindex="0" role="region" aria-label="SQL table grain"><table><thead><tr><th>Table</th><th>Grain</th><th>Research purpose</th></tr></thead><tbody><tr><td>securities</td><td>Security</td><td>Sector and currency dimension</td></tr><tr><td>security_daily_analytics</td><td>Security × date</td><td>Adjusted price, return and rolling risk</td></tr><tr><td>portfolio_positions</td><td>Portfolio × security × date</td><td>Position value, weight and sector</td></tr><tr><td>portfolio_daily_summary</td><td>Portfolio × date</td><td>NAV, return, costs and drawdown</td></tr><tr><td>model_predictions</td><td>Portfolio × model × forecast date</td><td>Actual and predicted volatility</td></tr><tr><td>pipeline_runs</td><td>Successful run</td><td>Configuration, provenance and hashes</td></tr></tbody></table></div>
-<details><summary>Inspect the implemented SQL queries</summary><p>CTEs and ROW_NUMBER select month-end NAV; LAG computes compounded monthly and 20-session returns; DENSE_RANK ranks assets by trailing volatility. Sector reporting joins positions to the security dimension. The first monthly return is undefined without a preceding month-end.</p><pre><code>-- Latest allocations, with sector names obtained from the security dimension.
-CREATE VIEW latest_sector_exposure AS
-WITH latest AS (SELECT MAX(date) AS date FROM portfolio_positions)
-SELECT p.portfolio_id, s.sector, SUM(p.market_value) AS market_value,
-       SUM(p.weight) AS weight
-FROM portfolio_positions p
-JOIN securities s ON s.ticker = p.ticker
-JOIN latest l ON l.date = p.date
-GROUP BY p.portfolio_id, s.sector;
-
--- Compound monthly returns from month-end NAV using a window function.
-CREATE VIEW monthly_portfolio_returns AS
-WITH ranked AS (
- SELECT *, SUBSTR(date, 1, 7) AS month,
- ROW_NUMBER() OVER (PARTITION BY portfolio_id, SUBSTR(date, 1, 7) ORDER BY date DESC) AS rn
- FROM portfolio_daily_summary
-), endpoints AS (
- SELECT portfolio_id, month, nav FROM ranked WHERE rn = 1
-)
-SELECT portfolio_id, month, nav,
- nav / LAG(nav) OVER (PARTITION BY portfolio_id ORDER BY month) - 1 AS monthly_return
-FROM endpoints;
-
--- Daily cross-sectional ranking by trailing annualized volatility.
-CREATE VIEW volatility_ranking AS
-SELECT date, ticker, rolling_volatility_20,
- DENSE_RANK() OVER (PARTITION BY date ORDER BY rolling_volatility_20) AS volatility_rank
-FROM security_daily_analytics WHERE rolling_volatility_20 IS NOT NULL;
-
-CREATE VIEW rolling_portfolio_returns AS
-SELECT date, portfolio_id,
- nav / LAG(nav, 20) OVER (PARTITION BY portfolio_id ORDER BY date) - 1 AS return_20_sessions
-FROM portfolio_daily_summary;
-</code></pre></details></section>
+<details><summary>Inspect the implemented SQL queries</summary><p>CTEs and ROW_NUMBER select month-end NAV; LAG computes compounded monthly and 20-session returns; DENSE_RANK ranks assets by trailing volatility. Sector reporting joins positions to the security dimension. The first monthly return is undefined without a preceding month-end.</p><pre><code>{{SQL}}</code></pre></details></section>
 <section class="section" id="models"><p class="eyebrow">05 / Statistical learning</p><h2>Can past volatility predict the next month?</h2><p>Each portfolio has its own regression model. At close t, the target is the sample standard deviation of returns from t+1 through t+20, multiplied by √252. Predictors use information available through t: 1-, 5- and 20-session portfolio returns, trailing 20-session volatility, the benchmark's 20-session return, and benchmark volume relative to its trailing average.</p>
 <div class="columns"><div><h3>Candidate models</h3><ul><li>Linear regression: an unpenalized reference.</li><li>Ridge: an L2 penalty shrinks coefficients.</li><li>Lasso: an L1 penalty can set coefficients to zero.</li><li>ElasticNet: combines L1 and L2 regularization.</li></ul></div><div><h3>A practical baseline</h3><p>Persistence assumes the next 20 sessions will have the same volatility as the trailing 20 sessions. Every candidate is evaluated on the same held-out dates. Lower RMSE means smaller errors in annualized volatility.</p></div></div>
 <h3>Chronology is part of the model.</h3><div class="timeline" aria-label="Chronological model evaluation"><div><strong>Develop and tune</strong><span>Four expanding training folds</span><span>Last training feature: 2 Jan 2025</span></div><div><strong>Purge 20 sessions</strong><span>Last training label ends 30 Jan 2025</span></div><div><strong>Evaluate once</strong><span>31 Jan 2025 to 31 Jul 2026</span><span>377 test predictions per portfolio</span></div></div>
 <p>The final 20% is reserved as holdout, with 20 rows removed at its training boundary. The same gap is applied inside TimeSeriesSplit. StandardScaler is fitted inside each training fold through a Pipeline. GridSearchCV selects parameters by validation MSE; the selected model is refitted on the development data and evaluated on holdout. It is not retrained daily during that test period.</p>
 <p>The last test forecast date precedes the final market-data date because each forecast needs 20 future returns to score it. Predictions are clipped at zero. Forecasts remain separate from allocations and are not used to claim a trading return.</p>
-<div class="table-wrap" tabindex="0" role="region" aria-label="Volatility forecast evaluation"><table><caption>CV selected Ridge with α = 100 for each portfolio. RMSE is shown in percentage points of annualized volatility; positive improvement means lower error than persistence.</caption><thead><tr><th>Portfolio</th><th>Ridge RMSE</th><th>Baseline RMSE</th><th>RMSE improvement</th><th>Test R²</th></tr></thead><tbody><tr><td>Balanced</td><td>4.18 pp</td><td>4.98 pp</td><td>+16.1%</td><td>-0.020</td></tr><tr><td>Growth</td><td>9.93 pp</td><td>13.14 pp</td><td>+24.4%</td><td>-0.045</td></tr><tr><td>Income</td><td>3.51 pp</td><td>3.12 pp</td><td>-12.7%</td><td>-0.332</td></tr><tr><td>Low volatility</td><td>3.60 pp</td><td>3.98 pp</td><td>+9.5%</td><td>-0.145</td></tr></tbody></table></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Volatility forecast evaluation"><table><caption>CV selected Ridge with α = 100 for each portfolio. RMSE is shown in percentage points of annualized volatility; positive improvement means lower error than persistence.</caption><thead><tr><th>Portfolio</th><th>Ridge RMSE</th><th>Baseline RMSE</th><th>RMSE improvement</th><th>Test R²</th></tr></thead><tbody>{{MODEL_ROWS}}</tbody></table></div>
 <div class="note"><p><strong>Interpretation:</strong> beating persistence and having negative R² can both be true. R² compares errors against a constant equal to the observed test-period mean, which would not be known in advance. These results support further investigation, not a claim of dependable forecasting. Overlapping 20-day targets also make the errors dependent.</p></div>
 <details><summary>Model selection decisions worth examining</summary><p>The selected Ridge penalty is the largest value in the tested grid. A broader penalty range is a useful follow-up, using a new validation plan before inspecting additional test results. Lasso has slightly lower held-out error than Ridge for Low volatility, but the report retains Ridge because selection was based on development CV, not test performance.</p><p>Grid search scores raw predictions; final test predictions are clipped to nonnegative volatility. This is a documented evaluation mismatch to align in a future revision. There is no uncertainty interval or significance test in the current experiment.</p></details>
-<details><summary>Inspect the actual feature construction and validation code</summary><pre><code>import numpy as np
-import pandas as pd
-from sklearn.linear_model import ElasticNet, Lasso, LinearRegression, Ridge
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-
-
-FEATURES = [&quot;return_1&quot;, &quot;return_5&quot;, &quot;return_20&quot;, &quot;volatility_20&quot;, &quot;market_return_20&quot;, &quot;volume_ratio&quot;]
-
-
-def feature_frame(group, benchmark, volume, horizon):
-    r = group.set_index(&quot;date&quot;).net_return.sort_index()
-    frame = pd.DataFrame({&quot;return_1&quot;: r, &quot;return_5&quot;: (1 + r).rolling(5).apply(np.prod, raw=True) - 1,
-                          &quot;return_20&quot;: (1 + r).rolling(20).apply(np.prod, raw=True) - 1,
-                          &quot;volatility_20&quot;: r.rolling(20).std() * np.sqrt(252),
-                          &quot;market_return_20&quot;: (1 + benchmark).rolling(20).apply(np.prod, raw=True) - 1,
-                          &quot;volume_ratio&quot;: volume / volume.rolling(20).mean()})
-    # The label at t contains returns t+1 through t+h; purge h rows at every split.
-    frame[&quot;target&quot;] = r.rolling(horizon).std().shift(-horizon) * np.sqrt(252)
-    frame[&quot;target_end&quot;] = pd.Series(r.index, index=r.index).shift(-horizon)
-    return frame.replace([np.inf, -np.inf], np.nan).dropna()
-
-
-def fit_models(daily, prices, config):
-    benchmark = daily[daily.portfolio_id == &quot;Benchmark&quot;].set_index(&quot;date&quot;).net_return
-    volume = prices[prices.ticker == config[&quot;benchmark&quot;]].set_index(&quot;date&quot;).volume
-    horizon = config[&quot;forecast_days&quot;]
-    scores, predictions, coefficients, audits = [], [], [], []
-    candidates = {&quot;Linear regression&quot;: (LinearRegression(), {}),
-                  &quot;Ridge&quot;: (Ridge(), {&quot;model__alpha&quot;: [0.1, 1., 10., 100.]}),
-                  &quot;Lasso&quot;: (Lasso(max_iter=20000), {&quot;model__alpha&quot;: [0.00001, 0.0001, 0.001]}),
-                  &quot;ElasticNet&quot;: (ElasticNet(max_iter=20000),
-                                 {&quot;model__alpha&quot;: [0.0001, 0.001], &quot;model__l1_ratio&quot;: [0.25, 0.75]})}
-    for name, group in daily.groupby(&quot;portfolio_id&quot;):
-        if name == &quot;Benchmark&quot;:
-            continue
-        frame = feature_frame(group, benchmark, volume, horizon)
-        split = int(len(frame) * (1 - config[&quot;test_fraction&quot;]))
-        train, test = frame.iloc[:split - horizon], frame.iloc[split:]
-        if len(train) &lt; 150 or len(test) &lt; 30:
-            raise ValueError(&quot;Insufficient history for purged chronological validation&quot;)
-        if train.target_end.max() &gt;= test.index.min():
-            raise ValueError(&quot;Training labels overlap the test period&quot;)
-        cv = TimeSeriesSplit(n_splits=4, gap=horizon)
-        for fold, (tr, va) in enumerate(cv.split(train)):
-            if train.iloc[tr].target_end.max() &gt;= train.iloc[va].index.min():
-                raise ValueError(&quot;Cross-validation label leakage&quot;)
-            audits.append({&quot;portfolio_id&quot;: name, &quot;fold&quot;: fold, &quot;train_start&quot;: train.iloc[tr].index.min(),
-                           &quot;last_train_label&quot;: train.iloc[tr].target_end.max(),
-                           &quot;validation_start&quot;: train.iloc[va].index.min(), &quot;validation_end&quot;: train.iloc[va].index.max()})
-        models = {}
-        for model_name, (model, grid) in candidates.items():
-            search = GridSearchCV(Pipeline([(&quot;scale&quot;, StandardScaler()), (&quot;model&quot;, model)]), grid,
-                                  cv=cv, scoring=&quot;neg_mean_squared_error&quot;, n_jobs=1)
-            search.fit(train[FEATURES], train.target)
-            models[model_name] = (np.maximum(search.predict(test[FEATURES]), 0), -search.best_score_, str(search.best_params_))
-            for feature, value in zip(FEATURES, search.best_estimator_.named_steps[&quot;model&quot;].coef_):
-                coefficients.append({&quot;portfolio_id&quot;: name, &quot;model&quot;: model_name,
-                                     &quot;feature&quot;: feature, &quot;coefficient&quot;: value})
-        selected = min(models, key=lambda key: models[key][1])
-        models[&quot;Persistence baseline&quot;] = (test.volatility_20.to_numpy(), np.nan, &quot;Trailing 20-day volatility&quot;)
-        for model_name, (prediction, cv_mse, params) in models.items():
-            scores.append({&quot;portfolio_id&quot;: name, &quot;model&quot;: model_name,
-                           &quot;rmse&quot;: np.sqrt(mean_squared_error(test.target, prediction)),
-                           &quot;r2&quot;: r2_score(test.target, prediction), &quot;cv_mse&quot;: cv_mse,
-                           &quot;selected_by_cv&quot;: model_name == selected, &quot;parameters&quot;: params,
-                           &quot;train_end&quot;: train.index[-1], &quot;last_train_label&quot;: train.target_end.max(),
-                           &quot;test_start&quot;: test.index[0], &quot;test_end&quot;: test.index[-1], &quot;test_rows&quot;: len(test)})
-            predictions.extend({&quot;date&quot;: date, &quot;portfolio_id&quot;: name, &quot;model&quot;: model_name,
-                                &quot;actual&quot;: actual, &quot;prediction&quot;: value}
-                               for date, actual, value in zip(test.index, test.target, prediction))
-    return pd.DataFrame(scores), pd.DataFrame(predictions), pd.DataFrame(coefficients), pd.DataFrame(audits)
-</code></pre></details><p><a href="/investment-analytics/output/model_scores.csv">All model scores</a> · <a href="/investment-analytics/output/validation_splits.csv">Cross-validation boundaries</a></p></section>
+<details><summary>Inspect the actual feature construction and validation code</summary><pre><code>{{MODEL_CODE}}</code></pre></details><p><a href="/investment-analytics/output/model_scores.csv">All model scores</a> · <a href="/investment-analytics/output/validation_splits.csv">Cross-validation boundaries</a></p></section>
 <section class="section" id="assurance"><p class="eyebrow">06 / Engineering assurance</p><h2>Tests target errors that would change the conclusion.</h2><div class="columns"><div><h3>Calculation and chronology</h3><ul><li>A 10% loss followed by a 10% gain compounds to a 1% loss.</li><li>Initial losses count toward drawdown.</li><li>Portfolio returns use previous-close weights.</li><li>Trading costs reduce the final portfolio value.</li><li>Changing future prices leaves initial low-volatility weights unchanged.</li><li>Forward labels contain exactly the intended next 20 returns.</li></ul></div><div><h3>Data and publication</h3><ul><li>Reject negative, missing and infinite price fields.</li><li>Reject conflicting duplicates and unknown holdings.</li><li>Count and remove exact duplicate records.</li><li>Reconcile position weights and values to NAV.</li><li>Reject incomplete ticker-date coverage.</li><li>Preserve the previous database when publication fails.</li></ul></div></div>
 <p>The automated suite has 15 passing cases. A GitHub Actions workflow is defined for tests, a synthetic pipeline run and notebook generation. Local execution is verified; remote CI execution has not been verified. The application is a local research pipeline with a published static report.</p>
-<details><summary>Review the automated tests</summary><pre><code>import sqlite3
-
-import numpy as np
-import pandas as pd
-import pytest
-
-from src.analytics import metrics, portfolio_analytics
-from src.load import load_mart
-from src.models import feature_frame, FEATURES
-from src.validation import clean_inputs, validate_outputs
-
-
-@pytest.fixture
-def inputs():
-    dates = pd.bdate_range(&quot;2020-01-01&quot;, periods=360)
-    frames = []
-    for i, ticker in enumerate([&quot;A&quot;, &quot;B&quot;, &quot;M&quot;]):
-        r = 0.0002 + (i + 1) * 0.002 * np.sin(np.arange(len(dates)) / 7)
-        frames.append(pd.DataFrame({&quot;date&quot;: dates, &quot;ticker&quot;: ticker,
-                                    &quot;adjusted_price&quot;: 100 * np.cumprod(1 + r), &quot;volume&quot;: 1000}))
-    prices = pd.concat(frames, ignore_index=True)
-    holdings = pd.DataFrame({&quot;portfolio_id&quot;: [&quot;Balanced&quot;] * 2, &quot;ticker&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;target_weight&quot;: [0.6, 0.4]})
-    securities = pd.DataFrame({&quot;ticker&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;M&quot;], &quot;sector&quot;: [&quot;Tech&quot;, &quot;Banks&quot;, &quot;Benchmark&quot;], &quot;currency&quot;: [&quot;CAD&quot;] * 3})
-    config = {&quot;warmup_days&quot;: 30, &quot;benchmark&quot;: &quot;M&quot;, &quot;initial_capital&quot;: 100000,
-              &quot;transaction_cost_bps&quot;: 10, &quot;risk_free_rate&quot;: 0.03}
-    return prices, holdings, securities, config
-
-
-def test_compounding_and_initial_loss_drawdown():
-    result = metrics([-0.1, 0.1], 0)
-    assert result[&quot;cumulative_return&quot;] == pytest.approx(-0.01)
-    assert result[&quot;max_drawdown&quot;] == pytest.approx(-0.1)
-    assert result[&quot;annualized_return&quot;] == pytest.approx(0.99 ** 126 - 1)
-
-
-def test_zero_volatility_sharpe_is_undefined():
-    assert np.isnan(metrics([0., 0., 0.])[&quot;sharpe&quot;])
-
-
-@pytest.mark.parametrize(&quot;fault&quot;, [&quot;negative&quot;, &quot;missing&quot;, &quot;infinite&quot;, &quot;conflict&quot;, &quot;gap&quot;, &quot;weights&quot;, &quot;unknown&quot;])
-def test_reject_bad_inputs(inputs, fault):
-    prices, holdings, securities, _ = inputs
-    if fault == &quot;negative&quot;:
-        prices.loc[0, &quot;adjusted_price&quot;] = -1
-    elif fault == &quot;missing&quot;:
-        prices.loc[0, &quot;volume&quot;] = np.nan
-    elif fault == &quot;infinite&quot;:
-        prices.loc[0, &quot;adjusted_price&quot;] = np.inf
-    elif fault == &quot;conflict&quot;:
-        prices = pd.concat([prices, prices.iloc[:1].assign(adjusted_price=999)])
-    elif fault == &quot;gap&quot;:
-        prices = prices.iloc[1:]
-    elif fault == &quot;weights&quot;:
-        holdings.loc[0, &quot;target_weight&quot;] = 0.8
-    elif fault == &quot;unknown&quot;:
-        holdings.loc[0, &quot;ticker&quot;] = &quot;UNKNOWN&quot;
-    with pytest.raises(ValueError):
-        clean_inputs(prices, holdings, securities)
-
-
-def test_exact_duplicates_are_audited(inputs):
-    p, h, s, _ = inputs
-    cleaned, audit = clean_inputs(pd.concat([p, p.iloc[:1]]), h, s)
-    assert len(cleaned) == len(p)
-    assert audit[&quot;exact_duplicates_removed&quot;] == 1
-
-
-def test_previous_weights_and_reconciliation(inputs):
-    p, h, s, c = inputs
-    daily, positions, *_ = portfolio_analytics(p, h, s, c)
-    validate_outputs(daily, positions)
-    wide = p.pivot(index=&quot;date&quot;, columns=&quot;ticker&quot;, values=&quot;adjusted_price&quot;)
-    r = wide.pct_change().iloc[31]
-    observed = daily[daily.portfolio_id == &quot;Balanced&quot;].iloc[1]
-    assert observed.gross_return == pytest.approx(0.6 * r.A + 0.4 * r.B)
-    assert daily[daily.portfolio_id == &quot;Benchmark&quot;].cost.sum() == 0
-
-
-def test_costs_reduce_nav(inputs):
-    p, h, s, c = inputs
-    cost = portfolio_analytics(p, h, s, c)[0]
-    free = portfolio_analytics(p, h, s, dict(c, transaction_cost_bps=0))[0]
-    a = cost[cost.portfolio_id == &quot;Balanced&quot;]
-    b = free[free.portfolio_id == &quot;Balanced&quot;]
-    assert a.cost.sum() &gt; 0
-    assert a.nav.iloc[-1] &lt; b.nav.iloc[-1]
-
-
-def test_low_vol_weights_ignore_future_prices(inputs):
-    p, h, s, c = inputs
-    first = portfolio_analytics(p, h, s, c)[-1]
-    altered = p.copy()
-    mask = altered.date &gt; sorted(p.date.unique())[c[&quot;warmup_days&quot;]]
-    altered.loc[mask &amp; (altered.ticker == &quot;A&quot;), &quot;adjusted_price&quot;] *= 2
-    second = portfolio_analytics(altered, h, s, c)[-1]
-    pd.testing.assert_frame_equal(first, second)
-
-
-def test_forecast_label_and_features_use_correct_dates():
-    dates = pd.bdate_range(&quot;2020-01-01&quot;, periods=120)
-    r = pd.Series(np.sin(np.arange(120)) * 0.01, index=dates)
-    group = pd.DataFrame({&quot;date&quot;: dates, &quot;net_return&quot;: r.values})
-    frame = feature_frame(group, r, pd.Series(1000, index=dates), 20)
-    t = frame.index[10]
-    i = dates.get_loc(t)
-    assert frame.loc[t, &quot;target&quot;] == pytest.approx(r.iloc[i + 1:i + 21].std() * np.sqrt(252))
-    altered = group.copy()
-    altered.loc[altered.date &gt; t, &quot;net_return&quot;] = 0.2
-    after = feature_frame(altered, r, pd.Series(1000, index=dates), 20)
-    np.testing.assert_allclose(frame.loc[t, FEATURES].astype(float), after.loc[t, FEATURES].astype(float))
-
-
-def test_atomic_load_preserves_previous_database(tmp_path):
-    with sqlite3.connect(tmp_path / &quot;investment_analytics.db&quot;) as conn:
-        conn.execute(&quot;CREATE TABLE original (value INTEGER)&quot;)
-        conn.execute(&quot;INSERT INTO original VALUES (7)&quot;)
-    with pytest.raises(sqlite3.Error):
-        load_mart(tmp_path, {&quot;new_table&quot;: pd.DataFrame({&quot;x&quot;: [1]})}, &quot;INVALID SQL;&quot;)
-    with sqlite3.connect(tmp_path / &quot;investment_analytics.db&quot;) as conn:
-        assert conn.execute(&quot;SELECT value FROM original&quot;).fetchone()[0] == 7
-</code></pre></details><details><summary>Research configuration</summary><pre><code>{
-  &quot;start&quot;: &quot;2018-01-01&quot;,
-  &quot;end&quot;: &quot;2026-09-01&quot;,
-  &quot;benchmark&quot;: &quot;XIC.TO&quot;,
-  &quot;initial_capital&quot;: 100000,
-  &quot;risk_free_rate&quot;: 0.03,
-  &quot;transaction_cost_bps&quot;: 10,
-  &quot;warmup_days&quot;: 252,
-  &quot;forecast_days&quot;: 20,
-  &quot;test_fraction&quot;: 0.2,
-  &quot;seed&quot;: 42
-}</code></pre></details><p><a href="/investment-analytics/output/run_manifest.json">Inspect run provenance and checksums</a></p></section>
+<details><summary>Review the automated tests</summary><pre><code>{{TEST_CODE}}</code></pre></details><details><summary>Research configuration</summary><pre><code>{{CONFIG}}</code></pre></details><p><a href="/investment-analytics/output/run_manifest.json">Inspect run provenance and checksums</a></p></section>
 <section class="section" id="limitations"><p class="eyebrow">07 / Critical assessment</p><h2>What the evidence establishes, and what remains open.</h2><p>The system demonstrates portfolio accounting, reproducible ETL, relational reporting and chronological model evaluation. The reported return and risk differences apply to this selected historical sample.</p><div class="columns"><div><h3>Current limitations</h3><ul><li>Today's selected stock universe introduces survivorship and selection bias.</li><li>Adjusted history can be revised; it is not institutional point-in-time data.</li><li>Sector exposures differ materially from the benchmark.</li><li>No FX, taxes, delisted securities or explicit dividend cash ledger.</li><li>A constant risk-free rate and flat transaction-cost assumption.</li><li>Shared missing dates need an exchange calendar to detect.</li><li>Database publication is atomic; CSV and HTML exports are not a single transaction.</li></ul></div><div><h3>Priorities for the next research iteration</h3><ol><li>Add a trading calendar and stronger data-coverage auditing.</li><li>Evaluate alternative lookbacks, cost levels and sector-matched benchmarks.</li><li>Align CV and test post-processing, then validate wider penalty grids on fresh data.</li><li>Add a training-mean baseline and methods that account for overlapping forecast errors.</li><li>Introduce point-in-time universes, uncertainty estimates and versioned artifact publication.</li></ol></div></div>
 <p>Python, pandas, NumPy, SQLite, scikit-learn, Plotly, matplotlib and Jupyter are implemented here. MATLAB and portfolio optimization belong to the <a href="/Project-Quant-Portfolio.dc.html">separate ETF portfolio research project</a>.</p></section>
 <section class="section" id="evidence"><p class="eyebrow">08 / Evidence</p><h2>Read the results alongside the implementation.</h2><div class="actions"><a class="primary" href="/investment-analytics/output/report.html">Interactive report</a><a href="/investment-analytics/output/notebook.html">Executed notebook</a><a href="/investment-analytics/notebooks/portfolio_exploration.ipynb" download>Download notebook</a></div><p>The notebook includes saved plots, SQL examples and implementation code. CSVs expose the underlying portfolio metrics, model scores and validation boundaries for independent review.</p></section>

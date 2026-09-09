@@ -1,0 +1,53 @@
+{
+  "run_id": "5eae98f6-dc1b-4aef-bab2-f1ea937e96d1",
+  "timestamp": "2026-09-09T05:56:24.068051+00:00",
+  "source": {
+    "source": "Yahoo Finance via yfinance",
+    "retrieved_at": "2026-09-09T05:52:46.940726+00:00",
+    "sha256": "b44f2f6710ea5c813e3c598cd6594adab2596f9a5bf8c00f4734f6ccca092bb4",
+    "start": "2018-01-01",
+    "end_exclusive": "2026-09-01",
+    "price_basis": "Dividend/split adjusted close; CAD"
+  },
+  "config": {
+    "start": "2018-01-01",
+    "end": "2026-09-01",
+    "benchmark": "XIC.TO",
+    "initial_capital": 100000,
+    "risk_free_rate": 0.03,
+    "transaction_cost_bps": 10,
+    "warmup_days": 252,
+    "forecast_days": 20,
+    "test_fraction": 0.2,
+    "seed": 42
+  },
+  "validation": {
+    "exact_duplicates_removed": 0,
+    "missing_prices": 0,
+    "price_records": 19575,
+    "securities": 9,
+    "dates": 2175
+  },
+  "package_versions": {
+    "pandas": "2.2.3",
+    "numpy": "2.2.2",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.7.2",
+    "plotly": "6.0.1",
+    "yfinance": "0.2.66"
+  },
+  "source_hashes": {
+    "models.py": "d3b9857cef57553a263665a98f579b1754de6253008e936e89252a7667ee289e",
+    "__init__.py": "119bea2168f9bc8c6d9c5bede44c209284f65287ca86dbcd0b04e3329efb77b2",
+    "pipeline.py": "8ef27a7d4819cc12b55178df0f76cabad4e095d74569b5fbfeb27b7f35629281",
+    "analytics.py": "95c583736f5c3da4bbda89bc79e63afe71b2993fb9d03e918b86561187901555",
+    "load.py": "d8a91cee90f1565c517f88b70140e956a199422a098fadda87c57480b1ebeade",
+    "extract.py": "c0f4a861fde634d93d24788296fb9dcf9e4923bb92dc34d927abd36cfbc94e65",
+    "report.py": "964fc108c63f03d22acf736ed5bc0bcc33faa66999f7dc0aba13ad3164ae6e8d",
+    "validation.py": "ed4fc8e5659945fa2cbb2d862a07ead720a23513fbef50c4c9a3d85b000774da"
+  },
+  "input_hashes": {
+    "holdings.csv": "9397b36e13490e54f79acecf54b2b9828df90bf2c63735a112d74dc6022baf45",
+    "securities.csv": "d8642c05a7a1793a0bebb725b8112051154643e4ffdcd8eafb3ba903bcc049e0"
+  }
+}

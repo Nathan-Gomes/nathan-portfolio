@@ -1,0 +1,46 @@
+ticker,weight,portfolio_id
+CNR.TO,0.15,Balanced
+CSU.TO,0.1,Balanced
+EMA.TO,0.1,Balanced
+ENB.TO,0.15,Balanced
+FTS.TO,0.15,Balanced
+RY.TO,0.15,Balanced
+SHOP.TO,0.1,Balanced
+TD.TO,0.1,Balanced
+XIC.TO,0.0,Balanced
+CNR.TO,0.2,Growth
+CSU.TO,0.3,Growth
+EMA.TO,0.0,Growth
+ENB.TO,0.0,Growth
+FTS.TO,0.0,Growth
+RY.TO,0.15,Growth
+SHOP.TO,0.35,Growth
+TD.TO,0.0,Growth
+XIC.TO,0.0,Growth
+CNR.TO,0.0,Income
+CSU.TO,0.0,Income
+EMA.TO,0.15,Income
+ENB.TO,0.2,Income
+FTS.TO,0.2,Income
+RY.TO,0.25,Income
+SHOP.TO,0.0,Income
+TD.TO,0.2,Income
+XIC.TO,0.0,Income
+CNR.TO,0.1102624065658676,Low volatility
+CSU.TO,0.07845691149665075,Low volatility
+EMA.TO,0.13657287126196513,Low volatility
+ENB.TO,0.08823507252682931,Low volatility
+FTS.TO,0.16135840737641857,Low volatility
+RY.TO,0.18747091522399126,Low volatility
+SHOP.TO,0.04043452791357581,Low volatility
+TD.TO,0.19720888763470157,Low volatility
+XIC.TO,0.0,Low volatility
+CNR.TO,0.0,Benchmark
+CSU.TO,0.0,Benchmark
+EMA.TO,0.0,Benchmark
+ENB.TO,0.0,Benchmark
+FTS.TO,0.0,Benchmark
+RY.TO,0.0,Benchmark
+SHOP.TO,0.0,Benchmark
+TD.TO,0.0,Benchmark
+XIC.TO,1.0,Benchmark
