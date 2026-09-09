@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quantitative Investment Analytics ETL Pipeline | Nathan Gomes</title>
+  <meta name="description" content="Python, pandas and SQL investment analytics: four Canadian equity portfolios, time-series machine learning validation, interactive reports and an executed Jupyter notebook.">
+  <link rel="stylesheet" href="/revamp.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#fbfaf8;color:#16181a;font-family:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}h1,h2,h3{margin:0}
+    .research-page{max-width:1160px;margin:auto;padding:0 32px;letter-spacing:0}
+    .research-header{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:28px 0;border-bottom:1px solid #e6e2db}
+    .research-header a{color:#16181a;text-decoration:none}.research-header nav{display:flex;gap:24px;flex-wrap:wrap}
+    .research-intro{padding:64px 0 32px}.research-intro h1{font-size:44px;line-height:1.12;max-width:26ch;letter-spacing:0}
+    .research-page p{font-size:17px;line-height:1.65;color:#3d4145;max-width:76ch;margin:18px 0}
+    .research-page .eyebrow{font:12px 'IBM Plex Mono',monospace;color:#1a6f57;text-transform:uppercase}
+    .research-actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}.research-actions a{padding:12px 18px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none}.research-actions a:first-child{background:#16181a;color:white}
+    .research-facts{display:flex;gap:36px;flex-wrap:wrap;border-top:1px solid #16181a;border-bottom:1px solid #e6e2db;padding:22px 0}.research-facts strong{display:block;font-size:25px}.research-facts span{font-size:13px;color:#7a7e83}
+    .research-page figure{margin:32px 0}.research-page img{width:100%;height:auto;display:block}.research-page figcaption{font-size:13px;color:#7a7e83;margin-top:12px}
+    .research-section{padding:36px 0;border-top:1px solid #e6e2db}.research-section h2{font-size:28px;letter-spacing:0}.research-section ul{padding-left:20px;line-height:1.9;color:#3d4145}
+    .research-page footer{padding:28px 0;border-top:1px solid #e6e2db}.research-page footer a{color:#1a6f57}
+    @media(max-width:600px){.research-page{padding:0 20px}.research-intro{padding-top:36px}.research-intro h1{font-size:30px}.research-facts{gap:24px}.research-header nav{gap:16px;font-size:14px}}
+  </style>
+</head>
+<body><div class="research-page">
+  <header class="research-header"><a href="/">NATHAN GOMES</a><nav aria-label="Project navigation"><a href="/#projects">Projects</a><a href="/investment-analytics/output/report.html">Report</a><a href="/investment-analytics/output/notebook.html">Notebook</a></nav></header>
+  <main>
+    <section class="research-intro">
+      <p class="eyebrow">Investment analytics · Data engineering</p>
+      <h1>Quantitative Investment Analytics ETL Pipeline</h1>
+      <p>A repeatable research pipeline that turns historical security prices and portfolio allocations into validated financial analytics, a SQL data mart, and testable volatility forecasts.</p>
+      <div class="research-actions"><a href="/investment-analytics/output/report.html">Open interactive report</a><a href="/investment-analytics/output/notebook.html">View code &amp; notebook</a><a href="/investment-analytics/notebooks/portfolio_exploration.ipynb" download>Download notebook</a></div>
+    </section>
+    <div class="research-facts"><div><strong>19,575</strong><span>Historical price records</span></div><div><strong>4</strong><span>Canadian equity portfolios</span></div><div><strong>7</strong><span>Interactive charts</span></div><div><strong>15</strong><span>Passing automated tests</span></div></div>
+    <figure><a href="/investment-analytics/output/report.html"><img src="/investment-analytics/performance.png" alt="Historical portfolio values and drawdowns for Growth, Income, Balanced, Low volatility and the Canadian equity benchmark" width="1189" height="790"></a><figcaption>Saved notebook output showing portfolio values after transaction costs and losses from previous peaks. The report includes interactive versions.</figcaption></figure>
+    <section class="research-section"><h2>The research question</h2><p>How do different equity allocations change returns, risk and sector exposure, and can a simple statistical model improve on a trailing-volatility forecast?</p><p>Growth emphasizes technology. Income holds banks, utilities and energy. Balanced diversifies across equity sectors. Low volatility uses inverse-volatility weights estimated before the evaluation period. All four are compared against XIC, a Canadian equity ETF, with consistent dates and financial assumptions.</p></section>
+    <section class="research-section"><h2>From source data to research outputs</h2><ul><li><strong>Extract:</strong> historical adjusted prices, portfolio weights and security-sector metadata.</li><li><strong>Validate:</strong> detect missing prices, conflicting duplicates, unknown holdings and invalid allocations.</li><li><strong>Analyze:</strong> calculate returns, volatility, Sharpe ratios, drawdown, sector exposure and benchmark differences using pandas and NumPy.</li><li><strong>Simulate:</strong> let weights drift between monthly rebalances and deduct costs on traded notional.</li><li><strong>Model:</strong> compare linear regression, Ridge, Lasso and ElasticNet for next-20-session volatility.</li><li><strong>Publish:</strong> load SQLite tables and views, export CSVs, and generate the report and executed notebook.</li></ul></section>
+    <section class="research-section"><h2>Validation before prediction</h2><p>The final 20% of observations is held out. Time-series cross-validation includes a 20-session gap so training labels cannot overlap validation periods. Scaling is fitted inside each training fold, and model selection uses development data only.</p><p>In this run, the selected Ridge models had lower test error than persistence for three portfolios, but not Income. All four had negative test R-squared. Those results are included alongside the charts: the experiment measures whether prediction helps, without assuming it will.</p></section>
+    <section class="research-section"><h2>Engineering and financial assumptions</h2><p>The SQL layer demonstrates joins, common table expressions, aggregations and window functions. Tests check compounding, initial losses, allocation reconciliation, transaction costs, future-data invariance and database publication failures. Frozen inputs, checksums, configuration and run history support reproduction.</p><p>Prices are dividend- and split-adjusted research data. The chosen universe introduces selection and survivorship bias. Income describes the sector allocation, not a modeled dividend stream. Forecasts are a separate experiment and do not change portfolio holdings.</p><p><strong>Tools:</strong> Python, pandas, NumPy, SQLite, scikit-learn, Plotly, matplotlib, Jupyter and pytest.</p></section>
+    <section class="research-section"><h2>Explore the results</h2><div class="research-actions"><a href="/investment-analytics/output/report.html">Open report</a><a href="/investment-analytics/output/notebook.html">Read executed notebook</a><a href="/investment-analytics/output/portfolio_summary.csv" download>Download portfolio metrics</a></div></section>
+  </main>
+  <footer><a href="/#projects">Back to all projects</a></footer>
+</div></body></html>
