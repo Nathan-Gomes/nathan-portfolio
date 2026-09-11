@@ -1,5 +1,6 @@
 import { animate, inView, stagger } from 'motion';
 import './portfolio-ui.css';
+import './portfolio-flow.css';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 function reveal(elements: Element[]) {
@@ -16,10 +17,76 @@ function button(label: string, text: string) {
 
 function enhance(root: HTMLElement) {
   root.classList.add('modern-portfolio');
+  root.querySelector('header')!.classList.add('site-navigation');
+  root.querySelector('section')!.classList.add('site-introduction');
+  const stack = root.querySelector<HTMLElement>('#stack')!;
+  root.querySelector('#certifications')!.before(stack);
+  const navigation = root.querySelector('header nav')!;
+  navigation.querySelector('[href="#certifications"]')!.before(navigation.querySelector('[href="#stack"]')!);
+  Object.entries({ projects: 'Selected projects', experience: 'Work experience', stack: 'Technical toolkit', certifications: 'Certifications' }).forEach(([id, title], index) => {
+    const section = root.querySelector<HTMLElement>(`#${id}`)!;
+    section.classList.add('portfolio-section');
+    const heading = section.querySelector('h2')!;
+    heading.textContent = title;
+    const head = document.createElement('div');
+    head.className = 'unified-section-head';
+    const number = document.createElement('span');
+    number.textContent = String(index + 1).padStart(2, '0');
+    number.className = 'section-number';
+    head.append(number, heading);
+    section.firstElementChild!.replaceWith(head);
+  });
+  const links = [...navigation.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+  let scheduled = false;
+  function updateNavigation() {
+    const active = links.map(link => root.querySelector<HTMLElement>(link.hash)).filter(section => section && section.getBoundingClientRect().top <= 180).at(-1);
+    links.forEach(link => {
+      if (active && link.hash === `#${active.id}`) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    scheduled = false;
+  }
+  window.addEventListener('scroll', () => { if (!scheduled) { scheduled = true; requestAnimationFrame(updateNavigation); } }, { passive: true });
+  const stackList = stack.querySelector<HTMLElement>('.stack-list')!;
+  const panels = [...stackList.querySelectorAll<HTMLElement>('.stack-row')];
+  const tablist = document.createElement('div');
+  tablist.className = 'toolkit-tabs';
+  tablist.setAttribute('role', 'tablist');
+  tablist.setAttribute('aria-label', 'Technical skill categories');
+  const labels = ['Software', 'Cloud', 'Data', 'Integration', 'Operations'];
+  const tabs = panels.map((panel, i) => {
+    panel.id = `toolkit-panel-${i}`;
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', `toolkit-tab-${i}`);
+    panel.tabIndex = 0;
+    const tab = button(labels[i], labels[i]);
+    tab.id = `toolkit-tab-${i}`;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', panel.id);
+    tab.onclick = () => selectTab(i);
+    tablist.append(tab);
+    return tab;
+  });
+  function selectTab(index: number) {
+    tabs.forEach((tab, i) => { tab.setAttribute('aria-selected', String(i === index)); tab.tabIndex = i === index ? 0 : -1; panels[i].hidden = i !== index; });
+    reveal([panels[index]]);
+  }
+  tablist.onkeydown = event => {
+    const current = tabs.indexOf(document.activeElement as HTMLButtonElement);
+    let next: number;
+    if (event.key === 'ArrowRight') next = (current + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft') next = (current + tabs.length - 1) % tabs.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = tabs.length - 1;
+    else return;
+    event.preventDefault(); selectTab(next); tabs[next].focus();
+  };
+  stackList.before(tablist);
+  selectTab(0);
+  const about = [...root.querySelectorAll('section')].find(section => section.querySelector('h2')?.textContent === 'About');
+  about?.classList.add('about-section');
   const projects = root.querySelector<HTMLElement>('#projects')!;
   const items = [...projects.querySelectorAll<HTMLAnchorElement>(':scope > a')];
-  const intro = projects.querySelector('div > p');
-  if (intro) intro.textContent = 'Selected work in data, software, and finance.';
   const grid = document.createElement('div');
   grid.className = 'project-gallery';
   grid.id = 'project-gallery';
@@ -108,7 +175,9 @@ function enhance(root: HTMLElement) {
     };
     card.append(trigger);
   });
-  inView(root.querySelectorAll('section'), element => { reveal([element]); });
+  inView(root.querySelectorAll('section'), element => {
+    if (!reduced.matches) animate(element, { opacity: [0.96, 1], y: [8, 0] }, { duration: 0.35 });
+  });
 }
 
 // The existing template runtime mounts the page asynchronously.
