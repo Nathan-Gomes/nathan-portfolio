@@ -1,6 +1,6 @@
 {
-  "run_id": "5eae98f6-dc1b-4aef-bab2-f1ea937e96d1",
-  "timestamp": "2026-09-09T05:56:24.068051+00:00",
+  "run_id": "d7b4ba9d-7e6e-4356-a071-608180c786ec",
+  "timestamp": "2026-09-12T08:09:27.751720+00:00",
   "source": {
     "source": "Yahoo Finance via yfinance",
     "retrieved_at": "2026-09-09T05:52:46.940726+00:00",
@@ -19,6 +19,10 @@
     "warmup_days": 252,
     "forecast_days": 20,
     "test_fraction": 0.2,
+    "simulation_years": 5,
+    "simulation_paths": 5000,
+    "bootstrap_block_days": 20,
+    "trading_days": 252,
     "seed": 42
   },
   "validation": {
@@ -34,16 +38,17 @@
     "scipy": "1.15.3",
     "scikit-learn": "1.7.2",
     "plotly": "6.0.1",
-    "yfinance": "0.2.66"
+    "yfinance": "0.2.53"
   },
   "source_hashes": {
     "models.py": "d3b9857cef57553a263665a98f579b1754de6253008e936e89252a7667ee289e",
     "__init__.py": "119bea2168f9bc8c6d9c5bede44c209284f65287ca86dbcd0b04e3329efb77b2",
-    "pipeline.py": "8ef27a7d4819cc12b55178df0f76cabad4e095d74569b5fbfeb27b7f35629281",
+    "pipeline.py": "80ba774a662f0851c404ba93e37adab00c342d4e98cfec77635e6ae0c756d25f",
+    "forward.py": "65855fd53cdf16e4a75634c1695b65de158082dee42c562efd9dee2b42ac37be",
     "analytics.py": "95c583736f5c3da4bbda89bc79e63afe71b2993fb9d03e918b86561187901555",
     "load.py": "d8a91cee90f1565c517f88b70140e956a199422a098fadda87c57480b1ebeade",
     "extract.py": "c0f4a861fde634d93d24788296fb9dcf9e4923bb92dc34d927abd36cfbc94e65",
-    "report.py": "964fc108c63f03d22acf736ed5bc0bcc33faa66999f7dc0aba13ad3164ae6e8d",
+    "report.py": "3da5a1c3d0590db83c49c31a5e069d6441803a6f4f6a7fca968571d612741291",
     "validation.py": "ed4fc8e5659945fa2cbb2d862a07ead720a23513fbef50c4c9a3d85b000774da"
   },
   "input_hashes": {
