@@ -41,6 +41,13 @@ for r in scores:
     models.append(row([r['portfolio_id'],f'{error*100:.2f} pp',f'{reference*100:.2f} pp',
                        f'{(1-error/reference)*100:+.1f}%', f"{float(r['r2']):.3f}"]))
 template = (site / 'scripts/templates/investment-case-study.html').read_text()
+scenario_rows = []
+for r in rows('output/forward_projection_summary.csv'):
+    scenario_rows.append(row([r['portfolio_id']] +
+        [f"${float(r[k]):,.0f}" for k in ['start_value', 'terminal_p05', 'terminal_median', 'terminal_p95']] +
+        [f"{float(r['terminal_median']) / float(r['start_value']) - 1:.1%}",
+         f"{float(r['probability_terminal_loss']):.1%}", f"{float(r['median_max_drawdown']):.1%}"]))
+template = template.replace('{{SCENARIO_ROWS}}', ''.join(scenario_rows))
 values = {'PERFORMANCE_ROWS':''.join(performance), 'HOLDING_ROWS':''.join(holdings), 'MODEL_ROWS':''.join(models),
           'SQL':html.escape((project / 'sql/analysis_queries.sql').read_text()),
           'MODEL_CODE':html.escape((project / 'src/models.py').read_text()),
