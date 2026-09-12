@@ -81,6 +81,52 @@ button:focus-visible {
   color: #1a6f57;
 }
 
+.risk-formula-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid #e6e2db;
+  background: #e6e2db;
+}
+
+.risk-formula-card {
+  min-width: 0;
+  padding: 26px;
+  background: #fbfaf8;
+}
+
+.risk-formula-index {
+  display: block;
+  color: #1a6f57;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+.risk-formula-card h3 {
+  margin: 13px 0 0;
+  font-size: 20px;
+}
+
+.risk-formula {
+  margin: 16px 0 0;
+  padding: 11px 12px;
+  overflow-wrap: anywhere;
+  background: #edf3f0;
+  color: #165d48;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.risk-formula-card p:last-child {
+  margin: 15px 0 0;
+  color: #555b60;
+  font-size: 15px;
+  line-height: 1.62;
+}
+
 .hero-availability > span {
   width: 7px;
   height: 7px;
@@ -588,6 +634,14 @@ button:focus-visible {
   .quant-workflow,
   .research-findings {
     grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .risk-formula-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .risk-formula-card {
+    padding: 22px;
   }
 
   .quant-metrics > div {
