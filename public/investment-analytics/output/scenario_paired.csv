@@ -1,0 +1,6 @@
+experiment,left_portfolio,right_portfolio,probability_underperformance,difference_p05,difference_median,difference_p95
+Published model,Growth,Balanced,0.1932,-50892.98810399946,91045.42455710641,504010.58833047794
+126-session moving blocks,Growth,Balanced,0.3036,-75397.02944605614,61840.22965847167,425376.19823369646
+252-session moving blocks,Growth,Balanced,0.2998,-78635.8324314338,66626.11382994884,417996.99391336954
+126-session circular blocks,Growth,Balanced,0.2254,-68713.74350441575,113837.57487386386,659185.457106881
+252-session circular blocks,Growth,Balanced,0.233,-75701.61803808839,109043.28189851552,625772.7887900912

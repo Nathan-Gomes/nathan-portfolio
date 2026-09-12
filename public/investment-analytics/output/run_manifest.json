@@ -1,6 +1,6 @@
 {
-  "run_id": "c4ef9988-346c-4f34-befe-be9ba7621dbd",
-  "timestamp": "2026-09-12T08:48:58.228435+00:00",
+  "run_id": "294876e1-cde9-472c-81f7-f5085bfb6ae2",
+  "timestamp": "2026-09-12T18:09:24.116064+00:00",
   "source": {
     "source": "Yahoo Finance via yfinance",
     "retrieved_at": "2026-09-09T05:52:46.940726+00:00",
@@ -41,15 +41,17 @@
     "yfinance": "0.2.53"
   },
   "source_hashes": {
+    "risk_presentation.py": "bf1cd4bdd68e981c7a55ad4f139eb48c70ac1ce2c6270298686d1ad572690573",
     "models.py": "d3b9857cef57553a263665a98f579b1754de6253008e936e89252a7667ee289e",
     "scenario_charts.py": "51f5f9627fda21bfb3566d88b4fdcf36ae8ba4392d1638addf17baf4dd227064",
     "__init__.py": "119bea2168f9bc8c6d9c5bede44c209284f65287ca86dbcd0b04e3329efb77b2",
-    "pipeline.py": "80ba774a662f0851c404ba93e37adab00c342d4e98cfec77635e6ae0c756d25f",
-    "forward.py": "05f7f8694d977869679ec1ba3f8711dae90102b2b5cba58890f2caf45f5d8bb0",
+    "scenario_risk.py": "05a0834d8591c6ccab138db6b51f80f65fd726dc78a013fe6d9446b251f07bf0",
+    "pipeline.py": "344866f167f804cc3ec2ce74585c3d1084abff4c38621c103d80f81440db53ce",
+    "forward.py": "e35bffeb72943cbe3fbcfc6e4c02016b9a6efb82577e57afdb374f2d56d43a12",
     "analytics.py": "95c583736f5c3da4bbda89bc79e63afe71b2993fb9d03e918b86561187901555",
     "load.py": "d8a91cee90f1565c517f88b70140e956a199422a098fadda87c57480b1ebeade",
     "extract.py": "c0f4a861fde634d93d24788296fb9dcf9e4923bb92dc34d927abd36cfbc94e65",
-    "report.py": "dcff85c299bb1c7f7b52b77e51a5a79aad9de016539792248617e61033b2df16",
+    "report.py": "c04b52654acef8dab511496486b2a368e1e8bd1b6126b67502fc5e48a37e4a9a",
     "validation.py": "ed4fc8e5659945fa2cbb2d862a07ead720a23513fbef50c4c9a3d85b000774da"
   },
   "input_hashes": {

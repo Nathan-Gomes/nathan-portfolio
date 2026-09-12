@@ -14,6 +14,8 @@ files = ["output/report.html", "output/notebook.html", "output/portfolio_summary
          "output/model_scores.csv", "output/forward_projection_bands.csv",
          "output/forward_projection_summary.csv", "output/forward_scenarios.png",
          "output/forward_indexed.png", "output/forward_ranges.png",
+         "output/scenario_downside.png", "output/scenario_drawdowns.png",
+         "output/scenario_downside.csv", "output/scenario_paired.csv", "output/scenario_sensitivity.csv",
          "notebooks/portfolio_exploration.ipynb"]
 for name in files:
     target = destination / name

@@ -10,7 +10,7 @@
 <header><a href="/">NATHAN GOMES</a><nav aria-label="Portfolio"><a href="/#projects">All projects</a><a href="/investment-analytics/output/report.html">Interactive report</a><a href="/investment-analytics/output/notebook.html">Research notebook</a><a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">GitHub source</a></nav></header>
 <main>
 <section class="intro"><p class="eyebrow">Investment research / Python / SQL / Statistical learning</p><h1>Quantitative Investment Analytics ETL Pipeline</h1><p class="lead">A reproducible workflow that compares long-term Canadian equity allocations, measures risk after trading costs, and translates completed history into five-year scenario ranges.</p><div class="actions"><a class="primary" href="/investment-analytics/output/report.html">Open interactive report</a><a href="/investment-analytics/output/notebook.html">Read code &amp; notebook</a><a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">View source on GitHub</a><a href="#scenarios">Read the scenarios</a></div><p class="meta">Independent research project by Nathan Gomes. Frozen market data through 31 August 2026. All values in CAD.</p></section>
-<div class="facts"><div><strong>19,575</strong><span>Validated price observations</span></div><div><strong>4 + XIC</strong><span>Portfolio allocations and benchmark</span></div><div><strong>5,000</strong><span>Five-year scenario paths per portfolio</span></div><div><strong>17</strong><span>Automated tests passing</span></div></div>
+<div class="facts"><div><strong>19,575</strong><span>Validated price observations</span></div><div><strong>4 + XIC</strong><span>Portfolio allocations and benchmark</span></div><div><strong>5,000</strong><span>Five-year scenario paths per portfolio</span></div><div><strong>19</strong><span>Automated tests passing</span></div></div>
 <nav class="jump" aria-label="Case study sections"><a href="#findings">Findings</a><a href="#construction">Holdings</a><a href="#methods">Calculations</a><a href="#scenarios">Five-year scenarios</a><a href="#engineering">ETL &amp; SQL</a><a href="#models">Model validation</a><a href="#assurance">Quality controls</a><a href="#limitations">Limitations</a></nav>
 <section class="section" id="findings"><p class="eyebrow">01 / Research findings</p><h2>Higher returns came with different risks.</h2><p>The experiment asks two questions: how does portfolio construction affect realized risk and return, and does regularized regression improve a simple forecast of future volatility? Portfolio performance and forecast accuracy are evaluated separately.</p>
 <div class="columns"><ul class="findings"><li><strong>Growth: 27.80% annualized return, 48.72% maximum drawdown.</strong><p>A 65% technology target produced the highest historical return and volatility. The large peak-to-trough loss matters as much as the ending value.</p></li><li><strong>Balanced: the highest sample Sharpe ratio, 0.97.</strong><p>Its 19.12% annualized return exceeded XIC's 16.22%, with similar volatility and a smaller maximum drawdown. This is an observed comparison, not evidence of persistent alpha.</p></li></ul><ul class="findings"><li><strong>Low volatility: 15.29% realized annualized volatility.</strong><p>The lowest among the four constructed portfolios, compared with 16.37% for XIC. Inverse-volatility weighting is a heuristic; it does not solve for minimum portfolio variance.</p></li><li><strong>Forecasting: improvements were mixed.</strong><p>The CV-selected Ridge model beat trailing-volatility persistence on test RMSE for three portfolios. All four selected models had negative test R², so predictive usefulness remains unproven.</p></li></ul></div>
@@ -19,8 +19,158 @@
 <p><a href="/investment-analytics/output/portfolio_summary.csv">Download the complete performance metrics</a></p></section>
 <section class="section" id="scenarios"><p class="eyebrow">Forward scenario analysis / 2026-2031</p><h2>How do the strategies compare with $100,000 each?</h2><p>Invest the same CAD 100,000 in each portfolio and XIC on 31 August 2026, then compare five modeled years through 31 August 2031. Each strategy receives the same starting capital, horizon and sampled market periods. The historical backtest also began with equal capital in 2019; this forward comparison starts a fresh, equal investment.</p>
 <figure><a href="/investment-analytics/output/forward_indexed.png" title="Open full-size strategy comparison"><img src="/investment-analytics/output/forward_indexed.png" alt="Five portfolio scenario medians all starting at CAD 100,000 in August 2026"></a><figcaption>Every line starts at $100,000. Dashed lines show conditional scenario medians. A value of $200,000 means a 100% cumulative gain. Colors match the historical chart.</figcaption></figure>
-<h3>How uncertain are those medians?</h3>
-<figure><a href="/investment-analytics/output/forward_ranges.png" title="Open full-size uncertainty charts"><img src="/investment-analytics/output/forward_ranges.png" alt="Portfolio uncertainty on identical CAD scales, each beginning at 100,000 dollars"></a><figcaption>Dark shading: 25th-75th percentiles. Light shading: 5th-95th percentiles at each date. All panels start at $100,000 and share the same dollar scale. These are conditional simulated ranges, not guaranteed bounds or validated confidence intervals.</figcaption></figure>
+<section id="scenario-risk"><h3>How much could the investment lose?</h3>
+<p>The lower fan boundary is a 5th-percentile cutoff: 5% of simulated ending balances lie below it. The average of that worst 5% describes the tail beyond the cutoff. Values below the initial CAD 100,000 represent losses of principal.</p>
+<figure><a href="/investment-analytics/output/scenario_downside.png" title="Open full-size downside chart"><img src="/investment-analytics/output/scenario_downside.png" alt="Adverse ending balances compared with the initial investment" style="width:100%;height:auto"></a><figcaption>Same dollar scale across all portfolios. This view focuses on downside without compression from the large upside range.</figcaption></figure>
+<div class="table-wrap table" style="overflow-x:auto" tabindex="0" role="region" aria-label="Scenario downside metrics"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Portfolio</th>
+      <th>1st percentile</th>
+      <th>5th percentile</th>
+      <th>Worst-5% average</th>
+      <th>Finish below initial capital</th>
+      <th>Ever lose over 20% of initial capital</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Balanced</td>
+      <td>$102,851</td>
+      <td>$131,665</td>
+      <td>$114,217</td>
+      <td>0.72%</td>
+      <td>8.80%</td>
+    </tr>
+    <tr>
+      <td>Benchmark</td>
+      <td>$77,753</td>
+      <td>$106,182</td>
+      <td>$88,261</td>
+      <td>3.92%</td>
+      <td>16.12%</td>
+    </tr>
+    <tr>
+      <td>Growth</td>
+      <td>$74,185</td>
+      <td>$114,708</td>
+      <td>$90,947</td>
+      <td>3.08%</td>
+      <td>24.24%</td>
+    </tr>
+    <tr>
+      <td>Income</td>
+      <td>$92,131</td>
+      <td>$119,698</td>
+      <td>$103,301</td>
+      <td>1.56%</td>
+      <td>12.16%</td>
+    </tr>
+    <tr>
+      <td>Low volatility</td>
+      <td>$103,037</td>
+      <td>$129,046</td>
+      <td>$112,975</td>
+      <td>0.84%</td>
+      <td>9.22%</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Growth versus Balanced in the same market scenarios</h3>
+<p>Subtract Balanced's ending value from Growth's in each shared simulated market sequence. Growth finishes below Balanced in <strong>19.32%</strong> of paths. The median difference is <strong>$+91,045</strong>; the 5th-percentile difference is <strong>$-50,893</strong>. These are conditional simulation results.</p>
+<p>Subtracting the portfolios' separate 5th percentiles does not give the 5th percentile of their difference. Their individual adverse outcomes need not occur in the same path. The paired shortfall is not a maximum loss.</p>
+<h3>What can happen before year five?</h3>
+<figure><a href="/investment-analytics/output/scenario_drawdowns.png" title="Open full-size drawdown chart"><img src="/investment-analytics/output/scenario_drawdowns.png" alt="Median and severe simulated maximum drawdown for each portfolio" style="width:100%;height:auto"></a><figcaption>Each path's largest fall from a prior peak, including the initial balance. A peak can be above starting capital. Larger bars mean deeper losses.</figcaption></figure>
+<h3>Does the conclusion survive different sampling assumptions?</h3>
+<p>All comparisons use 5,000 paths, seed 42, equal capital and the same completed history. Longer moving blocks retain longer sequences but underweight dates near the sample boundaries. Circular blocks wrap the end to the beginning, reducing that weighting effect while introducing artificial joins. The choice affects both dependence and sampled returns. No variant is selected because it produces a preferred ranking.</p>
+<div class="table-wrap table" style="overflow-x:auto" tabindex="0" role="region" aria-label="Sampling sensitivity"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Sampling assumption</th>
+      <th>Portfolio</th>
+      <th>5th percentile</th>
+      <th>Median final value</th>
+      <th>Finish below initial capital</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Published model</td>
+      <td>Balanced</td>
+      <td>$131,665</td>
+      <td>$235,938</td>
+      <td>0.72%</td>
+    </tr>
+    <tr>
+      <td>Published model</td>
+      <td>Growth</td>
+      <td>$114,708</td>
+      <td>$329,002</td>
+      <td>3.08%</td>
+    </tr>
+    <tr>
+      <td>126-session moving blocks</td>
+      <td>Balanced</td>
+      <td>$140,104</td>
+      <td>$217,691</td>
+      <td>0.30%</td>
+    </tr>
+    <tr>
+      <td>126-session moving blocks</td>
+      <td>Growth</td>
+      <td>$90,882</td>
+      <td>$283,667</td>
+      <td>6.22%</td>
+    </tr>
+    <tr>
+      <td>252-session moving blocks</td>
+      <td>Balanced</td>
+      <td>$139,163</td>
+      <td>$211,997</td>
+      <td>0.18%</td>
+    </tr>
+    <tr>
+      <td>252-session moving blocks</td>
+      <td>Growth</td>
+      <td>$91,528</td>
+      <td>$283,126</td>
+      <td>6.44%</td>
+    </tr>
+    <tr>
+      <td>126-session circular blocks</td>
+      <td>Balanced</td>
+      <td>$152,114</td>
+      <td>$244,540</td>
+      <td>0.18%</td>
+    </tr>
+    <tr>
+      <td>126-session circular blocks</td>
+      <td>Growth</td>
+      <td>$111,727</td>
+      <td>$360,857</td>
+      <td>3.60%</td>
+    </tr>
+    <tr>
+      <td>252-session circular blocks</td>
+      <td>Balanced</td>
+      <td>$152,584</td>
+      <td>$241,209</td>
+      <td>0.04%</td>
+    </tr>
+    <tr>
+      <td>252-session circular blocks</td>
+      <td>Growth</td>
+      <td>$106,308</td>
+      <td>$358,141</td>
+      <td>4.08%</td>
+    </tr>
+  </tbody>
+</table></div>
+<p><strong>Research finding:</strong> Growth's historical return advantage makes its median attractive under these assumptions, while several measures show greater downside than Balanced. A positive 5th percentile does not rule out principal losses. Higher volatility alone does not require every lower percentile to rank worst. The future return distribution remains unvalidated, and changing sampling assumptions can change the conclusion.</p>
+<p>The bootstrap can generate worse compounded outcomes than any observed historical path by repeating adverse blocks. It cannot establish probabilities for risks absent from the sample. The separate volatility-model holdout does not validate these five-year return scenarios.</p>
+<p><a href="/investment-analytics/output/scenario_downside.csv">Download downside metrics</a> · <a href="/investment-analytics/output/scenario_paired.csv">Download paired comparisons</a> · <a href="/investment-analytics/output/scenario_sensitivity.csv">Download sampling sensitivity</a></p></section>
+<details><summary>Full percentile ranges around the medians</summary>
+<figure><a href="/investment-analytics/output/forward_ranges.png" title="Open full-size uncertainty charts"><img src="/investment-analytics/output/forward_ranges.png" alt="Portfolio uncertainty on identical CAD scales, each beginning at 100,000 dollars"></a><figcaption>Dark shading: 25th-75th percentiles. Light shading: 5th-95th percentiles at each date. All panels start at $100,000 and share the same dollar scale. These are conditional simulated ranges, not guaranteed bounds or validated confidence intervals.</figcaption></figure></details>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Equal-capital five-year scenario summary"><table><caption>Equal CAD 100,000 investments. Loss means finishing below $100,000; maximum drawdown measures the largest percentage fall from a prior peak along each path, including the initial investment.</caption><thead><tr><th>Portfolio</th><th>Starting CAD</th><th>5th percentile</th><th>Median CAD</th><th>95th percentile</th><th>Median growth</th><th>Loss frequency</th><th>Median max drawdown</th></tr></thead><tbody><tr><td>Balanced</td><td>$100,000</td><td>$131,665</td><td>$235,938</td><td>$394,953</td><td>135.9%</td><td>0.7%</td><td>-20.3%</td></tr><tr><td>Benchmark</td><td>$100,000</td><td>$106,182</td><td>$213,678</td><td>$360,350</td><td>113.7%</td><td>3.9%</td><td>-24.2%</td></tr><tr><td>Growth</td><td>$100,000</td><td>$114,708</td><td>$329,002</td><td>$872,362</td><td>229.0%</td><td>3.1%</td><td>-33.5%</td></tr><tr><td>Income</td><td>$100,000</td><td>$119,698</td><td>$211,349</td><td>$341,758</td><td>111.3%</td><td>1.6%</td><td>-22.1%</td></tr><tr><td>Low volatility</td><td>$100,000</td><td>$129,046</td><td>$222,660</td><td>$355,250</td><td>122.7%</td><td>0.8%</td><td>-19.4%</td></tr></tbody></table></div>
 <p>Assess each allocation using both growth and downside. A higher median identifies stronger growth under these sampling assumptions; the lower percentile, loss frequency and drawdown describe the accompanying risk. Equal capital makes the comparison fair, but does not establish a universally best strategy or validate future returns.</p>
 <details><summary>Historical wealth continuation: 2019-2031</summary><p>This secondary view continues each portfolio's accumulated historical balance into the same scenarios. Balances differ at August 2026 because past performance differed. Use the equal-$100,000 comparison above to assess a fresh investment.</p><figure><a href="/investment-analytics/output/forward_scenarios.png" title="Open full-size historical continuation"><img src="/investment-analytics/output/forward_scenarios.png" alt="Historical portfolio wealth joined to five-year scenarios, with unequal balances at August 2026"></a><figcaption>Solid lines: historical backtest. Dashed lines: scenario medians rescaled to each final historical balance. Pointwise medians summarize many paths and are not individual investable paths.</figcaption></figure></details>
@@ -161,7 +311,7 @@ def fit_models(daily, prices, config):
 </code></pre></details><p><a href="/investment-analytics/output/model_scores.csv">All model scores</a> · <a href="/investment-analytics/output/validation_splits.csv">Cross-validation boundaries</a></p></section>
 <section class="section" id="assurance"><p class="eyebrow">07 / Engineering assurance</p><h2>Tests target errors that would change the conclusion.</h2><div class="columns"><div><h3>Calculation and chronology</h3><ul><li>A 10% loss followed by a 10% gain compounds to a 1% loss.</li><li>Initial losses count toward drawdown.</li><li>Portfolio returns use previous-close weights.</li><li>Trading costs reduce the final portfolio value.</li><li>Changing future prices leaves initial low-volatility weights unchanged.</li><li>Forward labels contain exactly the intended next 20 returns.</li><li>Scenario dates begin only after the last completed backtest date.</li></ul></div><div><h3>Data and publication</h3><ul><li>Reject negative, missing and infinite price fields.</li><li>Reject conflicting duplicates and unknown holdings.</li><li>Count and remove exact duplicate records.</li><li>Reconcile position weights and values to NAV.</li><li>Reject incomplete ticker-date coverage.</li><li>Preserve the previous database when publication fails.</li></ul></div></div>
 <h3>Backtesting and controls against look-ahead bias</h3><p>A backtest replays historical prices under declared portfolio rules. Look-ahead bias occurs when a decision uses information that was only available later. We guard against that in return timing, weight calibration and model training. These controls do not prove the entire research design is bias-free.</p><p>At each historical return date, the portfolio uses the weights held at the <strong>previous close</strong>; it cannot use that day's market move to decide the weights that earned it. Low Volatility weights are calibrated once from only the initial 252 sessions, then frozen. Monthly rebalances are booked after the day's return and cost, affecting only future days. Regression features use data through t, while their labels use t+1 through t+20; a 20-session purge prevents a training label from overlapping a later validation or test period. The five-year scenario engine starts after the final historical date and resamples only completed net-return history.</p>
-<p><strong>Remaining bias:</strong> the security universe and manual allocation policies were selected retrospectively. This creates selection and survivorship risk even when the calculations use correctly timed weights. Adjusted prices are a current historical snapshot, not a point-in-time archive. Five-year scenarios use all data available at August 2026 and are never fed back into earlier backtest decisions. Chronological holdout validation applies to the separate volatility regression, not to these five-year return scenarios.</p><p>The automated suite has 17 passing cases. A GitHub Actions workflow is defined for tests, a synthetic pipeline run and notebook generation. Local execution is verified; remote CI execution has not been verified. The application is a local research pipeline with a published static report.</p>
+<p><strong>Remaining bias:</strong> the security universe and manual allocation policies were selected retrospectively. This creates selection and survivorship risk even when the calculations use correctly timed weights. Adjusted prices are a current historical snapshot, not a point-in-time archive. Five-year scenarios use all data available at August 2026 and are never fed back into earlier backtest decisions. Chronological holdout validation applies to the separate volatility regression, not to these five-year return scenarios.</p><p>The automated suite has 19 passing cases, including checks that paired downside differs from subtracting separate percentiles and that tail-loss metrics reconcile on known loss paths. A GitHub Actions workflow is defined for tests, a synthetic pipeline run and notebook generation. Local execution is verified; remote CI execution has not been verified. The application is a local research pipeline with a published static report.</p>
 <details><summary>Review the automated tests</summary><pre><code>import sqlite3
 
 import numpy as np
@@ -170,6 +320,7 @@ import pytest
 
 from src.analytics import metrics, portfolio_analytics
 from src.forward import forward_scenarios
+from src.scenario_risk import paired_outcomes, risk_review
 from src.load import load_mart
 from src.models import feature_frame, FEATURES
 from src.validation import clean_inputs, validate_outputs
@@ -291,6 +442,31 @@ def test_shared_scenarios_preserve_identical_returns_and_initial_loss():
     assert (summary.start_value == 100000).all()
     np.testing.assert_allclose(summary.median_max_drawdown, .99 ** 10 - 1)
     assert (summary.probability_terminal_loss == 1).all()
+
+
+def test_paired_tail_is_not_difference_of_marginal_tails():
+    left = np.array([0., 10., 20., 100.])
+    right = left[::-1]
+    result = paired_outcomes(left, right)
+    assert result[&#x27;probability_underperformance&#x27;] == .5
+    assert result[&#x27;difference_p05&#x27;] == pytest.approx(-86.5)
+    assert np.quantile(left, .05) - np.quantile(right, .05) == 0
+
+
+def test_risk_review_reconciles_tail_losses_to_constant_loss_paths():
+    dates = pd.bdate_range(&#x27;2020-01-01&#x27;, periods=31)
+    daily = pd.concat([pd.DataFrame({&#x27;date&#x27;: dates, &#x27;portfolio_id&#x27;: name,
+        &#x27;nav&#x27;: 100000 * .99 ** np.arange(31), &#x27;net_return&#x27;: [0.] + [-.01] * 30})
+        for name in [&#x27;Growth&#x27;, &#x27;Balanced&#x27;]])
+    config = dict(seed=42, initial_capital=100000, simulation_years=1,
+                  simulation_paths=100, bootstrap_block_days=5, trading_days=10)
+    downside, sensitivity, paired = risk_review(daily, config)
+    np.testing.assert_allclose(downside.worst5_mean, 100000 * .99 ** 10)
+    assert (downside.terminal_loss_count == 100).all()
+    assert (downside.probability_terminal_loss == 1).all()
+    assert (downside.probability_ever_below_80pct == 0).all()
+    assert (paired.difference_p05 == 0).all()
+    assert (paired.probability_underperformance == 0).all()
 
 
 def test_forecast_label_and_features_use_correct_dates():

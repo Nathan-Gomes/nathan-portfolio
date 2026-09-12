@@ -48,6 +48,7 @@ for r in rows('output/forward_projection_summary.csv'):
         [f"{float(r['terminal_median']) / float(r['start_value']) - 1:.1%}",
          f"{float(r['probability_terminal_loss']):.1%}", f"{float(r['median_max_drawdown']):.1%}"]))
 template = template.replace('{{SCENARIO_ROWS}}', ''.join(scenario_rows))
+template = template.replace('{{SCENARIO_RISK}}', (project / 'output/scenario_risk_section.html').read_text())
 values = {'PERFORMANCE_ROWS':''.join(performance), 'HOLDING_ROWS':''.join(holdings), 'MODEL_ROWS':''.join(models),
           'SQL':html.escape((project / 'sql/analysis_queries.sql').read_text()),
           'MODEL_CODE':html.escape((project / 'src/models.py').read_text()),
