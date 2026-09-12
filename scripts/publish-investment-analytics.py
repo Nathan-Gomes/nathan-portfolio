@@ -12,7 +12,8 @@ site = Path(__file__).resolve().parents[1]
 destination = site / "public/investment-analytics"
 files = ["output/report.html", "output/notebook.html", "output/portfolio_summary.csv",
          "output/model_scores.csv", "output/forward_projection_bands.csv",
-         "output/forward_projection_summary.csv", "notebooks/portfolio_exploration.ipynb"]
+         "output/forward_projection_summary.csv", "output/forward_scenarios.png",
+         "notebooks/portfolio_exploration.ipynb"]
 for name in files:
     target = destination / name
     target.parent.mkdir(parents=True, exist_ok=True)
