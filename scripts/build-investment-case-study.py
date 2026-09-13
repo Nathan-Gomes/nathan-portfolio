@@ -41,6 +41,16 @@ for r in scores:
     models.append(row([r['portfolio_id'],f'{error*100:.2f} pp',f'{reference*100:.2f} pp',
                        f'{(1-error/reference)*100:+.1f}%', f"{float(r['r2']):.3f}"]))
 template = (site / 'scripts/templates/investment-case-study.html').read_text()
+downside = {r['portfolio_id']: r for r in rows('output/scenario_downside.csv')}
+paired = next(r for r in rows('output/scenario_paired.csv') if r['experiment'] == 'Published model')
+takeaways = {
+    'GROWTH_DRAWDOWN': f"{abs(float(downside['Growth']['median_max_drawdown'])):.1%}",
+    'BALANCED_DRAWDOWN': f"{abs(float(downside['Balanced']['median_max_drawdown'])):.1%}",
+    'GROWTH_BELOW_80': f"{float(downside['Growth']['probability_ever_below_80pct']):.1%}",
+    'BALANCED_BELOW_80': f"{float(downside['Balanced']['probability_ever_below_80pct']):.1%}",
+    'GROWTH_UNDERPERFORM': f"{float(paired['probability_underperformance']):.1%}",
+    'GROWTH_PAIRED_P05': f"${float(paired['difference_p05']):+,.0f}",
+}
 scenario_rows = []
 for r in rows('output/forward_projection_summary.csv'):
     scenario_rows.append(row([r['portfolio_id']] +
@@ -55,6 +65,8 @@ values = {'PERFORMANCE_ROWS':''.join(performance), 'HOLDING_ROWS':''.join(holdin
           'TEST_CODE':html.escape((project / 'tests/test_pipeline.py').read_text()),
           'CONFIG':html.escape(json.dumps(json.loads((project / 'config.json').read_text()), indent=2))}
 for name, value in values.items():
+    template = template.replace('{{' + name + '}}', value)
+for name, value in takeaways.items():
     template = template.replace('{{' + name + '}}', value)
 assert '{{' not in template
 (site / 'public/Project-Investment-Analytics.dc.html').write_text(template)
