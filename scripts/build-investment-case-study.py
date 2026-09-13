@@ -49,7 +49,7 @@ takeaways = {
     'GROWTH_BELOW_80': f"{float(downside['Growth']['probability_ever_below_80pct']):.1%}",
     'BALANCED_BELOW_80': f"{float(downside['Balanced']['probability_ever_below_80pct']):.1%}",
     'GROWTH_UNDERPERFORM': f"{float(paired['probability_underperformance']):.1%}",
-    'GROWTH_PAIRED_P05': f"${float(paired['difference_p05']):+,.0f}",
+    'GROWTH_PAIRED_SHORTFALL': f"${abs(float(paired['difference_p05'])):,.0f}",
 }
 scenario_rows = []
 for r in rows('output/forward_projection_summary.csv'):
