@@ -267,160 +267,22 @@ def test_atomic_load_preserves_previous_database(tmp_path):
 <p><a href="/investment-analytics/output/portfolio_summary.csv">Download the complete performance metrics</a></p></section>
 <section class="section" id="scenarios"><p class="eyebrow">07 / Five-year scenarios</p><h2>How do the strategies compare with $100,000 each?</h2><p>Invest the same CAD 100,000 in each portfolio and XIC on 31 August 2026, then compare five modeled years through 31 August 2031. Each strategy receives the same starting capital, horizon and sampled market periods. The historical backtest also began with equal capital in 2019; this forward comparison starts a fresh, equal investment.</p>
 <figure><a href="/investment-analytics/output/forward_indexed.png" title="Open full-size strategy comparison"><img src="/investment-analytics/output/forward_indexed.png" alt="Five portfolio scenario medians all starting at CAD 100,000 in August 2026"></a><figcaption>Every line starts at $100,000. Dashed lines show conditional scenario medians. A value of $200,000 means a 100% cumulative gain. Colors match the historical chart.</figcaption></figure>
-<section id="scenario-risk"><h3>How much could the investment lose?</h3>
-<p>The lower fan boundary is a 5th-percentile cutoff: 5% of simulated ending balances lie below it. The average of that worst 5% describes the tail beyond the cutoff. Values below the initial CAD 100,000 represent losses of principal.</p>
-<figure><a href="/investment-analytics/output/scenario_downside.png" title="Open full-size downside chart"><img src="/investment-analytics/output/scenario_downside.png" alt="Adverse ending balances compared with the initial investment" style="width:100%;height:auto"></a><figcaption>Same dollar scale across all portfolios. This view focuses on downside without compression from the large upside range.</figcaption></figure>
-<div class="table-wrap table" style="overflow-x:auto" tabindex="0" role="region" aria-label="Scenario downside metrics"><table class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Portfolio</th>
-      <th>1st percentile</th>
-      <th>5th percentile</th>
-      <th>Worst-5% average</th>
-      <th>Finish below initial capital</th>
-      <th>Ever lose over 20% of initial capital</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Balanced</td>
-      <td>$102,851</td>
-      <td>$131,665</td>
-      <td>$114,217</td>
-      <td>0.72%</td>
-      <td>8.80%</td>
-    </tr>
-    <tr>
-      <td>Benchmark</td>
-      <td>$77,753</td>
-      <td>$106,182</td>
-      <td>$88,261</td>
-      <td>3.92%</td>
-      <td>16.12%</td>
-    </tr>
-    <tr>
-      <td>Growth</td>
-      <td>$74,185</td>
-      <td>$114,708</td>
-      <td>$90,947</td>
-      <td>3.08%</td>
-      <td>24.24%</td>
-    </tr>
-    <tr>
-      <td>Income</td>
-      <td>$92,131</td>
-      <td>$119,698</td>
-      <td>$103,301</td>
-      <td>1.56%</td>
-      <td>12.16%</td>
-    </tr>
-    <tr>
-      <td>Low volatility</td>
-      <td>$103,037</td>
-      <td>$129,046</td>
-      <td>$112,975</td>
-      <td>0.84%</td>
-      <td>9.22%</td>
-    </tr>
-  </tbody>
-</table></div>
-<h3>Growth versus Balanced in the same market scenarios</h3>
-<p>Subtract Balanced's ending value from Growth's in each shared simulated market sequence. Growth finishes below Balanced in <strong>19.32%</strong> of paths. The median difference is <strong>$+91,045</strong>; the 5th-percentile difference is <strong>$-50,893</strong>. These are conditional simulation results.</p>
-<p>Subtracting the portfolios' separate 5th percentiles does not give the 5th percentile of their difference. Their individual adverse outcomes need not occur in the same path. The paired shortfall is not a maximum loss.</p>
-<h3>What can happen before year five?</h3>
-<figure><a href="/investment-analytics/output/scenario_drawdowns.png" title="Open full-size drawdown chart"><img src="/investment-analytics/output/scenario_drawdowns.png" alt="Median and severe simulated maximum drawdown for each portfolio" style="width:100%;height:auto"></a><figcaption>Each path's largest fall from a prior peak, including the initial balance. A peak can be above starting capital. Larger bars mean deeper losses.</figcaption></figure>
-<h3>Does the conclusion survive different sampling assumptions?</h3>
-<p>All comparisons use 5,000 paths, seed 42, equal capital and the same completed history. Longer moving blocks retain longer sequences but underweight dates near the sample boundaries. Circular blocks wrap the end to the beginning, reducing that weighting effect while introducing artificial joins. The choice affects both dependence and sampled returns. No variant is selected because it produces a preferred ranking.</p>
-<div class="table-wrap table" style="overflow-x:auto" tabindex="0" role="region" aria-label="Sampling sensitivity"><table class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Sampling assumption</th>
-      <th>Portfolio</th>
-      <th>5th percentile</th>
-      <th>Median final value</th>
-      <th>Finish below initial capital</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Published model</td>
-      <td>Balanced</td>
-      <td>$131,665</td>
-      <td>$235,938</td>
-      <td>0.72%</td>
-    </tr>
-    <tr>
-      <td>Published model</td>
-      <td>Growth</td>
-      <td>$114,708</td>
-      <td>$329,002</td>
-      <td>3.08%</td>
-    </tr>
-    <tr>
-      <td>126-session moving blocks</td>
-      <td>Balanced</td>
-      <td>$140,104</td>
-      <td>$217,691</td>
-      <td>0.30%</td>
-    </tr>
-    <tr>
-      <td>126-session moving blocks</td>
-      <td>Growth</td>
-      <td>$90,882</td>
-      <td>$283,667</td>
-      <td>6.22%</td>
-    </tr>
-    <tr>
-      <td>252-session moving blocks</td>
-      <td>Balanced</td>
-      <td>$139,163</td>
-      <td>$211,997</td>
-      <td>0.18%</td>
-    </tr>
-    <tr>
-      <td>252-session moving blocks</td>
-      <td>Growth</td>
-      <td>$91,528</td>
-      <td>$283,126</td>
-      <td>6.44%</td>
-    </tr>
-    <tr>
-      <td>126-session circular blocks</td>
-      <td>Balanced</td>
-      <td>$152,114</td>
-      <td>$244,540</td>
-      <td>0.18%</td>
-    </tr>
-    <tr>
-      <td>126-session circular blocks</td>
-      <td>Growth</td>
-      <td>$111,727</td>
-      <td>$360,857</td>
-      <td>3.60%</td>
-    </tr>
-    <tr>
-      <td>252-session circular blocks</td>
-      <td>Balanced</td>
-      <td>$152,584</td>
-      <td>$241,209</td>
-      <td>0.04%</td>
-    </tr>
-    <tr>
-      <td>252-session circular blocks</td>
-      <td>Growth</td>
-      <td>$106,308</td>
-      <td>$358,141</td>
-      <td>4.08%</td>
-    </tr>
-  </tbody>
-</table></div>
-<p><strong>Research finding:</strong> Growth's historical return advantage makes its median attractive under these assumptions, while several measures show greater downside than Balanced. A positive 5th percentile does not rule out principal losses. Higher volatility alone does not require every lower percentile to rank worst. The future return distribution remains unvalidated, and changing sampling assumptions can change the conclusion.</p>
-<p>The bootstrap can generate worse compounded outcomes than any observed historical path by repeating adverse blocks. It cannot establish probabilities for risks absent from the sample. The separate volatility-model holdout does not validate these five-year return scenarios.</p>
-<p><a href="/investment-analytics/output/scenario_downside.csv">Download downside metrics</a> · <a href="/investment-analytics/output/scenario_paired.csv">Download paired comparisons</a> · <a href="/investment-analytics/output/scenario_sensitivity.csv">Download sampling sensitivity</a></p></section>
-<details><summary>Full percentile ranges around the medians</summary>
-<figure><a href="/investment-analytics/output/forward_ranges.png" title="Open full-size uncertainty charts"><img src="/investment-analytics/output/forward_ranges.png" alt="Portfolio uncertainty on identical CAD scales, each beginning at 100,000 dollars"></a><figcaption>Dark shading: 25th-75th percentiles. Light shading: 5th-95th percentiles at each date. All panels start at $100,000 and share the same dollar scale. These are conditional simulated ranges, not guaranteed bounds or validated confidence intervals.</figcaption></figure></details>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Equal-capital five-year scenario summary"><table><caption>Equal CAD 100,000 investments. Loss means finishing below $100,000; maximum drawdown measures the largest percentage fall from a prior peak along each path, including the initial investment.</caption><thead><tr><th>Portfolio</th><th>Starting CAD</th><th>5th percentile</th><th>Median CAD</th><th>95th percentile</th><th>Median growth</th><th>Loss frequency</th><th>Median max drawdown</th></tr></thead><tbody><tr><td>Balanced</td><td>$100,000</td><td>$131,665</td><td>$235,938</td><td>$394,953</td><td>135.9%</td><td>0.7%</td><td>-20.3%</td></tr><tr><td>Benchmark</td><td>$100,000</td><td>$106,182</td><td>$213,678</td><td>$360,350</td><td>113.7%</td><td>3.9%</td><td>-24.2%</td></tr><tr><td>Growth</td><td>$100,000</td><td>$114,708</td><td>$329,002</td><td>$872,362</td><td>229.0%</td><td>3.1%</td><td>-33.5%</td></tr><tr><td>Income</td><td>$100,000</td><td>$119,698</td><td>$211,349</td><td>$341,758</td><td>111.3%</td><td>1.6%</td><td>-22.1%</td></tr><tr><td>Low volatility</td><td>$100,000</td><td>$129,046</td><td>$222,660</td><td>$355,250</td><td>122.7%</td><td>0.8%</td><td>-19.4%</td></tr></tbody></table></div>
 <p>Assess each allocation using both growth and downside. A higher median identifies stronger growth under these sampling assumptions; the lower percentile, loss frequency and drawdown describe the accompanying risk. Equal capital makes the comparison fair, but does not establish a universally best strategy or validate future returns.</p>
+<section id="scenario-risk">
+<h3>How much could the investment lose?</h3>
+<p>The 5th percentile is a cutoff: 5% of simulated ending balances fall below it. The chart also shows the 1st percentile and the average of the worst 5% of outcomes. Values left of the CAD 100,000 line represent losses of principal.</p>
+<figure><a href="/investment-analytics/output/scenario_downside.png" title="Open full-size downside chart"><img src="/investment-analytics/output/scenario_downside.png" alt="Adverse five-year ending balances compared with the initial CAD 100,000 investment"></a><figcaption>All portfolios share the same dollar scale so their adverse outcomes can be compared directly.</figcaption></figure>
+<h3>Growth versus Balanced in the same market scenarios</h3>
+<p>Growth finishes behind Balanced in 19.3% of shared simulated market paths. At the 5th percentile of the Growth-minus-Balanced difference, Growth finishes $50,893 behind; 5% of differences are worse. This compares both strategies under the same market sequence. Subtracting their separate 5th percentiles would not give this result.</p>
+<h3>What can happen before year five?</h3>
+<figure><a href="/investment-analytics/output/scenario_drawdowns.png" title="Open full-size drawdown chart"><img src="/investment-analytics/output/scenario_drawdowns.png" alt="Median and severe simulated maximum drawdown for each portfolio"></a><figcaption>Each path's largest fall from a prior peak, including the initial balance. A peak can be above starting capital. Larger bars mean deeper losses.</figcaption></figure>
+<div class="note"><p><strong>How sensitive are the results?</strong> Across the tested sampling methods, Growth retains a higher median ending value than Balanced. However, using longer consecutive blocks of historical returns pushes Growth's 5th-percentile ending value below the initial $100,000 and roughly doubles its simulated frequency of finishing at a loss. The size of the downside depends on how history is sampled; these scenarios have not been validated as future probabilities.</p></div>
+<p><a href="/investment-analytics/output/scenario_downside.csv">Download detailed downside metrics</a> · <a href="/investment-analytics/output/scenario_paired.csv">Download paired comparisons</a> · <a href="/investment-analytics/output/scenario_sensitivity.csv">Download sampling sensitivity</a></p>
+</section>
+
+<details><summary>Full percentile ranges around the medians</summary>
+<figure><a href="/investment-analytics/output/forward_ranges.png" title="Open full-size uncertainty charts"><img src="/investment-analytics/output/forward_ranges.png" alt="Portfolio uncertainty on identical CAD scales, each beginning at 100,000 dollars"></a><figcaption>Dark shading: 25th-75th percentiles. Light shading: 5th-95th percentiles at each date. All panels start at $100,000 and share the same dollar scale. These are conditional simulated ranges, not guaranteed bounds or validated confidence intervals.</figcaption></figure></details>
 <details><summary>Historical wealth continuation: 2019-2031</summary><p>This secondary view continues each portfolio's accumulated historical balance into the same scenarios. Balances differ at August 2026 because past performance differed. Use the equal-$100,000 comparison above to assess a fresh investment.</p><figure><a href="/investment-analytics/output/forward_scenarios.png" title="Open full-size historical continuation"><img src="/investment-analytics/output/forward_scenarios.png" alt="Historical portfolio wealth joined to five-year scenarios, with unequal balances at August 2026"></a><figcaption>Solid lines: historical backtest. Dashed lines: scenario medians rescaled to each final historical balance. Pointwise medians summarize many paths and are not individual investable paths.</figcaption></figure></details>
 <h3>How the scenarios are calculated</h3><p>Python and NumPy resample complete 20-session blocks from aligned historical net portfolio returns, using the same block selections for all four portfolios and XIC. Each of 5,000 paths compounds 1,260 modeled returns from CAD 100,000. The table, downloadable CSVs and SQL mart share this equal-capital basis. The secondary continuation multiplies each path by its final historical NAV divided by $100,000. Time coordinates span exactly five calendar years; they are not an exchange trading calendar. Historical rebalancing costs are embedded in the sampled returns, rather than recalculated as future trades.</p>
 <div class="note"><p><strong>What this result supports:</strong> a comparison under a historical-repeat assumption. The sample contains unusually strong equity growth, so large median values and low loss frequencies must not be treated as reliable forecasts. Resampling changes the sequence; it does not independently estimate future expected returns. Unseen crises, changing valuations, parameter uncertainty, inflation and taxes are not modeled. There is no claim that these five-year ranges have been validated out of sample.</p></div>
