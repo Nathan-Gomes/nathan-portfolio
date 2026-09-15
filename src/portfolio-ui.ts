@@ -92,7 +92,7 @@ function enhance(root: HTMLElement) {
   grid.id = 'project-gallery';
   const captions = [
     'ETF optimization, MATLAB cross-checks, and walk-forward testing.',
-    'Four Canadian equity portfolios, validated market data, and volatility forecasts.',
+    'Four Canadian equity portfolios, historical risk analysis, and five-year scenarios.',
     'Property stress tests, debt analysis, and capital allocation scenarios.',
     'Cloud spending, resource utilization, and a prioritized savings queue.',
     'A study of AI operating costs, human labour, and break-even scenarios.',

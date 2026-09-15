@@ -31,15 +31,6 @@ for r in rows('data/securities.csv'):
         continue
     holdings.append(row([f"{r['ticker']} · {r['name']}", r['sector']] +
                         [f"{targets.get((name, r['ticker']), 0):.2%}" for name in ['Growth','Income','Balanced','Low volatility']]))
-scores = rows('output/model_scores.csv')
-models = []
-for r in scores:
-    if r['selected_by_cv'] != 'True':
-        continue
-    baseline = next(x for x in scores if x['portfolio_id'] == r['portfolio_id'] and x['model'] == 'Persistence baseline')
-    error, reference = float(r['rmse']), float(baseline['rmse'])
-    models.append(row([r['portfolio_id'],f'{error*100:.2f} pp',f'{reference*100:.2f} pp',
-                       f'{(1-error/reference)*100:+.1f}%', f"{float(r['r2']):.3f}"]))
 template = (site / 'scripts/templates/investment-case-study.html').read_text()
 downside = {r['portfolio_id']: r for r in rows('output/scenario_downside.csv')}
 paired = next(r for r in rows('output/scenario_paired.csv') if r['experiment'] == 'Published model')
@@ -59,9 +50,8 @@ for r in rows('output/forward_projection_summary.csv'):
          f"{float(r['probability_terminal_loss']):.1%}", f"{float(r['median_max_drawdown']):.1%}"]))
 template = template.replace('{{SCENARIO_ROWS}}', ''.join(scenario_rows))
 template = template.replace('{{SCENARIO_RISK}}', (project / 'output/scenario_risk_section.html').read_text())
-values = {'PERFORMANCE_ROWS':''.join(performance), 'HOLDING_ROWS':''.join(holdings), 'MODEL_ROWS':''.join(models),
+values = {'PERFORMANCE_ROWS':''.join(performance), 'HOLDING_ROWS':''.join(holdings),
           'SQL':html.escape((project / 'sql/analysis_queries.sql').read_text()),
-          'MODEL_CODE':html.escape((project / 'src/models.py').read_text()),
           'TEST_CODE':html.escape((project / 'tests/test_pipeline.py').read_text()),
           'CONFIG':html.escape(json.dumps(json.loads((project / 'config.json').read_text()), indent=2))}
 for name, value in values.items():
