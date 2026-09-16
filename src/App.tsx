@@ -4,7 +4,6 @@ import {
   ArrowUpRight,
   Award,
   BookOpenCheck,
-  Bot,
   BriefcaseBusiness,
   Building2,
   Calendar,
@@ -34,7 +33,7 @@ import './App.css'
 const resumePath = '/Nathan-Gomes-Resume.pdf'
 const invoiceAppUrl = 'https://nathan-invoice-review.onrender.com/overview'
 
-type ProjectVisual = 'invoice' | 'scraper' | 'copilot' | 'tutor'
+type ProjectVisual = 'invoice' | 'scraper' | 'tutor'
 
 type Project = {
   title: string
@@ -72,24 +71,6 @@ const projects: Project[] = [
       'Property operators often have the data already, but it is scattered across PDFs and spreadsheets. This system creates a repeatable path from document intake to investigation, recommendation, ownership, and measured resolution without hiding the calculation behind an unexplained score.',
     workflow: ['Review and approve invoices', 'Investigate ranked incidents', 'Publish findings and actions'],
     today: ['Explains cost and usage changes', 'Preserves evidence and audit history', 'Supports recurring analyst review'],
-  },
-  {
-    title: 'Autofill CoPilot',
-    eyebrow: 'Productivity helper',
-    summary:
-      'I designed this lightweight assistant concept to reduce form friction with practical UX, repeatable inputs, and cleaner daily workflows.',
-    stack: ['Swift', 'Xcode', 'macOS', 'UX systems'],
-    highlights: ['local-first flow', 'form patterns', 'desktop utility'],
-    metric: 'Faster forms',
-    accent: '#ff7a1a',
-    icon: Bot,
-    visual: 'copilot',
-    deepDive:
-      'I focused Autofill CoPilot on a familiar pain: entering the same personal, academic, and work-history details across forms. The goal is to make repeated inputs easier to manage while keeping the experience simple enough that it feels like a utility, not another platform.',
-    whyUseful:
-      'Modern work is full of form-heavy workflows: applications, onboarding, internal tools, portals, and admin tasks. A thoughtful autofill assistant can save time while reducing small mistakes that happen when people rush repetitive entry.',
-    workflow: ['Store repeatable fields', 'Detect form patterns', 'Fill with user control'],
-    today: ['Cuts down admin friction', 'Improves consistency', 'Fits the rise of personal productivity agents'],
   },
   {
     title: 'Mobile Python Tutor',
@@ -226,31 +207,6 @@ function ProjectMockup({ project }: { project: Project }) {
                 <small>{92 - index * 8}% match</small>
               </div>
             ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (project.visual === 'copilot') {
-    return (
-      <div className="project-visual copilot-visual" aria-label="Autofill CoPilot desktop app mockup">
-        <div className="copilot-window">
-          <div className="copilot-sidebar">
-            <span className="active-dot"></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div className="copilot-form">
-            <p>Profile Pack</p>
-            <div className="input-line wide"></div>
-            <div className="input-line"></div>
-            <div className="input-line short"></div>
-            <button type="button">Fill selected fields</button>
-          </div>
-          <div className="copilot-bubble">
-            <Bot size={20} />
-            <span>3 fields ready</span>
           </div>
         </div>
       </div>

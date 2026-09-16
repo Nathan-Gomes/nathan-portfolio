@@ -736,7 +736,6 @@
 }
 
 .browser-frame,
-.copilot-window,
 .phone-shell {
   position: relative;
   height: 100%;
@@ -955,65 +954,6 @@
   font-weight: 900;
 }
 
-.copilot-window {
-  display: grid;
-  grid-template-columns: 56px 1fr;
-  padding: 18px;
-  gap: 16px;
-  background:
-    linear-gradient(135deg, rgba(255, 122, 26, 0.24), transparent 44%),
-    #fff7ed;
-}
-
-.copilot-sidebar {
-  display: grid;
-  align-content: start;
-  gap: 12px;
-  padding: 14px;
-  border-radius: 8px;
-  background: #0f172a;
-}
-
-.copilot-sidebar span {
-  width: 14px;
-  height: 14px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.copilot-sidebar .active-dot {
-  background: #ff7a1a;
-}
-
-.copilot-form {
-  padding: 18px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.82);
-}
-
-.copilot-form p {
-  margin: 0 0 20px;
-  color: #0f172a;
-  font-weight: 900;
-}
-
-.input-line {
-  height: 34px;
-  width: 74%;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  background: #fed7aa;
-}
-
-.input-line.wide {
-  width: 100%;
-}
-
-.input-line.short {
-  width: 46%;
-}
-
-.copilot-form button,
 .answer-row button {
   border: 0;
   border-radius: 8px;
@@ -1022,21 +962,6 @@
   font: inherit;
   font-weight: 900;
   padding: 10px 12px;
-}
-
-.copilot-bubble {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  color: #7c2d12;
-  background: #ffffff;
-  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.15);
-  font-weight: 900;
 }
 
 .tutor-visual {
