@@ -21,7 +21,7 @@
       <div>
         <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#1a6f57;margin-bottom:28px">Project 01 | Quantitative finance</p>
         <h1 style="font-size:clamp(36px,4.8vw,64px);line-height:1.04;letter-spacing:0;font-weight:600;max-width:17ch">Quantitative Portfolio Research Pipeline</h1>
-        <p style="margin-top:32px;max-width:64ch;font-size:19px;line-height:1.62;color:#3d4145">A reproducible portfolio research system that loads historical ETF prices into SQL, analyzes returns and risk in Python with pandas, validates optimization logic against MATLAB, and produces a tested walk-forward report.</p>
+        <p style="margin-top:32px;max-width:64ch;font-size:19px;line-height:1.62;color:#3d4145">This project tests how a diversified ETF allocation balances return and risk against SPY. It turns historical market data into portfolio weights, evaluates those choices on later returns, and makes the assumptions, calculations, and transaction costs available for review.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px"><a href="quant-portfolio-report.html" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;background:#16181a;color:#fff;text-decoration:none;font-weight:500">Open live report</a><a href="https://nbviewer.org/url/www.nathan-gomes.com/notebooks/quantitative-portfolio-research-pipeline.ipynb" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View notebook</a><a href="https://github.com/Nathan-Gomes/quant-portfolio-research" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View source</a></div>
       </div>
       <dl style="margin:0;display:grid;gap:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.5">
@@ -29,6 +29,16 @@
         <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Dataset</dt><dd style="margin:0">12,066 ETF price records</dd></div>
         <div><dt style="color:#a2a5a8;text-transform:uppercase;margin-bottom:5px">Status</dt><dd style="margin:0;color:#1a6f57">Live report and notebook</dd></div>
       </dl>
+    </section>
+
+    <section id="why-it-matters" aria-labelledby="trust-heading" style="padding:32px 0 40px;border-top:1px solid #e6e2db">
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#1a6f57;text-transform:uppercase;margin-bottom:12px">Why this matters | Decision support and trust</p>
+      <h2 id="trust-heading" style="font-size:28px;line-height:1.25;margin-bottom:18px">Investment decisions need evidence people can understand and check.</h2>
+      <div style="max-width:78ch;font-size:18px;line-height:1.65;color:#3d4145">
+        <p>Clients and stakeholders entrust investment teams with substantial capital, sometimes millions or billions. When a portfolio gains or loses value, they want to understand the decisions behind it, the risks taken, and whether the outcome is consistent with the investment approach. Unexplained results can weaken trust even when performance is positive.</p>
+        <p style="margin-top:18px">This pipeline makes the research traceable: historical prices feed documented financial calculations, allocation constraints make the investment rules explicit, and walk-forward testing evaluates weights on subsequent returns with modeled trading costs. Reviewers can inspect the allocation history, compare return and drawdown against SPY, and rerun the analysis under different assumptions.</p>
+        <p style="margin-top:18px">For a quantitative developer, the value is building a reliable connection between an investment idea and evidence that portfolio managers can examine and explain. This project supports that investigation and makes its assumptions visible; measuring each asset's exact contribution to gains and losses would require a dedicated performance-attribution analysis.</p>
+      </div>
     </section>
 
     <section class="quant-metrics" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #16181a;border-bottom:1px solid #e6e2db;background:#fff">
