@@ -53,13 +53,13 @@ function enhance(root: HTMLElement) {
   tablist.className = 'toolkit-tabs';
   tablist.setAttribute('role', 'tablist');
   tablist.setAttribute('aria-label', 'Technical skill categories');
-  const labels = ['Software', 'Cloud', 'Data', 'Integration', 'Operations'];
   const tabs = panels.map((panel, i) => {
     panel.id = `toolkit-panel-${i}`;
     panel.setAttribute('role', 'tabpanel');
     panel.setAttribute('aria-labelledby', `toolkit-tab-${i}`);
     panel.tabIndex = 0;
-    const tab = button(labels[i], labels[i]);
+    const label = panel.dataset.tabLabel || panel.querySelector('h3')?.textContent || 'Skills';
+    const tab = button(label, label);
     tab.id = `toolkit-tab-${i}`;
     tab.setAttribute('role', 'tab');
     tab.setAttribute('aria-controls', panel.id);
