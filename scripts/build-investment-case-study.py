@@ -52,7 +52,7 @@ template = template.replace('{{SCENARIO_ROWS}}', ''.join(scenario_rows))
 template = template.replace('{{SCENARIO_RISK}}', (site / 'scripts/templates/investment-scenario-risk.html').read_text())
 values = {'PERFORMANCE_ROWS':''.join(performance), 'HOLDING_ROWS':''.join(holdings),
           'SQL':html.escape((project / 'sql/analysis_queries.sql').read_text()),
-          'TEST_CODE':html.escape((project / 'tests/test_pipeline.py').read_text()),
+          'TEST_CODE':html.escape((project / 'tests/research/test_pipeline.py').read_text()),
           'CONFIG':html.escape(json.dumps(json.loads((project / 'config.json').read_text()), indent=2))}
 for name, value in values.items():
     template = template.replace('{{' + name + '}}', value)
