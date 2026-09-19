@@ -31,7 +31,7 @@
         <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#1a6f57;margin-bottom:28px">Project 01 | Quantitative finance</p>
         <h1 style="font-size:clamp(36px,4.8vw,64px);line-height:1.04;letter-spacing:0;font-weight:600;max-width:17ch">Quantitative Portfolio Research Pipeline</h1>
         <p style="margin-top:32px;max-width:64ch;font-size:19px;line-height:1.62;color:#3d4145">This project tests how a diversified ETF allocation balances return and risk against SPY. It turns historical market data into portfolio weights, evaluates those choices on later returns, and makes the assumptions, calculations, and transaction costs available for review.</p>
-        <div style="margin-top:24px;max-width:64ch;padding:16px 20px;background:#f4f2ee;border-left:3px solid #1a6f57;font-size:15px;line-height:1.55;color:#3d4145"><strong>The optimizer beat every rule that estimates nothing</strong> — equal weight, inverse volatility, risk parity — while cutting SPY's drawdown by nearly a third, and an independent MATLAB implementation verifies the numbers agree to 6 significant figures.</div>
+        <div style="margin-top:24px;max-width:64ch;padding:16px 20px;background:#f4f2ee;border-left:3px solid #1a6f57;font-size:15px;line-height:1.55;color:#3d4145"><strong>The optimizer beat every rule that estimates nothing</strong> (equal weight, inverse volatility, risk parity) while cutting SPY's drawdown by nearly a third, and an independent MATLAB implementation verifies the numbers agree to 6 significant figures.</div>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:26px"><a href="quant-portfolio-report.html" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;background:#16181a;color:#fff;text-decoration:none;font-weight:500">Open live report</a><a href="https://nbviewer.org/url/www.nathan-gomes.com/notebooks/quantitative-portfolio-research-pipeline.ipynb" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View notebook</a><a href="https://github.com/Nathan-Gomes/quant-portfolio-research" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;border:1px solid #d5d0c7;color:#16181a;text-decoration:none;font-weight:500">View source</a></div>
       </div>
       <dl style="margin:0;display:grid;gap:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.5">
@@ -61,7 +61,7 @@
     <section style="padding:64px 0;border-bottom:1px solid #e6e2db">
       <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6f57;text-transform:uppercase">Live performance</p>
       <h2 style="margin-top:12px;font-size:32px;max-width:28ch">What $10,000 would have become</h2>
-      <p style="margin-top:14px;max-width:70ch;font-size:16px;line-height:1.6;color:#7a7e83">Out-of-sample, walk-forward, February 2021 through December 2025. SPY finished ahead in dollars; the optimized path got there with a shallower fall along the way — an 18.4% trough in October 2022 (marked below) against a 24.5% one for SPY.</p>
+      <p style="margin-top:14px;max-width:70ch;font-size:16px;line-height:1.6;color:#7a7e83">Out-of-sample, walk-forward, February 2021 through December 2025. SPY finished ahead in dollars; the optimized path got there with a shallower fall along the way: an 18.4% trough in October 2022 (marked below) against a 24.5% one for SPY.</p>
       <div style="margin-top:28px"><svg viewBox="0 0 760 340" role="img" aria-label="Growth of ten thousand dollars, optimized portfolio versus SPY, February 2021 through December 2025" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
 <line x1="66" y1="306.0" x2="696.0" y2="306.0" stroke="#e6e2db" stroke-width="1"/>
 <text x="58" y="309.5" text-anchor="end" font-size="10" fill="#a2a5a8">$8,000</text>
@@ -146,7 +146,7 @@
 <rect x="464.0" y="313.0" width="11" height="11" fill="#e87ba4"/>
 <text x="480.0" y="322.0" font-size="11" fill="#3d4145">SPY <tspan fill="#a2a5a8">30%</tspan></text>
 </svg></div>
-      <div style="margin-top:24px;padding:20px 24px;background:#f4f2ee;border-left:3px solid #1a6f57;font-size:15px;line-height:1.6;color:#3d4145">Gold and US equities sit near their 30% caps almost the entire period; emerging markets is held at essentially zero. That is the optimizer reading the covariance matrix, not a hand-picked allocation — the 30% cap exists specifically to stop it from concentrating further.</div>
+      <div style="margin-top:24px;padding:20px 24px;background:#f4f2ee;border-left:3px solid #1a6f57;font-size:15px;line-height:1.6;color:#3d4145">Gold and US equities sit near their 30% caps almost the entire period; emerging markets is held at essentially zero. That is the optimizer reading the covariance matrix, not a hand-picked allocation. The 30% cap exists specifically to stop it from concentrating further.</div>
     </section>
 
     <section style="display:grid;grid-template-columns:1fr 1fr;gap:64px;padding:80px 0;border-bottom:1px solid #e6e2db">
@@ -182,12 +182,12 @@
 <line x1="58" y1="394" x2="694" y2="394" stroke="#16181a" stroke-width="1"/>
 <line x1="58" y1="24" x2="58" y2="394" stroke="#16181a" stroke-width="1"/>
 <line x1="58.0" y1="324.6" x2="593.6" y2="31.7" stroke="#a2a5a8" stroke-width="1.2" stroke-dasharray="5 4"/>
-<circle cx="451.0" cy="109.7" r="7" fill="#107a53"><title>Maximum Sharpe — 12.30% return, 11.74% volatility, Sharpe 0.79</title></circle>
-<circle cx="373.6" cy="152.3" r="7" fill="#2a78d6"><title>Minimum variance — 10.45% return, 9.43% volatility, Sharpe 0.79</title></circle>
-<circle cx="384.7" cy="184.4" r="7" fill="#eb6834"><title>Risk parity — 9.07% return, 9.76% volatility, Sharpe 0.62</title></circle>
-<circle cx="365.9" cy="208.0" r="7" fill="#4a3aa7"><title>Inverse volatility — 8.04% return, 9.20% volatility, Sharpe 0.55</title></circle>
-<circle cx="449.4" cy="154.7" r="7" fill="#1baf7a"><title>Equal weight — 10.35% return, 11.69% volatility, Sharpe 0.63</title></circle>
-<circle cx="631.3" cy="50.1" r="7" fill="#fbfaf8" stroke="#8a8f93" stroke-width="2.5"><title>Benchmark (SPY) — 14.87% return, 17.13% volatility, Sharpe 0.69</title></circle>
+<circle cx="451.0" cy="109.7" r="7" fill="#107a53"><title>Maximum Sharpe, 12.30% return, 11.74% volatility, Sharpe 0.79</title></circle>
+<circle cx="373.6" cy="152.3" r="7" fill="#2a78d6"><title>Minimum variance, 10.45% return, 9.43% volatility, Sharpe 0.79</title></circle>
+<circle cx="384.7" cy="184.4" r="7" fill="#eb6834"><title>Risk parity, 9.07% return, 9.76% volatility, Sharpe 0.62</title></circle>
+<circle cx="365.9" cy="208.0" r="7" fill="#4a3aa7"><title>Inverse volatility, 8.04% return, 9.20% volatility, Sharpe 0.55</title></circle>
+<circle cx="449.4" cy="154.7" r="7" fill="#1baf7a"><title>Equal weight, 10.35% return, 11.69% volatility, Sharpe 0.63</title></circle>
+<circle cx="631.3" cy="50.1" r="7" fill="#fbfaf8" stroke="#8a8f93" stroke-width="2.5"><title>Benchmark (SPY), 14.87% return, 17.13% volatility, Sharpe 0.69</title></circle>
 <circle cx="64" cy="432" r="6" fill="#107a53"/>
 <text x="76" y="436" font-size="12" fill="#16181a">Maximum Sharpe <tspan fill="#7a7e83">Sharpe 0.79</tspan></text>
 <circle cx="404" cy="432" r="6" fill="#2a78d6"/>
@@ -217,10 +217,10 @@
           <tr style="border-bottom:1px solid #e6e2db"><td style="padding:10px 12px">Risk parity</td><td style="text-align:right;padding:10px 12px">9.07%</td><td style="text-align:right;padding:10px 12px">9.76%</td><td style="text-align:right;padding:10px 12px">0.62</td><td style="text-align:right;padding:10px 12px">−19.7%</td><td style="text-align:right;padding:10px 12px">0.25</td></tr>
           <tr style="border-bottom:1px solid #e6e2db"><td style="padding:10px 12px">Inverse volatility</td><td style="text-align:right;padding:10px 12px">8.04%</td><td style="text-align:right;padding:10px 12px">9.20%</td><td style="text-align:right;padding:10px 12px">0.55</td><td style="text-align:right;padding:10px 12px">−19.5%</td><td style="text-align:right;padding:10px 12px">0.28</td></tr>
           <tr style="border-bottom:1px solid #e6e2db"><td style="padding:10px 12px">Equal weight</td><td style="text-align:right;padding:10px 12px">10.35%</td><td style="text-align:right;padding:10px 12px">11.69%</td><td style="text-align:right;padding:10px 12px">0.63</td><td style="text-align:right;padding:10px 12px">−22.0%</td><td style="text-align:right;padding:10px 12px">0.20</td></tr>
-          <tr><td style="padding:10px 12px">Benchmark (SPY)</td><td style="text-align:right;padding:10px 12px">14.87%</td><td style="text-align:right;padding:10px 12px">17.13%</td><td style="text-align:right;padding:10px 12px">0.69</td><td style="text-align:right;padding:10px 12px">−24.5%</td><td style="text-align:right;padding:10px 12px">—</td></tr>
+          <tr><td style="padding:10px 12px">Benchmark (SPY)</td><td style="text-align:right;padding:10px 12px">14.87%</td><td style="text-align:right;padding:10px 12px">17.13%</td><td style="text-align:right;padding:10px 12px">0.69</td><td style="text-align:right;padding:10px 12px">−24.5%</td><td style="text-align:right;padding:10px 12px">n/a</td></tr>
         </tbody>
       </table></div>
-      <div style="margin-top:28px;padding:24px 28px;background:#f4f2ee;border-left:3px solid #1a6f57;font-size:16px;line-height:1.6;color:#3d4145"><p><strong>Optimizing helped here — and that is not a general law.</strong> Maximum Sharpe reached 0.79 against 0.63 for equal weight, the best rule that estimates nothing. Six ETFs spanning bonds, gold and four equity regions have genuinely different risk profiles, so the covariance carries structure worth exploiting. On a more correlated single-country stock universe the same class of optimizer loses to equal weight — which is the DeMiguel, Garlappi and Uppal (2009) result, and which <a href="Project-Investment-Analytics.dc.html" style="color:#1a6f57">my other project</a> reproduces.</p></div>
+      <div style="margin-top:28px;padding:24px 28px;background:#f4f2ee;border-left:3px solid #1a6f57;font-size:16px;line-height:1.6;color:#3d4145"><p><strong>Optimizing helped here, but that is not a general law.</strong> Maximum Sharpe reached 0.79 against 0.63 for equal weight, the best rule that estimates nothing. Six ETFs spanning bonds, gold and four equity regions have genuinely different risk profiles, so the covariance carries structure worth exploiting. On a more correlated single-country stock universe the same class of optimizer loses to equal weight, which is the DeMiguel, Garlappi and Uppal (2009) result, and which <a href="Project-Investment-Analytics.dc.html" style="color:#1a6f57">my other project</a> reproduces.</p></div>
     </section>
 
     <section style="padding:80px 0;border-bottom:1px solid #e6e2db">
@@ -235,7 +235,7 @@
 
     <section style="padding:56px 0;border-bottom:1px solid #e6e2db">
       <div style="max-width:78ch;font-size:17px;line-height:1.65;color:#3d4145">
-        <p><strong>Independent MATLAB implementation.</strong> Minimum variance and risk parity are re-solved in MATLAB with no shared solver — accelerated projected gradient and closed-form coordinate descent, written out rather than delegated to a toolbox — and the script asserts agreement with the Python answer rather than printing numbers for a reader to compare. It runs in GNU Octave, so a reviewer without a MATLAB licence can check the result, and continuous integration runs it on every push.</p>
+        <p><strong>Independent MATLAB implementation.</strong> Minimum variance and risk parity are re-solved in MATLAB with no shared solver: accelerated projected gradient and closed-form coordinate descent, written out rather than delegated to a toolbox. The script asserts agreement with the Python answer rather than printing numbers for a reader to compare. It runs in GNU Octave, so a reviewer without a MATLAB licence can check the result, and continuous integration runs it on every push.</p>
         <p style="margin-top:18px">Setting this up properly surfaced a real defect. The exported covariance was the full-sample matrix while the published weights were fitted to the latest 36-month window, so the cross-check had been solving a different problem from the one it claimed to verify. The comparison now uses the matrix the weights were actually solved from, and agrees to 6e-7.</p>
       </div>
     </section>
