@@ -838,7 +838,7 @@ table.data .scroll { overflow-x: auto; }
    The offline demo has no server, so the backtest and the block bootstrap run
    here instead. Both sides share the mulberry32 generator, so the same seed
    produces the same scenarios in Python and in the browser, and the parity test
-   in tests/test_app_engine.py checks that the numbers agree. */
+   in tests/application/test_app_engine.py checks that the numbers agree. */
 (function (PL) {
   "use strict";
 
@@ -2896,10 +2896,21 @@ function scenarioPlate(result) {
 
   const callouts = document.createElement("div");
   callouts.className = "callouts";
+  // A percentile from a finite number of paths carries sampling error. Quoting
+  // it without one invites the reader to believe the last digits.
+  const error = scenario.sampling_error || {};
+  const noise = (key) => {
+    const band = error[key];
+    return band && band.low != null && band.high != null
+      ? ` · 95% sampling interval for this percentile: ${charts.money(band.low)}–${charts.money(band.high)}` : "";
+  };
   const cells = [
-    ["Median outcome", charts.money(scenario.terminal_median), `from ${charts.money(scenario.start_value)}`],
-    ["Weak case (5th pct)", charts.money(scenario.terminal_p05), `mean of the worst 5%: ${charts.money(scenario.worst5_mean)}`],
-    ["Strong case (95th pct)", charts.money(scenario.terminal_p95), `25th–75th: ${charts.money(scenario.terminal_p25)} to ${charts.money(scenario.terminal_p75)}`],
+    ["Median outcome", charts.money(scenario.terminal_median),
+      `from ${charts.money(scenario.start_value)}${noise("terminal_median")}`],
+    ["Weak case (5th pct)", charts.money(scenario.terminal_p05),
+      `mean of the worst 5%: ${charts.money(scenario.worst5_mean)}${noise("terminal_p05")}`],
+    ["Strong case (95th pct)", charts.money(scenario.terminal_p95),
+      `25th–75th: ${charts.money(scenario.terminal_p25)} to ${charts.money(scenario.terminal_p75)}${noise("terminal_p95")}`],
     ["Ends below start", charts.percent(scenario.probability_terminal_loss, 1), `of ${scenario.paths.toLocaleString()} paths`],
     ["Typical worst drop", charts.percent(scenario.median_max_drawdown), `1 in 20 paths fall ${charts.percent(scenario.severe_max_drawdown_p05)} or worse`],
     ["Dips under 80% of start", charts.percent(scenario.probability_ever_below_floor, 1), "at any point along the way"],
@@ -3247,6 +3258,7 @@ function assumptionsPlate(result) {
       <dt>Return convention</dt><dd>Previous close weights times current returns, so no holding is set using the return it earns.</dd>
       <dt>Rebalancing</dt><dd>${settings.rebalance === "none" ? "None: weights drift for the whole window." : `${settings.rebalance[0].toUpperCase()}${settings.rebalance.slice(1)}, on the first session of each new period.`} Cost of ${settings.transaction_cost_bps} bps on the traded notional, both sides.</dd>
       <dt>Sharpe</dt><dd>Risk-free rate of ${charts.percent(settings.risk_free_rate)} a year, converted to a daily equivalent. Constant across the window.</dd>
+      <dt>Sampling error</dt><dd>Live-server results include 95% intervals for the estimated percentiles, using binomial order statistics. These measure finite-simulation error under the chosen model, not uncertainty about future markets or model assumptions. More paths generally improve precision; no fixed percentage applies to every portfolio. The offline demo does not calculate these intervals.</dd>
       <dt>Scenario engine</dt><dd>Block bootstrap: ${settings.paths.toLocaleString()} paths of ${settings.block_days}-session blocks resampled from this window's completed net returns, seed ${settings.seed}. Every portfolio is given the identical block positions.</dd>
       <dt>Starting balance for scenarios</dt><dd>${settings.scenario_basis === "equal" ? `The same ${charts.money(settings.initial_capital)} for every portfolio, so the comparison is about construction.` : "Each portfolio continues from its own final value, which answers a wealth-continuation question instead."}</dd>
       ${result.portfolios.some((p) => p.optimization) ? `
