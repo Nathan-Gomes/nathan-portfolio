@@ -32,6 +32,15 @@ for r in rows('data/securities.csv'):
     holdings.append(row([f"{r['ticker']} · {r['name']}", r['sector']] +
                         [f"{targets.get((name, r['ticker']), 0):.2%}" for name in ['Growth','Income','Balanced','Low volatility']]))
 template = (site / 'scripts/templates/investment-case-study.html').read_text()
+template = template.replace('{{CONSTRUCTION_SECTIONS}}',
+                            (site / 'scripts/templates/investment-construction.html').read_text())
+with (site / 'public/investment-analytics/output/construction-comparison.csv').open() as stream:
+    construction = []
+    for r in csv.DictReader(stream):
+        construction.append(row([r['rule'], f"{float(r['annualized_return']):.2%}",
+                                 f"{float(r['volatility']):.2%}", f"{float(r['sharpe']):.2f}",
+                                 f"{float(r['annual_turnover']):.2f}", f"${float(r['total_cost']):,.0f}"]))
+template = template.replace('{{CONSTRUCTION_ROWS}}', ''.join(construction))
 downside = {r['portfolio_id']: r for r in rows('output/scenario_downside.csv')}
 paired = next(r for r in rows('output/scenario_paired.csv') if r['experiment'] == 'Published model')
 takeaways = {

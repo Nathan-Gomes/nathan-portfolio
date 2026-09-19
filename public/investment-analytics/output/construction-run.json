@@ -1,0 +1,227 @@
+{
+  "request": {
+    "source": "bundled",
+    "start": "2018-01-02",
+    "end": "2026-08-31",
+    "benchmark": "XIC.TO",
+    "paths": 5000,
+    "horizon_years": 5,
+    "transaction_cost_bps": 10,
+    "rebalance": "monthly",
+    "initial_capital": 100000,
+    "portfolios": [
+      {
+        "name": "Minimum variance",
+        "weights": {
+          "RY.TO": 1,
+          "TD.TO": 1,
+          "SHOP.TO": 1,
+          "CSU.TO": 1,
+          "ENB.TO": 1,
+          "FTS.TO": 1,
+          "EMA.TO": 1,
+          "CNR.TO": 1
+        },
+        "scheme": "optimized",
+        "objective": "minimum_variance",
+        "max_weight": 0.35,
+        "estimation_days": 252,
+        "estimator": "ledoit_wolf"
+      },
+      {
+        "name": "Risk parity",
+        "weights": {
+          "RY.TO": 1,
+          "TD.TO": 1,
+          "SHOP.TO": 1,
+          "CSU.TO": 1,
+          "ENB.TO": 1,
+          "FTS.TO": 1,
+          "EMA.TO": 1,
+          "CNR.TO": 1
+        },
+        "scheme": "optimized",
+        "objective": "risk_parity",
+        "max_weight": 0.35,
+        "estimation_days": 252,
+        "estimator": "ledoit_wolf"
+      },
+      {
+        "name": "Equal weight",
+        "weights": {
+          "RY.TO": 1,
+          "TD.TO": 1,
+          "SHOP.TO": 1,
+          "CSU.TO": 1,
+          "ENB.TO": 1,
+          "FTS.TO": 1,
+          "EMA.TO": 1,
+          "CNR.TO": 1
+        },
+        "scheme": "equal",
+        "objective": "minimum_variance",
+        "max_weight": 0.35,
+        "estimation_days": 252,
+        "estimator": "ledoit_wolf"
+      }
+    ]
+  },
+  "meta": {
+    "run_id": "a1079918a48cb78b",
+    "generated_at": "2026-09-19T06:21:33+00:00",
+    "engine_version": "1.0.0",
+    "source": "Frozen research dataset shipped with the repository",
+    "window_start": "2019-01-03",
+    "window_end": "2026-08-31",
+    "trading_days": 1923,
+    "years": 7.63,
+    "calibration_days": 252,
+    "timings_ms": {
+      "align": 8.9,
+      "backtest": 1347.1,
+      "scenarios": 393.6,
+      "diagnostics": 650.9,
+      "total": 2447.7
+    },
+    "benchmark": "XIC.TO benchmark",
+    "settings": {
+      "initial_capital": 100000.0,
+      "transaction_cost_bps": 10.0,
+      "risk_free_rate": 0.03,
+      "rebalance": "monthly",
+      "horizon_years": 5.0,
+      "paths": 5000,
+      "block_days": 20,
+      "seed": 42,
+      "scenario_basis": "equal"
+    },
+    "result_cache_hit": false
+  },
+  "manifest": {
+    "run_id": "a1079918a48cb78b",
+    "generated_at": "2026-09-19T06:21:33+00:00",
+    "engine_version": "1.0.0",
+    "request_sha256": "92b569a67dc0f2e4ab1fc1f4114388585e7fd98940891275e2b60e7291b51173",
+    "request": {
+      "portfolios": [
+        {
+          "name": "Minimum variance",
+          "weights": {
+            "RY.TO": 1.0,
+            "TD.TO": 1.0,
+            "SHOP.TO": 1.0,
+            "CSU.TO": 1.0,
+            "ENB.TO": 1.0,
+            "FTS.TO": 1.0,
+            "EMA.TO": 1.0,
+            "CNR.TO": 1.0
+          },
+          "scheme": "optimized",
+          "objective": "minimum_variance",
+          "estimation_days": 252,
+          "max_weight": 0.35,
+          "estimator": "ledoit_wolf",
+          "volatility_target": null,
+          "parameters": {}
+        },
+        {
+          "name": "Risk parity",
+          "weights": {
+            "RY.TO": 1.0,
+            "TD.TO": 1.0,
+            "SHOP.TO": 1.0,
+            "CSU.TO": 1.0,
+            "ENB.TO": 1.0,
+            "FTS.TO": 1.0,
+            "EMA.TO": 1.0,
+            "CNR.TO": 1.0
+          },
+          "scheme": "optimized",
+          "objective": "risk_parity",
+          "estimation_days": 252,
+          "max_weight": 0.35,
+          "estimator": "ledoit_wolf",
+          "volatility_target": null,
+          "parameters": {}
+        },
+        {
+          "name": "Equal weight",
+          "weights": {
+            "RY.TO": 1.0,
+            "TD.TO": 1.0,
+            "SHOP.TO": 1.0,
+            "CSU.TO": 1.0,
+            "ENB.TO": 1.0,
+            "FTS.TO": 1.0,
+            "EMA.TO": 1.0,
+            "CNR.TO": 1.0
+          },
+          "scheme": "equal",
+          "objective": "minimum_variance",
+          "estimation_days": 252,
+          "max_weight": 0.35,
+          "estimator": "ledoit_wolf",
+          "volatility_target": null,
+          "parameters": {}
+        }
+      ],
+      "start": "2018-01-02",
+      "end": "2026-08-31",
+      "benchmark": "XIC.TO",
+      "initial_capital": 100000.0,
+      "transaction_cost_bps": 10.0,
+      "risk_free_rate": 0.03,
+      "rebalance": "monthly",
+      "horizon_years": 5.0,
+      "paths": 5000,
+      "block_days": 20,
+      "seed": 42,
+      "scenario_basis": "equal",
+      "source": "bundled"
+    },
+    "data": {
+      "rows": 19575,
+      "tickers": [
+        "CNR.TO",
+        "CSU.TO",
+        "EMA.TO",
+        "ENB.TO",
+        "FTS.TO",
+        "RY.TO",
+        "SHOP.TO",
+        "TD.TO",
+        "XIC.TO"
+      ],
+      "first_date": "2018-01-02",
+      "last_date": "2026-08-31",
+      "sha256": "98e44875ae656d9281afa8b45b20efdf0b7c9d66edf032ec09350bc80fe514b3",
+      "source": "Frozen research dataset shipped with the repository"
+    },
+    "code_sha256": "9aedb9659a90c120dfc9a99764ebe6816ca20eb04b61ced949cdc978e2095c18",
+    "code_files": {
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "analysis.py": "609b08de2d259b4a052bbc6160f2063dd9d49e25913b18e474bcbf802437eac2",
+      "conformance.py": "bb72e487dc4c5496cb265921baf77a25458ab2957bb1082d9a97103b624bb1cf",
+      "convex.py": "81ac9bbd9f94e1fcbc81d419db414ac41bb9d5906d43b011d06a515c39fe3b4e",
+      "engine.py": "711073642f366ee57c7fcabf0c5dda1e90ec48c91cae63f2571642ed76781495",
+      "marketdata.py": "e4bba8bd3b6077fa61dd61085a12b857dd1dbec09442369906135a0fee913a64",
+      "optimize.py": "5a6e4e2e9b43f3fedee255ed8a405fc609bb43de0ca00a448bbd4c5f8e242caa",
+      "provenance.py": "d0b71b4af25c9ca36434a4645388cd23c3cb4558fdcaee986c9312d7c73f984f",
+      "riskmodel.py": "d5784b3826f0f569375a2454caaedd7eae5283a2378656f180c668c41da1af8d",
+      "rng.py": "ae5ba2600ea7d9128200f2783d1c5e830315ec4926affcb34ea83aaba5dda95e",
+      "server.py": "e8c40f89a15fd86e64fe0e5d7b72ce4ce2196308803a03f3a60693ad7f9ef466",
+      "strategies.py": "12dd524f2c4e0ca80b6193d32490e3d02450dc224b5c5768edca019ec155772b"
+    },
+    "environment": {
+      "python": "3.10.5",
+      "packages": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.15.3",
+        "scikit-learn": "1.7.2",
+        "fastapi": "0.141.1",
+        "yfinance": "0.2.66"
+      }
+    }
+  }
+}
