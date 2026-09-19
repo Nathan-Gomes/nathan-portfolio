@@ -2671,7 +2671,8 @@ async function run() {
     status.textContent = `Done in ${(reporter.elapsed() / 1000).toFixed(1)}s · `
       + `${result.meta.trading_days.toLocaleString()} shared sessions · `
       + `${result.meta.settings.paths.toLocaleString()} simulated markets`
-      + (timings ? ` · engine ${(timings.total / 1000).toFixed(1)}s` : "");
+      + (result.meta.result_cache_hit ? " · reused verified result"
+        : timings ? ` · engine ${(timings.total / 1000).toFixed(1)}s` : "");
     showMode(result.meta.source);
     renderResults();
     if (!first) revealResults();
