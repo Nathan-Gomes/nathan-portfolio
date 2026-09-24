@@ -1,74 +1,547 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AlphaCast is a cross-sectional equity ranking workstation by Nathan Gomes: walk-forward machine learning, live signals, portfolio construction and model monitoring on 98 US large caps.">
-  <title>AlphaCast | Nathan Gomes</title>
-  <link rel="stylesheet" href="revamp.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *{box-sizing:border-box} body{margin:0;background:#fbfaf8;color:#16181a;font-family:'IBM Plex Sans',sans-serif} a{color:inherit} .page{max-width:1160px;margin:auto;padding:0 40px}.nav{display:flex;justify-content:space-between;gap:24px;padding:28px 0;border-bottom:1px solid #e6e2db;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase}.nav a{text-decoration:none;color:#687077}.nav a:first-child{color:#16181a}.nav a:hover{color:#1a6f57}.hero{padding:112px 0 76px;border-bottom:1px solid #e6e2db}.eyebrow{margin:0 0 26px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#1a6f57}.hero h1{margin:0;max-width:780px;font-size:clamp(42px,6vw,72px);line-height:1.02;font-weight:600}.lead{max-width:790px;margin:32px 0 0;font-size:22px;line-height:1.55;color:#445057}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}.actions a{padding:14px 18px;border:1px solid #b7c9c1;text-decoration:none;color:#1a6f57;font-weight:500}.actions a:first-child{background:#16181a;color:#fff;border-color:#16181a}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:42px 0;background:#e6e2db;border:1px solid #e6e2db}.facts div{padding:24px;background:#fbfaf8}.facts strong{display:block;font-size:28px}.facts span{display:block;margin-top:7px;color:#687077;font-size:14px}.section{padding:72px 0;border-bottom:1px solid #e6e2db}.section h2{margin:0;font-size:32px;line-height:1.15}.section>p{max-width:760px;margin:18px 0 0;color:#4d585e;font-size:18px;line-height:1.65}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}.step{padding:22px;border:1px solid #d9d5ce;background:#fff}.step span{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#1a6f57}.step h3{margin:14px 0 8px;font-size:19px}.step p{margin:0;color:#59636a;line-height:1.5}.columns{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:30px}.columns h3{font-size:20px}.columns ul{padding-left:20px;color:#4d585e;line-height:1.75}.note{margin-top:30px;padding:22px 24px;border-left:3px solid #1a6f57;background:#eff5f2;color:#435159;line-height:1.6}.footer{padding:40px 0 72px;color:#687077;font-size:14px}@media(max-width:700px){.page{padding:0 22px}.nav{align-items:flex-start;flex-direction:column;gap:14px}.hero{padding:72px 0 56px}.lead{font-size:18px}.facts,.steps,.columns{grid-template-columns:1fr}.facts{gap:1px}.section{padding:54px 0}}
-  .shot{margin:44px 0 0;border:1px solid #d9d5ce;background:#0b0f14}.shot img{display:block;width:100%;height:auto}.shot figcaption{padding:12px 16px;background:#fff;border-top:1px solid #e6e2db;color:#59636a;font-size:14px;line-height:1.5}.views{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}.views .step h3{font-size:17px}table.results{width:100%;border-collapse:collapse;margin-top:30px;font-size:15px}table.results th,table.results td{padding:11px 12px;border-bottom:1px solid #e6e2db;text-align:right;font-variant-numeric:tabular-nums}table.results th:first-child,table.results td:first-child{text-align:left}table.results th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#687077;font-weight:500}table.results tr.lead td{background:#eff5f2;font-weight:500}.table-scroll{overflow-x:auto}@media(max-width:900px){.views{grid-template-columns:1fr 1fr}}@media(max-width:700px){.views{grid-template-columns:1fr}}
-  </style>
+<title>AlphaCast | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="AlphaCast: a machine-learning equity ranking workstation by Nathan Gomes. Five models on embargoed walk-forward folds across 98 US large caps, live signals, portfolio construction and model monitoring.">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #16181a;
+    --paper: #fbfaf8;
+    --card: #ffffff;
+    --line: #e6e2db;
+    --muted: #7a7e83;
+    --faint: #a2a5a8;
+    --body: #3d4145;
+    --green: #1a6f57;
+    --green-bright: #107a53;
+    --tint: #edf3f0;
+    --wash: #f4f2ee;
+    --warn: #a8551f;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4, p, ul, ol, figure { margin: 0; text-wrap: pretty; }
+  a { color: var(--ink); }
+  a:hover { color: var(--green); }
+  ::selection { background: #cfe3da; }
+
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 40px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--green);
+  }
+  .rule { border-top: 1px solid var(--line); }
+  section[id] { scroll-margin-top: 78px; }
+
+  /* ---------- sticky skim nav ---------- */
+  .skimnav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(251, 250, 248, 0.93);
+    -webkit-backdrop-filter: saturate(180%) blur(8px);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .skimnav-inner {
+    display: flex; align-items: center; gap: 4px;
+    overflow-x: auto; scrollbar-width: none;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .skimnav-inner::-webkit-scrollbar { display: none; }
+  .skimnav a {
+    padding: 13px 11px; color: var(--muted); text-decoration: none;
+    border-bottom: 2px solid transparent;
+  }
+  .skimnav a:hover { color: var(--green-bright); border-bottom-color: var(--green-bright); }
+  .skimnav a:first-child { padding-left: 0; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 64px 0 0; }
+  .herogrid { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 64px; align-items: end; }
+  .hero h1 {
+    font-size: clamp(38px, 5.2vw, 66px); line-height: 1.02;
+    letter-spacing: -0.015em; font-weight: 600; max-width: 16ch; margin-top: 22px;
+  }
+  .deck { margin-top: 26px; max-width: 60ch; font-size: 20px; line-height: 1.55; color: var(--body); }
+  .verdict {
+    margin-top: 26px; max-width: 66ch; padding: 18px 22px;
+    background: var(--tint); border-left: 3px solid var(--green-bright);
+    font-size: 17px; line-height: 1.55; color: #17372c;
+  }
+  .btnrow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+  .btn {
+    display: inline-flex; align-items: center; height: 48px; padding: 0 22px;
+    text-decoration: none; font-weight: 500; font-size: 15px;
+    border: 1px solid transparent; transition: background .16s, color .16s, border-color .16s;
+  }
+  .btn-primary { background: var(--ink); color: #fff; }
+  .btn-primary:hover { background: var(--green-bright); color: #fff; }
+  .btn-ghost { border-color: #d5d0c7; color: var(--ink); background: var(--card); }
+  .btn-ghost:hover { border-color: var(--green-bright); color: var(--green-bright); }
+
+  .factlist { display: grid; gap: 18px; font-family: var(--mono); font-size: 12px; line-height: 1.5; margin: 0; }
+  .factlist dt { color: var(--faint); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .factlist dd { margin: 0; color: var(--body); }
+
+  /* ---------- scoreboard ---------- */
+  .scoreboard {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px; background: var(--line);
+    border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line);
+  }
+  .score { padding: 22px 24px 20px; background: var(--card); }
+  .score-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .score-value { display: block; margin-top: 10px; font-size: 38px; line-height: 1; font-weight: 600; letter-spacing: -0.02em; }
+  .score-vs { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .pill {
+    display: inline-block; margin-top: 10px; padding: 3px 8px;
+    font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
+  }
+  .pill-good { background: var(--tint); color: var(--green-bright); }
+  .pill-cost { background: #f7efe7; color: var(--warn); }
+  .pill-flat { background: var(--wash); color: var(--muted); }
+
+  /* ---------- 30-second read ---------- */
+  .takeaways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .takeaway { padding: 28px 26px 30px; background: var(--card); }
+  .takeaway-n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; background: var(--ink); color: #fff;
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+  }
+  .takeaway h3 { margin-top: 16px; font-size: 19px; line-height: 1.25; letter-spacing: -0.01em; }
+  .takeaway p { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--body); }
+  .takeaway b { font-weight: 600; color: var(--ink); }
+
+  /* ---------- charts ---------- */
+  .chart-card { margin-top: 26px; padding: 26px 26px 20px; background: var(--card); border: 1px solid var(--line); }
+  .legend { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .swatch { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 7px; }
+  .readout {
+    margin-top: 22px; padding: 18px 22px; background: var(--wash);
+    border-left: 3px solid var(--green-bright); font-size: 15px; line-height: 1.6; color: var(--body);
+  }
+  .readout b { color: var(--ink); }
+  .caption { margin-top: 12px; font-family: var(--mono); font-size: 11.5px; line-height: 1.55; color: var(--muted); }
+
+  /* ---------- generic section head ---------- */
+  .sechead { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 28px; align-items: start; }
+  .secnum { font-family: var(--mono); font-size: 12px; color: var(--faint); padding-top: 8px; letter-spacing: 0.08em; }
+  .sechead h2 { margin-top: 12px; font-size: clamp(26px, 3vw, 34px); line-height: 1.16; letter-spacing: -0.015em; max-width: 24ch; }
+  .sechead .lede { margin-top: 14px; max-width: 74ch; font-size: 17px; line-height: 1.62; color: var(--body); }
+
+  /* ---------- pipeline ---------- */
+  .pipeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .step { position: relative; padding: 26px 24px 28px; background: var(--card); }
+  .step-n { font-family: var(--mono); font-size: 11px; color: var(--green-bright); letter-spacing: 0.1em; }
+  .step h3 { margin-top: 14px; font-size: 18px; line-height: 1.25; }
+  .step p { margin-top: 10px; font-size: 14.5px; line-height: 1.58; color: var(--muted); }
+  .step-tools { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .step-tools span {
+    padding: 3px 7px; background: var(--wash); color: var(--body);
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.02em;
+  }
+
+  /* ---------- table ---------- */
+  .tablewrap { overflow-x: auto; margin-top: 24px; }
+  table.results { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 620px; }
+  table.results th {
+    text-align: right; padding: 11px 14px; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500;
+    border-bottom: 1px solid var(--ink); white-space: nowrap;
+  }
+  table.results th:first-child, table.results td:first-child { text-align: left; }
+  table.results td { text-align: right; padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--body); }
+  table.results tr.win td { background: var(--tint); color: var(--ink); font-weight: 600; }
+  table.results tr.bench td { background: #fcfbf9; }
+  table.results tr.bench td:first-child { color: var(--muted); }
+  .tag {
+    display: inline-block; margin-left: 9px; padding: 2px 7px; vertical-align: 1px;
+    background: var(--green-bright); color: #fff; font-family: var(--mono);
+    font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;
+  }
+
+  /* ---------- evidence cards ---------- */
+  .evidence { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .ecard { padding: 32px 30px 34px; background: var(--card); }
+  .ecard h3 { margin-top: 14px; font-size: 21px; line-height: 1.25; }
+  .ecard p { margin-top: 14px; font-size: 15.5px; line-height: 1.65; color: var(--body); }
+  .ecard .stat { display: block; margin-top: 18px; font-family: var(--mono); font-size: 12px; color: var(--green-bright); }
+
+  /* ---------- controls list ---------- */
+  .controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 44px; margin-top: 8px; padding: 0; list-style: none; }
+  .controls li {
+    display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 12px; align-items: start;
+    min-height: 60px; padding: 14px 0; border-bottom: 1px solid var(--line);
+    font-size: 15.5px; line-height: 1.5; color: var(--body);
+  }
+  .controls li::before { content: "\2713"; color: var(--green-bright); font-size: 13px; line-height: 1.6; }
+
+  /* ---------- skills ---------- */
+  .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .skill { padding: 26px 24px 28px; background: var(--card); }
+  .skill h3 { font-size: 16px; }
+  .skill p { margin-top: 9px; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .chips span { padding: 4px 8px; background: var(--wash); font-family: var(--mono); font-size: 10.5px; color: var(--body); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 980px) {
+    .takeaways, .pipeline, .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .herogrid { gap: 40px; }
+    .scoreboard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .wrap { padding: 0 20px; }
+    .hero { padding-top: 40px; }
+    .deck { font-size: 17.5px; }
+    .takeaways, .pipeline, .skills, .evidence, .scoreboard, .controls, .herogrid { grid-template-columns: minmax(0, 1fr); }
+    .herogrid { gap: 36px; align-items: start; }
+    .factlist { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; }
+    .sechead { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .secnum { padding-top: 0; }
+    .chart-card { padding: 18px 16px 14px; }
+    .score-value { font-size: 32px; }
+    .btn { width: 100%; justify-content: center; }
+    .ecard { padding: 26px 22px 28px; }
+  }
+</style>
+<style>
+  .shot { margin-top: 26px; border: 1px solid #1c2631; background: #0b0f14; }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .shots figcaption { padding: 12px 14px; background: var(--card); border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; color: var(--body); }
+  .views { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 26px; }
+  .views .step p { color: var(--body); }
+  .live-badge { display: inline-flex; align-items: center; gap: 8px; }
+  .live-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); }
+  @media (max-width: 980px) { .views { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 760px) { .views, .shots { grid-template-columns: minmax(0, 1fr); } }
+</style>
 </head>
 <body>
-  <main class="page">
-    <nav class="nav"><a href="/#projects">Nathan Gomes</a><span><a href="https://github.com/Nathan-Gomes/alphacast" target="_blank" rel="noreferrer">GitHub ↗</a></span></nav>
+<div class="wrap">
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:26px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <nav style="display:flex;gap:24px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">
+      <a href="/#projects" style="text-decoration:none;color:#7a7e83">Projects</a>
+      <a href="https://alphacast.onrender.com" target="_blank" rel="noreferrer" style="text-decoration:none;color:#1a6f57">Live app</a>
+      <a href="https://github.com/Nathan-Gomes/alphacast" target="_blank" rel="noreferrer" style="text-decoration:none;color:#7a7e83">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<div class="skimnav">
+  <div class="wrap">
+    <div class="skimnav-inner">
+      <a href="#result">01 &nbsp;Result</a>
+      <a href="#app">02 &nbsp;The app</a>
+      <a href="#performance">03 &nbsp;Performance</a>
+      <a href="#models">04 &nbsp;Did ML help?</a>
+      <a href="#regimes">05 &nbsp;When it works</a>
+      <a href="#system">06 &nbsp;How it works</a>
+      <a href="#trust">07 &nbsp;Validation</a>
+      <a href="#next">08 &nbsp;Next</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <main>
+
     <section class="hero">
-      <p class="eyebrow">03 / Machine-learning equity research</p>
-      <h1>AlphaCast</h1>
-      <p class="lead">A research workstation that ranks 98 US large caps by their expected sector-relative return over the next 20 trading sessions, tests five models under the same walk-forward rules, and turns the signal into a cost-aware portfolio it keeps monitoring.</p>
-      <div class="actions"><a href="https://alphacast.onrender.com" target="_blank" rel="noreferrer">Launch AlphaCast ↗</a><a href="https://github.com/Nathan-Gomes/alphacast" target="_blank" rel="noreferrer">View source on GitHub ↗</a><a href="https://github.com/Nathan-Gomes/alphacast/blob/main/docs/METHODOLOGY.md" target="_blank" rel="noreferrer">Read methodology ↗</a></div>
-      <div class="facts"><div><strong>98</strong><span>US large caps across 11 sectors, 2014 to 2026</span></div><div><strong>114</strong><span>Monthly out-of-sample folds with a 20-session embargo</span></div><div><strong>5</strong><span>Models compared against a momentum baseline</span></div></div>
-      <figure class="shot"><img src="assets/alphacast-overview.png" alt="AlphaCast overview screen: signal date, model health, research read-out, current top-ranked stocks, growth chart and model leaderboard" loading="lazy"><figcaption>The Overview screen. It shows the latest signal, the active model's out-of-sample record and health, the current top ranks, and a plain-language read-out generated from the results.</figcaption></figure>
-    </section>
-
-    <section class="section">
-      <p class="eyebrow">Project question</p>
-      <h2>Can machine learning rank next month's relative winners, out of sample, after costs?</h2>
-      <p>AlphaCast does not predict prices. At every month-end it ranks each stock against its sector peers, using only information available at that close, then measures how the ranking performed over the following 20 sessions. A model earns credit only if it beats a plain 12-1 momentum ranking on identical folds, costs, and portfolio rules.</p>
-      <div class="steps"><div class="step"><span>01</span><h3>Point-in-time features</h3><p>14 trailing price, risk, liquidity, and relative-strength inputs, ranked within each date.</p></div><div class="step"><span>02</span><h3>Sector-relative target</h3><p>The 20-session forward return minus the equal-weight return of the stock's sector.</p></div><div class="step"><span>03</span><h3>Embargoed walk-forward</h3><p>Expanding training windows stop 20 sessions before each test date, so labels never overlap.</p></div><div class="step"><span>04</span><h3>Rank, trade, monitor</h3><p>Rank IC and quintile spreads, a top-15 sleeve net of costs, then drift and health checks.</p></div></div>
-    </section>
-
-    <section class="section">
-      <p class="eyebrow">The application</p>
-      <h2>Built as software people would use, not a notebook.</h2>
-      <p>The live app is a multi-view workstation. It opens on a precomputed workspace built from a frozen Yahoo Finance snapshot, so the first screen loads instantly. New studies run in the background with progress reporting.</p>
-      <div class="views">
-        <div class="step"><span>Overview</span><h3>Today's signal</h3><p>KPIs, model health, a generated read-out, current top and bottom ranks.</p></div>
-        <div class="step"><span>Screener</span><h3>The full cross-section</h3><p>Sort, search, and filter by sector, quintile, or holding; export to CSV.</p></div>
-        <div class="step"><span>Security</span><h3>Why a stock ranks there</h3><p>Per-feature attribution, rank history against realised outcomes, rank under each model.</p></div>
-        <div class="step"><span>Portfolio</span><h3>The book it implies</h3><p>Target holdings, entries and exits, implied turnover and cost, and sector tilts.</p></div>
-        <div class="step"><span>Backtest · Diagnostics</span><h3>Did the ranking work?</h3><p>Net and gross growth, drawdowns, rolling active return, IC by month, quintiles, regimes.</p></div>
-        <div class="step"><span>Models · Monitoring</span><h3>Which model, and is it still working?</h3><p>Side-by-side comparison, feature reliance, rolling IC bands, reliance and feature drift.</p></div>
+      <div class="herogrid">
+        <div>
+          <p class="eyebrow"><span class="live-badge">Current focus &nbsp;/&nbsp; Machine-learning equity research</span></p>
+          <h1>AlphaCast</h1>
+          <p class="deck">A research workstation that ranks 98 US large caps by their expected return against their own sector over the next 20 trading sessions, tests five models on the same walk-forward folds, and turns the ranking into a portfolio it keeps monitoring.</p>
+          <div class="verdict"><strong>The verdict:</strong> one model, Random Forest, found a small but statistically real ranking signal (Rank IC 0.024, t = 2.4) that survived costs. It is concentrated in volatile markets, most models did not beat plain momentum, and every model has weakened over the last six months.</div>
+          <div class="btnrow">
+            <a class="btn btn-primary" href="https://alphacast.onrender.com" target="_blank" rel="noreferrer">Launch the app</a>
+            <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/alphacast/blob/main/docs/METHODOLOGY.md" target="_blank" rel="noreferrer">Read the methodology</a>
+            <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/alphacast" target="_blank" rel="noreferrer">Source on GitHub</a>
+          </div>
+        </div>
+        <dl class="factlist">
+          <div><dt>Test window</dt><dd>Feb 2017 &ndash; Jul 2026<br>114 monthly folds, out of sample</dd></div>
+          <div><dt>Universe</dt><dd>98 US large caps &middot; 11 sectors<br>daily data 2014 &ndash; 2026</dd></div>
+          <div><dt>Models</dt><dd>Momentum baseline &middot; Ridge<br>Elastic Net &middot; Random Forest<br>Gradient Boosting</dd></div>
+          <div><dt>Stack</dt><dd>Python &middot; pandas &middot; scikit-learn<br>FastAPI &middot; JavaScript &middot; pytest</dd></div>
+        </dl>
       </div>
-      <figure class="shot"><img src="assets/alphacast-security.png" alt="AlphaCast security screen for NVDA: rank, price chart, feature attribution bars and rank under every model" loading="lazy"><figcaption>The Security screen. It shows the price path, the features pushing a stock's score up or down, its rank history against realised outcomes, and its rank under each model.</figcaption></figure>
     </section>
 
-    <section class="section">
-      <p class="eyebrow">Findings</p>
-      <h2>A modest, real signal that is not stationary.</h2>
-      <p>Over 114 monthly out-of-sample folds (February 2017 to July 2026), Random Forest was the only model whose mean Rank IC was statistically distinguishable from zero. The linear models and gradient boosting did not clearly beat the momentum baseline after turnover. All five models are currently flagged as degraded: their last six months of ranking quality fall below their long-run record. AlphaCast surfaces that result instead of hiding it.</p>
-      <div class="table-scroll"><table class="results">
-        <thead><tr><th>Model</th><th>Mean Rank IC</th><th>t-stat</th><th>IC &gt; 0</th><th>Net Sharpe</th><th>Turnover / mo</th></tr></thead>
-        <tbody>
-          <tr class="lead"><td>Random Forest</td><td>0.024</td><td>2.41</td><td>59%</td><td>1.24</td><td>41%</td></tr>
-          <tr><td>Gradient Boosting</td><td>0.010</td><td>0.97</td><td>45%</td><td>1.06</td><td>57%</td></tr>
-          <tr><td>Elastic Net</td><td>0.010</td><td>0.80</td><td>49%</td><td>0.90</td><td>35%</td></tr>
-          <tr><td>Ridge</td><td>0.010</td><td>0.75</td><td>50%</td><td>0.80</td><td>46%</td></tr>
-          <tr><td>Momentum 12-1 (baseline)</td><td>0.006</td><td>0.37</td><td>54%</td><td>1.22</td><td>25%</td></tr>
-          <tr><td>Equal-weight universe</td><td>—</td><td>—</td><td>—</td><td>1.09</td><td>—</td></tr>
-        </tbody>
-      </table></div>
-      <div class="note"><strong>How to read this:</strong> an IC of 0.02 to 0.03 is typical of real cross-sectional equity signals, and a 1.2 Sharpe on a long-only large-cap sleeve mostly reflects a strong decade for US large caps. The useful comparison is against the baseline and the universe on identical periods and costs, and it is only a prompt for further research.</div>
+    <section id="result" style="padding:56px 0 0">
+      <div class="scoreboard">
+        <div class="score">
+          <span class="score-label">Mean Rank IC</span>
+          <strong class="score-value">0.024</strong>
+          <div class="score-vs">t = 2.4 &middot; momentum 0.006</div>
+          <span class="pill pill-good">Only model with t &gt; 2</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Net Sharpe</span>
+          <strong class="score-value">1.24</strong>
+          <div class="score-vs">Universe 1.09 &middot; momentum 1.22</div>
+          <span class="pill pill-good">Best of five models</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Annual return, net</span>
+          <strong class="score-value">28.3%</strong>
+          <div class="score-vs">Universe 16.6%</div>
+          <span class="pill pill-good">11.6 pts ahead</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Worst drawdown</span>
+          <strong class="score-value">&minus;21.0%</strong>
+          <div class="score-vs">Universe &minus;16.3%</div>
+          <span class="pill pill-cost">4.7 pts deeper</span>
+        </div>
+      </div>
+      <p class="caption">Random Forest top-15 equal-weight sleeve, rebalanced monthly, net of 10 bps one-way costs on 41% average monthly turnover. Walk-forward, out of sample, Feb 2017 &ndash; Jul 2026. Benchmark: the equal-weight universe over the same periods.</p>
     </section>
 
-    <section class="section"><p class="eyebrow">Engineering</p><h2>Research controls and software built together.</h2><div class="columns"><div><h3>Implemented</h3><ul><li>Frozen Yahoo Finance snapshot for 98 stocks plus live Yahoo and synthetic data sources, with a data-quality gate that drops partially published sessions</li><li>Within-date rank-normalised features and winsorised training labels</li><li>Momentum, Ridge, Elastic Net, Random Forest, and gradient boosting on identical embargoed folds</li><li>Live scoring of the latest close, occlusion attribution, quintile and regime diagnostics</li><li>Equal-weight top-ranked portfolio with turnover and basis-point costs</li><li>Monitoring statuses, population-stability feature drift, and attribution drift</li><li>FastAPI backend with background jobs, JSON and CSV export, dependency-free JavaScript workstation, pytest suite, Docker and Render deployment</li></ul></div><div><h3>Deliberately not claimed</h3><ul><li>No price targets, trading recommendation, or claim of established alpha</li><li>No point-in-time index membership: the universe is today's large caps, so results carry survivorship bias</li><li>No point-in-time fundamentals, delisting returns, borrow costs, taxes, or spread and impact model</li><li>No portfolio optimizer, sector constraints, or order routing</li><li>No hyperparameter search tuned on the test folds</li></ul></div></div><div class="note"><strong>Why the controls matter:</strong> every feature is known at the decision close, every label starts after it, and training stops 20 sessions before each evaluation. Models are refitted quarterly on weekly-sampled history, so a stale fit can only be older and cannot leak.</div></section>
-    <section class="section"><p class="eyebrow">Next research iteration</p><h2>Strengthen the data before expanding the claim.</h2><p>Next: point-in-time constituents to remove survivorship bias, point-in-time fundamentals, sector-constrained optimisation, and a spread and impact cost model. Each addition goes through the same chronological validation before it can support a stronger conclusion.</p></section>
-    <footer class="footer">AlphaCast is independent research software by Nathan Gomes. It is for research and education, not investment advice.</footer>
+    <section style="padding:56px 0 0">
+      <p class="eyebrow" style="margin-bottom:22px">The thirty-second version</p>
+      <div class="takeaways">
+        <div class="takeaway">
+          <span class="takeaway-n">1</span>
+          <h3>The signal is small, and only one model has it</h3>
+          <p>Random Forest ranked stocks with a mean Rank IC of <b>0.024</b>, positive in <b>59%</b> of 114 months, the only result with a t-statistic above 2. That is typical of real equity signals: useful as a tilt, nowhere near a forecast.</p>
+        </div>
+        <div class="takeaway">
+          <span class="takeaway-n">2</span>
+          <h3>Most machine learning did not beat momentum</h3>
+          <p>Ridge, Elastic Net and gradient boosting all reached about <b>0.010</b> IC, above momentum's <b>0.006</b> but within noise, and after turnover their Sharpe ratios fell <b>below</b> momentum's 1.22. Model complexity was not what made the difference.</p>
+        </div>
+        <div class="takeaway">
+          <span class="takeaway-n">3</span>
+          <h3>It works in stress and fades in calm markets</h3>
+          <p>In high-volatility months (53 of them) Random Forest's IC averaged <b>0.055</b>; in calm expansions (60 months) it was <b>-0.004</b>. The monitoring view currently flags <b>all 5 models as degraded</b>. The app shows this rather than hiding it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="app" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">02</div>
+        <div>
+          <p class="eyebrow">The application</p>
+          <h2>Built as software people use, not a notebook</h2>
+          <p class="lede">The live app opens on the latest signal, precomputed from a frozen Yahoo Finance snapshot so the first screen loads instantly. New studies run in the background with progress reporting, and every table exports to CSV or JSON.</p>
+        </div>
+      </div>
+      <div class="shots">
+        <figure class="shot"><img src="assets/alphacast-overview.png" alt="AlphaCast overview screen: signal date, model health, generated research read-out, current top ranks and a growth chart" loading="lazy"><figcaption><b>Overview.</b> The latest signal, the active model's record and health, and a read-out generated from the results.</figcaption></figure>
+        <figure class="shot"><img src="assets/alphacast-security.png" alt="AlphaCast security screen for NVDA: rank, price, per-feature attribution and rank under each model" loading="lazy"><figcaption><b>Security.</b> Why a stock ranks where it does, and how its past ranks played out.</figcaption></figure>
+      </div>
+      <div class="views">
+        <div class="step"><span class="step-n">SIGNAL</span><h3>Overview &amp; Screener</h3><p>Today's ranks for the whole universe with factor profiles, rank changes, search, sector and quintile filters.</p></div>
+        <div class="step"><span class="step-n">EXPLAIN</span><h3>Security</h3><p>Per-feature attribution, price path, rank history against realised outcomes, rank under every model.</p></div>
+        <div class="step"><span class="step-n">ACT</span><h3>Portfolio</h3><p>The top-15 book at the latest close: weights, entries and exits, implied turnover and cost, sector tilts.</p></div>
+        <div class="step"><span class="step-n">EVALUATE</span><h3>Backtest &amp; Diagnostics</h3><p>Net and gross growth, drawdowns, rolling active return, monthly IC, quintile spreads, regimes.</p></div>
+        <div class="step"><span class="step-n">COMPARE</span><h3>Models</h3><p>All five models on identical folds: IC, t-stat, Sharpe, turnover, cumulative IC and feature reliance.</p></div>
+        <div class="step"><span class="step-n">WATCH</span><h3>Monitoring &amp; Runs</h3><p>Health status, rolling IC bands, reliance and feature drift; background runs on live Yahoo data.</p></div>
+      </div>
+    </section>
+
+    <section id="performance" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">03</div>
+        <div>
+          <p class="eyebrow">Out-of-sample performance</p>
+          <h2>What $1 in the top-ranked sleeve became</h2>
+          <p class="lede">Each month the model ranks all 98 stocks using only data up to that close, the top 15 are held equally for the next 20 sessions, and trading costs are charged on every change. Log scale, so equal slopes mean equal percentage growth.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        <svg viewBox="0 0 760 354" role="img" aria-label="Growth of one dollar: Random Forest and momentum top-15 sleeves net of costs against the equal-weight universe" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+<line x1="62" y1="283.3" x2="700" y2="283.3" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="286.8" text-anchor="end" font-size="10" fill="#a2a5a8">$1</text>
+<line x1="62" y1="208.7" x2="700" y2="208.7" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="212.2" text-anchor="end" font-size="10" fill="#a2a5a8">$2</text>
+<line x1="62" y1="134.1" x2="700" y2="134.1" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="137.6" text-anchor="end" font-size="10" fill="#a2a5a8">$4</text>
+<line x1="62" y1="59.4" x2="700" y2="59.4" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="62.9" text-anchor="end" font-size="10" fill="#a2a5a8">$8</text>
+<text x="62.0" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2017</text>
+<text x="196.3" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2019</text>
+<text x="330.6" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2021</text>
+<text x="464.9" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2023</text>
+<text x="599.3" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2025</text>
+<path d="M62.0,283.3 L67.6,282.7 L73.2,283.3 L78.8,281.9 L84.4,277.8 L90.0,274.2 L95.6,276.3 L101.2,273.0 L106.8,271.8 L112.4,270.3 L118.0,271.1 L123.6,261.1 L129.2,264.2 L134.8,270.3 L140.4,267.4 L145.9,259.3 L151.5,256.2 L157.1,252.4 L162.7,247.5 L168.3,245.4 L173.9,254.9 L179.5,251.3 L185.1,258.0 L190.7,250.8 L196.3,246.0 L201.9,245.4 L207.5,244.0 L213.1,252.4 L218.7,243.8 L224.3,240.7 L229.9,245.0 L235.5,244.0 L241.1,242.4 L246.7,238.2 L252.3,233.2 L257.9,228.8 L263.5,230.1 L269.1,254.1 L274.7,232.4 L280.3,226.8 L285.9,225.2 L291.5,217.4 L297.1,205.7 L302.6,215.4 L308.2,220.7 L313.8,195.6 L319.4,191.1 L325.0,187.0 L330.6,175.3 L336.2,169.3 L341.8,165.4 L347.4,160.8 L353.0,158.5 L358.6,160.5 L364.2,155.4 L369.8,156.5 L375.4,144.8 L381.0,141.8 L386.6,138.3 L392.2,134.2 L397.8,136.3 L403.4,129.6 L409.0,140.5 L414.6,130.2 L420.2,145.0 L425.8,134.5 L431.4,132.6 L437.0,143.3 L442.6,129.5 L448.2,126.7 L453.8,133.7 L459.4,121.2 L464.9,126.0 L470.5,125.9 L476.1,128.3 L481.7,124.2 L487.3,116.2 L492.9,112.1 L498.5,117.9 L504.1,123.5 L509.7,126.6 L515.3,117.5 L520.9,113.9 L526.5,116.4 L532.1,113.0 L537.7,107.4 L543.3,111.0 L548.9,106.4 L554.5,101.0 L560.1,97.9 L565.7,99.7 L571.3,96.4 L576.9,94.5 L582.5,89.9 L588.1,98.1 L593.7,96.0 L599.3,98.3 L604.9,103.7 L610.5,105.1 L616.1,99.0 L621.6,91.9 L627.2,90.3 L632.8,82.7 L638.4,75.5 L644.0,65.5 L649.6,63.9 L655.2,61.4 L660.8,49.4 L666.4,47.2 L672.0,53.5 L677.6,43.0 L683.2,31.0 L688.8,29.8 L694.4,35.1 L700.0,28.7" fill="none" stroke="#c98500" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="706" y="32.2" font-size="10" fill="#3d4145">$10.6</text>
+<path d="M62.0,283.3 L67.6,282.3 L73.2,281.6 L78.8,276.7 L84.4,274.4 L90.0,270.3 L95.6,272.0 L101.2,267.1 L106.8,262.5 L112.4,260.9 L118.0,260.5 L123.6,248.8 L129.2,249.8 L134.8,255.4 L140.4,255.5 L145.9,246.8 L151.5,249.0 L157.1,247.3 L162.7,241.7 L168.3,236.7 L173.9,252.7 L179.5,253.2 L185.1,262.2 L190.7,253.8 L196.3,247.1 L201.9,244.4 L207.5,243.5 L213.1,247.7 L218.7,240.4 L224.3,236.6 L229.9,237.1 L235.5,238.7 L241.1,241.5 L246.7,237.6 L252.3,233.6 L257.9,227.9 L263.5,228.1 L269.1,239.2 L274.7,222.4 L280.3,218.4 L285.9,215.4 L291.5,206.1 L297.1,194.3 L302.6,200.9 L308.2,204.4 L313.8,195.5 L319.4,192.7 L325.0,190.1 L330.6,187.0 L336.2,185.2 L341.8,180.2 L347.4,176.7 L353.0,178.1 L358.6,180.4 L364.2,175.7 L369.8,175.8 L375.4,165.7 L381.0,168.2 L386.6,165.8 L392.2,168.7 L397.8,175.1 L403.4,167.7 L409.0,176.0 L414.6,169.1 L420.2,175.1 L425.8,171.0 L431.4,168.5 L437.0,172.6 L442.6,156.5 L448.2,155.2 L453.8,158.7 L459.4,158.5 L464.9,161.6 L470.5,164.2 L476.1,161.2 L481.7,160.3 L487.3,154.6 L492.9,150.1 L498.5,149.4 L504.1,156.3 L509.7,160.8 L515.3,147.7 L520.9,141.7 L526.5,134.4 L532.1,123.1 L537.7,119.1 L543.3,123.0 L548.9,115.6 L554.5,109.6 L560.1,115.7 L565.7,114.1 L571.3,112.6 L576.9,110.9 L582.5,103.8 L588.1,104.4 L593.7,96.5 L599.3,102.5 L604.9,112.7 L610.5,110.0 L616.1,106.1 L621.6,103.5 L627.2,105.1 L632.8,103.6 L638.4,97.2 L644.0,96.5 L649.6,96.4 L655.2,91.8 L660.8,82.3 L666.4,80.1 L672.0,89.5 L677.6,75.6 L683.2,64.1 L688.8,61.3 L694.4,69.1 L700.0,66.9" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"/>
+<text x="706" y="70.4" font-size="10" fill="#3d4145">$7.5</text>
+<path d="M62.0,283.3 L67.6,282.9 L73.2,281.2 L78.8,279.1 L84.4,277.3 L90.0,275.2 L95.6,275.9 L101.2,273.0 L106.8,270.0 L112.4,267.1 L118.0,265.9 L123.6,259.8 L129.2,265.2 L134.8,269.0 L140.4,267.7 L145.9,265.5 L151.5,264.9 L157.1,261.1 L162.7,258.6 L168.3,256.4 L173.9,265.3 L179.5,263.5 L185.1,272.4 L190.7,265.1 L196.3,260.9 L201.9,259.6 L207.5,256.2 L213.1,262.1 L218.7,254.3 L224.3,250.7 L229.9,253.2 L235.5,251.5 L241.1,249.1 L246.7,245.3 L252.3,241.9 L257.9,240.3 L263.5,244.0 L269.1,259.4 L274.7,245.2 L280.3,240.4 L285.9,242.2 L291.5,236.3 L297.1,229.1 L302.6,233.2 L308.2,236.7 L313.8,222.4 L319.4,219.8 L325.0,219.7 L330.6,213.5 L336.2,207.0 L341.8,202.0 L347.4,199.6 L353.0,198.6 L358.6,196.5 L364.2,194.1 L369.8,196.8 L375.4,189.9 L381.0,188.5 L386.6,182.1 L392.2,185.3 L397.8,190.3 L403.4,186.3 L409.0,194.2 L414.6,190.9 L420.2,199.5 L425.8,191.7 L431.4,192.3 L437.0,201.0 L442.6,189.4 L448.2,184.7 L453.8,189.1 L459.4,182.8 L464.9,186.7 L470.5,187.4 L476.1,186.3 L481.7,187.5 L487.3,182.3 L492.9,178.2 L498.5,181.7 L504.1,186.5 L509.7,191.0 L515.3,182.6 L520.9,176.9 L526.5,174.8 L532.1,171.2 L537.7,166.8 L543.3,170.1 L548.9,167.9 L554.5,166.3 L560.1,163.3 L565.7,161.0 L571.3,158.6 L576.9,158.6 L582.5,153.2 L588.1,159.0 L593.7,153.9 L599.3,153.2 L604.9,157.8 L610.5,161.1 L616.1,156.5 L621.6,151.9 L627.2,150.1 L632.8,146.4 L638.4,144.7 L644.0,142.6 L649.6,141.1 L655.2,139.3 L660.8,134.9 L666.4,132.8 L672.0,140.1 L677.6,136.1 L683.2,133.1 L688.8,133.2 L694.4,129.7 L700.0,126.1" fill="none" stroke="#7d858c" stroke-width="2" stroke-linejoin="round" stroke-dasharray="5 4"/>
+<text x="706" y="129.6" font-size="10" fill="#3d4145">$4.3</text>
+</svg>
+        <div class="legend"><span><span class="swatch" style="background:#c98500"></span>Random Forest, net</span><span><span class="swatch" style="background:#2a78d6"></span>Momentum 12-1, net</span><span><span class="swatch" style="background:repeating-linear-gradient(90deg,#7d858c 0 5px,transparent 5px 9px)"></span>Equal-weight universe</span></div>
+      </div>
+      <div class="readout"><b>How to read it:</b> the universe itself compounded strongly (a 1.09 Sharpe for an equal-weight basket of today's large caps, flattered by survivorship). Random Forest's edge over it works out to an information ratio of <b>0.98</b>, bought with a deeper worst drawdown (&minus;21.0% against &minus;16.3%) and 0.49% a year in trading costs.</div>
+    </section>
+
+    <section id="models" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">04</div>
+        <div>
+          <p class="eyebrow">Did machine learning help?</p>
+          <h2>Five models, one set of folds, one bar to clear</h2>
+          <p class="lede">A 12-1 momentum ranking needs no fitting, so it is the honest baseline. Every model saw the same features, the same folds, the same portfolio rule and the same costs. The cumulative IC chart shows whether an edge was persistent or came from a few lucky months.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        <p class="eyebrow" style="color:var(--muted)">Cumulative monthly Rank IC</p>
+        <svg viewBox="0 0 760 354" role="img" aria-label="Cumulative monthly Rank IC by model" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+<line x1="62" y1="291.9" x2="700" y2="291.9" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="295.4" text-anchor="end" font-size="10" fill="#a2a5a8">-1</text>
+<line x1="62" y1="225.7" x2="700" y2="225.7" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="229.2" text-anchor="end" font-size="10" fill="#a2a5a8">0</text>
+<line x1="62" y1="159.4" x2="700" y2="159.4" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="162.9" text-anchor="end" font-size="10" fill="#a2a5a8">1</text>
+<line x1="62" y1="93.2" x2="700" y2="93.2" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="96.7" text-anchor="end" font-size="10" fill="#a2a5a8">2</text>
+<line x1="62" y1="27.0" x2="700" y2="27.0" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="30.5" text-anchor="end" font-size="10" fill="#a2a5a8">3</text>
+<text x="62.0" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2017</text>
+<text x="191.9" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2019</text>
+<text x="327.4" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2021</text>
+<text x="462.9" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2023</text>
+<text x="598.4" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">2025</text>
+<line x1="62" y1="225.7" x2="700" y2="225.7" stroke="#16181a" stroke-width="1"/>
+<path d="M62.0,219.0 L67.6,228.1 L73.3,243.0 L78.9,234.3 L84.6,237.1 L90.2,243.3 L95.9,234.0 L101.5,237.6 L107.2,243.9 L112.8,252.9 L118.5,244.7 L124.1,234.5 L129.8,244.5 L135.4,242.5 L141.0,224.5 L146.7,223.0 L152.3,225.6 L158.0,220.9 L163.6,226.8 L169.3,235.0 L174.9,237.0 L180.6,229.0 L186.2,237.6 L191.9,229.4 L197.5,227.2 L203.2,226.7 L208.8,231.3 L214.4,231.3 L220.1,220.2 L225.7,210.8 L231.4,218.6 L237.0,230.9 L242.7,235.1 L248.3,230.9 L254.0,225.2 L259.6,213.0 L265.3,204.1 L270.9,193.8 L276.5,188.9 L282.2,175.4 L287.8,157.8 L293.5,150.9 L299.1,161.8 L304.8,164.3 L310.4,162.7 L316.1,160.1 L321.7,151.5 L327.4,150.9 L333.0,156.9 L338.7,153.3 L344.3,158.2 L349.9,148.5 L355.6,151.0 L361.2,135.2 L366.9,144.3 L372.5,136.0 L378.2,127.6 L383.8,125.7 L389.5,120.8 L395.1,118.6 L400.8,115.4 L406.4,117.5 L412.1,112.6 L417.7,110.4 L423.3,113.0 L429.0,96.5 L434.6,99.8 L440.3,91.4 L445.9,94.8 L451.6,99.2 L457.2,74.4 L462.9,73.8 L468.5,69.9 L474.2,73.5 L479.8,67.0 L485.5,58.1 L491.1,65.9 L496.7,67.9 L502.4,61.7 L508.0,54.7 L513.7,57.1 L519.3,61.8 L525.0,65.4 L530.6,64.9 L536.3,65.6 L541.9,65.3 L547.6,70.1 L553.2,66.0 L558.8,60.0 L564.5,60.4 L570.1,52.0 L575.8,56.0 L581.4,64.6 L587.1,70.2 L592.7,75.4 L598.4,78.2 L604.0,74.9 L609.7,73.2 L615.3,71.1 L621.0,61.9 L626.6,65.1 L632.2,60.2 L637.9,56.4 L643.5,55.0 L649.2,45.2 L654.8,46.4 L660.5,36.8 L666.1,29.6 L671.8,33.9 L677.4,31.7 L683.1,30.2 L688.7,28.7 L694.4,35.8 L700.0,40.9" fill="none" stroke="#c98500" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="706" y="44.4" font-size="10" fill="#3d4145">2.8</text>
+<path d="M62.0,225.9 L67.6,236.5 L73.3,250.5 L78.9,243.5 L84.6,244.7 L90.2,242.5 L95.9,231.9 L101.5,233.2 L107.2,244.0 L112.8,250.7 L118.5,256.9 L124.1,246.1 L129.8,258.7 L135.4,252.5 L141.0,248.3 L146.7,242.0 L152.3,246.4 L158.0,244.7 L163.6,253.5 L169.3,255.9 L174.9,257.5 L180.6,247.7 L186.2,251.3 L191.9,237.4 L197.5,236.8 L203.2,224.2 L208.8,225.4 L214.4,227.0 L220.1,227.2 L225.7,231.5 L231.4,233.6 L237.0,237.7 L242.7,244.9 L248.3,239.4 L254.0,245.1 L259.6,230.0 L265.3,225.4 L270.9,210.5 L276.5,201.2 L282.2,185.2 L287.8,165.3 L293.5,166.9 L299.1,167.3 L304.8,170.1 L310.4,171.8 L316.1,164.7 L321.7,162.6 L327.4,163.7 L333.0,163.8 L338.7,165.3 L344.3,169.6 L349.9,163.5 L355.6,163.1 L361.2,151.3 L366.9,172.0 L372.5,167.7 L378.2,163.4 L383.8,161.1 L389.5,164.5 L395.1,165.4 L400.8,168.7 L406.4,163.8 L412.1,150.6 L417.7,149.1 L423.3,149.6 L429.0,139.1 L434.6,143.9 L440.3,148.7 L445.9,154.2 L451.6,157.3 L457.2,141.6 L462.9,150.3 L468.5,147.8 L474.2,151.1 L479.8,143.5 L485.5,136.6 L491.1,138.5 L496.7,134.9 L502.4,121.9 L508.0,115.5 L513.7,126.1 L519.3,131.5 L525.0,133.4 L530.6,131.9 L536.3,136.0 L541.9,136.1 L547.6,135.8 L553.2,134.1 L558.8,134.3 L564.5,138.2 L570.1,129.0 L575.8,129.0 L581.4,131.6 L587.1,125.3 L592.7,132.9 L598.4,138.9 L604.0,142.2 L609.7,146.9 L615.3,150.7 L621.0,152.5 L626.6,148.9 L632.2,152.1 L637.9,150.9 L643.5,149.9 L649.2,142.3 L654.8,144.2 L660.5,130.5 L666.1,129.1 L671.8,138.7 L677.4,127.5 L683.1,133.1 L688.7,132.1 L694.4,141.9 L700.0,150.5" fill="none" stroke="#e87ba4" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="706" y="154.0" font-size="10" fill="#3d4145"></text>
+<path d="M62.0,228.7 L67.6,234.5 L73.3,239.9 L78.9,240.4 L84.6,232.3 L90.2,244.0 L95.9,235.4 L101.5,234.2 L107.2,237.6 L112.8,246.6 L118.5,232.6 L124.1,223.8 L129.8,229.5 L135.4,230.2 L141.0,212.9 L146.7,216.8 L152.3,231.1 L158.0,223.6 L163.6,219.3 L169.3,233.1 L174.9,239.4 L180.6,237.9 L186.2,246.1 L191.9,236.4 L197.5,236.0 L203.2,241.8 L208.8,256.1 L214.4,256.8 L220.1,243.2 L225.7,243.9 L231.4,250.2 L237.0,261.6 L242.7,274.3 L248.3,270.4 L254.0,279.7 L259.6,271.0 L265.3,272.7 L270.9,262.6 L276.5,244.2 L282.2,241.4 L287.8,234.3 L293.5,234.1 L299.1,234.8 L304.8,229.1 L310.4,230.2 L316.1,221.5 L321.7,216.3 L327.4,199.4 L333.0,214.6 L338.7,225.5 L344.3,211.1 L349.9,218.5 L355.6,233.2 L361.2,226.8 L366.9,234.8 L372.5,223.0 L378.2,213.1 L383.8,216.1 L389.5,218.7 L395.1,224.3 L400.8,225.3 L406.4,233.5 L412.1,221.2 L417.7,236.6 L423.3,238.4 L429.0,227.3 L434.6,237.5 L440.3,233.3 L445.9,227.4 L451.6,225.0 L457.2,212.0 L462.9,217.8 L468.5,228.2 L474.2,236.9 L479.8,240.8 L485.5,229.3 L491.1,217.6 L496.7,231.8 L502.4,226.7 L508.0,223.4 L513.7,209.6 L519.3,203.6 L525.0,215.9 L530.6,220.7 L536.3,206.5 L541.9,209.7 L547.6,205.6 L553.2,206.5 L558.8,213.9 L564.5,221.1 L570.1,213.1 L575.8,209.5 L581.4,210.7 L587.1,230.6 L592.7,215.9 L598.4,220.4 L604.0,223.3 L609.7,214.3 L615.3,199.4 L621.0,177.2 L626.6,170.7 L632.2,165.1 L637.9,169.6 L643.5,157.2 L649.2,151.4 L654.8,145.9 L660.5,143.9 L666.1,147.3 L671.8,151.6 L677.4,139.6 L683.1,131.9 L688.7,134.3 L694.4,152.3 L700.0,147.4" fill="none" stroke="#1baf7a" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="706" y="150.9" font-size="10" fill="#3d4145"></text>
+<path d="M62.0,228.8 L67.6,233.2 L73.3,241.8 L78.9,236.7 L84.6,228.0 L90.2,239.7 L95.9,235.3 L101.5,230.9 L107.2,233.2 L112.8,241.0 L118.5,230.8 L124.1,222.5 L129.8,225.6 L135.4,225.8 L141.0,207.9 L146.7,210.3 L152.3,223.5 L158.0,216.0 L163.6,211.7 L169.3,226.9 L174.9,235.2 L180.6,233.5 L186.2,246.6 L191.9,238.4 L197.5,237.7 L203.2,242.5 L208.8,256.1 L214.4,256.0 L220.1,242.7 L225.7,245.6 L231.4,252.7 L237.0,263.8 L242.7,276.2 L248.3,269.7 L254.0,283.3 L259.6,274.1 L265.3,275.3 L270.9,265.7 L276.5,249.8 L282.2,245.4 L287.8,236.0 L293.5,236.2 L299.1,239.1 L304.8,233.4 L310.4,228.4 L316.1,220.7 L321.7,214.7 L327.4,191.0 L333.0,203.6 L338.7,215.6 L344.3,201.3 L349.9,210.1 L355.6,224.4 L361.2,218.0 L366.9,228.1 L372.5,211.1 L378.2,201.1 L383.8,201.2 L389.5,210.1 L395.1,214.1 L400.8,218.1 L406.4,227.0 L412.1,211.6 L417.7,226.0 L423.3,227.6 L429.0,219.5 L434.6,230.7 L440.3,222.4 L445.9,216.4 L451.6,218.1 L457.2,202.4 L462.9,206.0 L468.5,216.0 L474.2,224.6 L479.8,224.7 L485.5,214.5 L491.1,204.5 L496.7,216.4 L502.4,210.6 L508.0,207.7 L513.7,192.9 L519.3,186.9 L525.0,201.6 L530.6,207.5 L536.3,191.8 L541.9,194.1 L547.6,189.3 L553.2,194.0 L558.8,201.3 L564.5,208.0 L570.1,199.1 L575.8,192.5 L581.4,189.9 L587.1,207.8 L592.7,192.6 L598.4,194.6 L604.0,194.9 L609.7,187.4 L615.3,173.9 L621.0,158.6 L626.6,152.8 L632.2,151.0 L637.9,159.2 L643.5,146.6 L649.2,138.6 L654.8,135.8 L660.5,131.6 L666.1,133.8 L671.8,140.5 L677.4,134.3 L683.1,131.8 L688.7,134.4 L694.4,147.9 L700.0,151.7" fill="none" stroke="#eb6834" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="706" y="155.2" font-size="10" fill="#3d4145"></text>
+<path d="M62.0,224.2 L67.6,227.8 L73.3,210.0 L78.9,205.7 L84.6,195.7 L90.2,190.3 L95.9,196.8 L101.5,180.7 L107.2,191.3 L112.8,197.0 L118.5,183.6 L124.1,170.1 L129.8,176.2 L135.4,176.0 L141.0,163.7 L146.7,170.9 L152.3,188.5 L158.0,169.3 L163.6,166.2 L169.3,177.5 L174.9,186.8 L180.6,191.4 L186.2,189.9 L191.9,174.1 L197.5,167.4 L203.2,178.4 L208.8,158.7 L214.4,173.5 L220.1,176.6 L225.7,163.5 L231.4,180.0 L237.0,207.4 L242.7,224.0 L248.3,223.9 L254.0,211.2 L259.6,206.7 L265.3,201.2 L270.9,202.6 L276.5,199.7 L282.2,186.9 L287.8,177.8 L293.5,178.2 L299.1,181.7 L304.8,176.2 L310.4,206.4 L316.1,216.4 L321.7,207.0 L327.4,219.2 L333.0,238.9 L338.7,241.0 L344.3,227.5 L349.9,230.0 L355.6,232.5 L361.2,220.2 L366.9,217.3 L372.5,209.2 L378.2,212.6 L383.8,229.4 L389.5,251.0 L395.1,246.5 L400.8,231.5 L406.4,234.4 L412.1,251.2 L417.7,241.9 L423.3,258.4 L429.0,255.6 L434.6,237.7 L440.3,243.8 L445.9,248.2 L451.6,241.7 L457.2,262.3 L462.9,258.8 L468.5,251.8 L474.2,244.2 L479.8,238.2 L485.5,241.1 L491.1,246.2 L496.7,226.8 L502.4,228.1 L508.0,225.7 L513.7,216.2 L519.3,225.4 L525.0,205.7 L530.6,188.6 L536.3,195.9 L541.9,201.8 L547.6,193.8 L553.2,180.1 L558.8,201.7 L564.5,194.8 L570.1,203.3 L575.8,203.1 L581.4,205.9 L587.1,197.9 L592.7,187.0 L598.4,192.2 L604.0,204.6 L609.7,189.6 L615.3,189.9 L621.0,195.7 L626.6,199.5 L632.2,206.2 L637.9,187.6 L643.5,186.7 L649.2,183.8 L654.8,186.8 L660.5,176.6 L666.1,174.8 L671.8,171.0 L677.4,153.6 L683.1,143.3 L688.7,128.9 L694.4,156.0 L700.0,179.1" fill="none" stroke="#2a78d6" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="706" y="182.6" font-size="10" fill="#3d4145"></text>
+</svg>
+        <div class="legend"><span><span class="swatch" style="background:#c98500"></span>Random Forest</span><span><span class="swatch" style="background:#e87ba4"></span>Gradient Boosting</span><span><span class="swatch" style="background:#1baf7a"></span>Elastic Net</span><span><span class="swatch" style="background:#eb6834"></span>Ridge</span><span><span class="swatch" style="background:#2a78d6"></span>Momentum 12-1</span></div>
+        <div class="tablewrap">
+          <table class="results">
+            <thead><tr><th>Model</th><th>Mean IC</th><th>t-stat</th><th>IC &gt; 0</th><th>Q1 &minus; Q5</th><th>Net Sharpe</th><th>Turnover</th><th>Max DD</th></tr></thead>
+            <tbody>
+<tr class="win"><td>Random Forest<span class="tag">Only significant</span></td><td>0.024</td><td>2.41</td><td>59%</td><td>0.80%</td><td>1.24</td><td>41%</td><td>&minus;21.0%</td></tr>
+<tr><td>Gradient Boosting</td><td>0.010</td><td>0.97</td><td>45%</td><td>0.33%</td><td>1.06</td><td>57%</td><td>&minus;22.8%</td></tr>
+<tr><td>Elastic Net</td><td>0.010</td><td>0.80</td><td>49%</td><td>0.38%</td><td>0.90</td><td>35%</td><td>&minus;23.3%</td></tr>
+<tr><td>Ridge</td><td>0.010</td><td>0.75</td><td>50%</td><td>0.41%</td><td>0.80</td><td>46%</td><td>&minus;27.4%</td></tr>
+<tr><td>Momentum 12-1 <span style="color:#a2a5a8">(baseline)</span></td><td>0.006</td><td>0.37</td><td>54%</td><td>0.23%</td><td>1.22</td><td>25%</td><td>&minus;21.1%</td></tr>
+<tr class="bench"><td>Equal-weight universe</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>1.09</td><td>&mdash;</td><td>&minus;16.3%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>The answer is mixed.</b> Tree ensembles can capture interactions the linear models miss, and Random Forest's IC line climbs steadily through 2020 and 2022. Gradient boosting, the more flexible tree model, traded more and gained less. The linear models end up close to momentum once costs are counted.</div>
+    </section>
+
+    <section id="regimes" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">05</div>
+        <div>
+          <p class="eyebrow">When does it work?</p>
+          <h2>The signal is not stationary</h2>
+          <p class="lede">Each month is labelled using only trailing information: the universe's 63-session return sets expansion or contraction, and 20-session volatility above the training window's median sets high volatility. These labels are diagnostics, never inputs or tuning targets.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="tablewrap">
+          <table class="results">
+            <thead><tr><th>Regime (Random Forest)</th><th>Months</th><th>Mean IC</th><th>IC &gt; 0</th><th>Monthly active return</th></tr></thead>
+            <tbody><tr><td>Expansion / low vol</td><td>60</td><td>-0.004</td><td>47%</td><td>+0.50%</td></tr><tr class="win"><td>Expansion / high vol</td><td>29</td><td>0.059</td><td>76%</td><td>+1.57%</td></tr><tr class="win"><td>Contraction / high vol</td><td>24</td><td>0.051</td><td>67%</td><td>+1.14%</td></tr><tr><td>Contraction / low vol</td><td>1</td><td>0.106</td><td>100%</td><td>+1.28%</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>Most of the edge comes from volatile markets.</b> In calm expansions, the most common state, the ranking was indistinguishable from random. The last six folds average an IC of -0.028, which is why the monitoring view flags the model as degraded going into the Sep 2026 signal.</div>
+    </section>
+
+    <section id="system" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">06</div>
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>From daily prices to a monitored portfolio</h2>
+        </div>
+      </div>
+      <div class="pipeline" style="margin-top:32px">
+        <div class="step"><span class="step-n">01 &nbsp;DATA</span><h3>Point-in-time panel</h3><p>Adjusted prices and volume for 98 stocks. A quality gate drops sessions Yahoo published for under 90% of the universe.</p><div class="step-tools"><span>yfinance</span><span>pandas</span></div></div>
+        <div class="step"><span class="step-n">02 &nbsp;FEATURES</span><h3>14 trailing signals</h3><p>Momentum, risk, liquidity and sector-relative strength, ranked within each date so decade-long level drift cannot leak in.</p><div class="step-tools"><span>NumPy</span><span>pandas</span></div></div>
+        <div class="step"><span class="step-n">03 &nbsp;MODELS</span><h3>Embargoed walk-forward</h3><p>Expanding windows stop 20 sessions before each test month. Weekly-sampled training, quarterly refits, winsorised labels.</p><div class="step-tools"><span>scikit-learn</span></div></div>
+        <div class="step"><span class="step-n">04 &nbsp;PRODUCT</span><h3>API and workstation</h3><p>Background runs, live scoring, attribution, drift and health checks served to a dependency-free JavaScript app.</p><div class="step-tools"><span>FastAPI</span><span>JavaScript</span><span>Render</span></div></div>
+      </div>
+    </section>
+
+    <section id="trust" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">07</div>
+        <div>
+          <p class="eyebrow">Validation</p>
+          <h2>Why the numbers can be trusted, and where they cannot</h2>
+        </div>
+      </div>
+      <div class="evidence" style="margin-top:32px">
+        <div class="ecard"><p class="eyebrow">Leakage controls</p><h3>Every label starts after its decision</h3><p>Features use data through the decision close; the 20-session target starts the next session; training ends 20 sessions before each test date so labels never overlap. Stale quarterly fits can only be older, never newer.</p><span class="stat">Tested: embargo, month-end folds, sampler equivalence</span></div>
+        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">17 pytest cases &middot; ruff &middot; CI on every push</span></div>
+        <div class="ecard"><p class="eyebrow">Deliberately not claimed</p><h3>What this cannot show</h3><p>The universe is today's large caps, so results carry survivorship bias. There are no point-in-time fundamentals, delisting returns, borrow costs, taxes or market-impact model, and no portfolio optimizer.</p><span class="stat">Stated in the app, the README and here</span></div>
+        <div class="ecard"><p class="eyebrow">Explainability</p><h3>Attribution for every ranked stock</h3><p>Each score is decomposed by setting one feature at a time to the day's median. The decomposition is exact for the linear models and a local approximation for trees; reliance is compared across models on one scale.</p><span class="stat">Occlusion attribution &middot; reliance drift</span></div>
+      </div>
+    </section>
+
+    <section id="next" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">08</div>
+        <div>
+          <p class="eyebrow">Next research iteration</p>
+          <h2>Strengthen the data before expanding the claim</h2>
+          <p class="lede">Point-in-time constituents to remove survivorship bias, point-in-time fundamentals, sector-constrained optimisation, and a spread and impact cost model. Each goes through the same chronological validation before it can support a stronger conclusion.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:80px 0 0">
+      <div class="skills">
+        <div class="skill"><h3>Quantitative research</h3><p>Cross-sectional signal design, rank IC and quintile analysis, walk-forward validation with an embargo, regime diagnostics.</p><div class="chips"><span>Rank IC</span><span>Walk-forward</span><span>Regimes</span></div></div>
+        <div class="skill"><h3>Machine learning</h3><p>Five comparable models with declared hyperparameters, label winsorisation, occlusion attribution and drift monitoring.</p><div class="chips"><span>scikit-learn</span><span>Random Forest</span><span>PSI</span></div></div>
+        <div class="skill"><h3>Software engineering</h3><p>Background job API, multi-view JavaScript workstation, performance profiling, tests, CI and Docker deployment.</p><div class="chips"><span>FastAPI</span><span>JavaScript</span><span>pytest</span></div></div>
+      </div>
+    </section>
+
+    <section style="padding:88px 0 96px;margin-top:80px;border-top:1px solid #e6e2db;text-align:center">
+      <p class="eyebrow">Try it</p>
+      <h2 style="margin:16px auto 16px;max-width:22ch;font-size:clamp(28px,3.6vw,40px);line-height:1.1;letter-spacing:-0.02em">Open the workstation and inspect today's ranks</h2>
+      <p style="max-width:56ch;margin:0 auto;color:var(--body);font-size:17px;line-height:1.6">The free instance may take a minute to wake up. Nothing in AlphaCast is investment advice.</p>
+      <div class="btnrow" style="justify-content:center">
+        <a class="btn btn-primary" href="https://alphacast.onrender.com" target="_blank" rel="noreferrer">Launch AlphaCast</a>
+        <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/alphacast" target="_blank" rel="noreferrer">Source on GitHub</a>
+      </div>
+    </section>
   </main>
+</div>
+<div class="wrap">
+  <footer style="display:flex;justify-content:space-between;gap:24px;padding:26px 0;border-top:1px solid #e6e2db;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#7a7e83">
+    <span>AlphaCast &middot; Nathan Gomes</span><a href="/#projects" style="color:#7a7e83;text-decoration:none">All projects</a>
+  </footer>
+</div>
 </body>
 </html>
