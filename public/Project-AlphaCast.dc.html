@@ -486,6 +486,33 @@
         </div>
       </div>
       <div class="readout"><b>Most of the edge comes from volatile markets.</b> In calm expansions, the most common state, the ranking was indistinguishable from random. The last six folds average an IC of -0.028, which is why the monitoring view flags the model as degraded going into the Sep 2026 signal.</div>
+      <div class="chart-card">
+        <p class="eyebrow" style="color:var(--muted)">Rank IC by forward horizon</p>
+        <svg viewBox="0 0 760 354" role="img" aria-label="Mean Rank IC by forward horizon for Random Forest, the ensemble and momentum" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+<line x1="62" y1="283.3" x2="700" y2="283.3" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="286.8" text-anchor="end" font-size="10" fill="#a2a5a8">0.000</text>
+<line x1="62" y1="216.1" x2="700" y2="216.1" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="219.6" text-anchor="end" font-size="10" fill="#a2a5a8">0.010</text>
+<line x1="62" y1="149.0" x2="700" y2="149.0" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="152.5" text-anchor="end" font-size="10" fill="#a2a5a8">0.020</text>
+<line x1="62" y1="81.8" x2="700" y2="81.8" stroke="#e6e2db" stroke-width="1"/>
+<text x="54" y="85.3" text-anchor="end" font-size="10" fill="#a2a5a8">0.030</text>
+<text x="62.0" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">5 sessions</text>
+<text x="221.5" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">10 sessions</text>
+<text x="381.0" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">20 sessions</text>
+<text x="540.5" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">40 sessions</text>
+<text x="700.0" y="314" text-anchor="middle" font-size="10" fill="#a2a5a8">60 sessions</text>
+<line x1="62" y1="283.3" x2="700" y2="283.3" stroke="#16181a" stroke-width="1"/>
+<path d="M62.0,201.4 L221.5,28.9 L381.0,119.0 L540.5,60.1 L700.0,28.7" fill="none" stroke="#c98500" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="706" y="32.2" font-size="10" fill="#3d4145"></text>
+<path d="M62.0,158.4 L221.5,50.7 L381.0,160.2 L540.5,96.4 L700.0,55.7" fill="none" stroke="#4a3aa7" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="706" y="59.2" font-size="10" fill="#3d4145"></text>
+<path d="M62.0,187.9 L221.5,233.3 L381.0,241.9 L540.5,219.8 L700.0,213.7" fill="none" stroke="#2a78d6" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="706" y="217.2" font-size="10" fill="#3d4145"></text>
+</svg>
+        <div class="legend"><span><span class="swatch" style="background:#c98500"></span>Random Forest</span><span><span class="swatch" style="background:#4a3aa7"></span>Ensemble</span><span><span class="swatch" style="background:#2a78d6"></span>Momentum 12-1</span></div>
+      </div>
+      <div class="readout"><b>The signal is slower than the horizon it was trained for.</b> Scored against longer windows, Random Forest's IC does not fade: 0.038 at 10 sessions and 0.038 at 60, against 0.024 at 20. A slower rebalance could keep most of the ranking skill with less turnover, a test for the next iteration rather than a conclusion, since longer windows overlap more and carry fewer independent observations.</div>
     </section>
 
     <section id="costs" style="padding:80px 0 0">
@@ -563,7 +590,7 @@
       </div>
       <div class="evidence" style="margin-top:32px">
         <div class="ecard"><p class="eyebrow">Leakage controls</p><h3>Every label starts after its decision</h3><p>Features use data through the decision close; the 20-session target starts the next session; training ends 20 sessions before each test date so labels never overlap. Stale quarterly fits can only be older, never newer.</p><span class="stat">Tested: embargo, month-end folds, sampler equivalence, and a shuffled-data placebo that must show no skill</span></div>
-        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">26 pytest cases &middot; ruff &middot; CI on every push</span></div>
+        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">27 pytest cases &middot; ruff &middot; CI on every push</span></div>
         <div class="ecard"><p class="eyebrow">Deliberately not claimed</p><h3>What this cannot show</h3><p>The universe is today's large caps, so results carry survivorship bias. There are no point-in-time fundamentals, delisting returns, borrow costs, taxes or market-impact model, and no portfolio optimizer.</p><span class="stat">Stated in the app, the README and here</span></div>
         <div class="ecard"><p class="eyebrow">Explainability</p><h3>Attribution for every ranked stock</h3><p>Each score is decomposed by setting one feature at a time to the day's median. The decomposition is exact for the linear models and a local approximation for trees; reliance is compared across models on one scale.</p><span class="stat">Occlusion attribution &middot; reliance drift</span></div>
       </div>
@@ -575,7 +602,7 @@
         <div>
           <p class="eyebrow">Next research iteration</p>
           <h2>Strengthen the data before expanding the claim</h2>
-          <p class="lede">Point-in-time constituents to remove survivorship bias, point-in-time fundamentals, sector-constrained optimisation, and a spread and impact cost model. Each goes through the same chronological validation before it can support a stronger conclusion.</p>
+          <p class="lede">Point-in-time constituents to remove survivorship bias, point-in-time fundamentals, a slower rebalance where the decay analysis suggests the signal lasts, and a spread and impact cost model. Each goes through the same chronological validation before it can support a stronger conclusion.</p>
         </div>
       </div>
     </section>
