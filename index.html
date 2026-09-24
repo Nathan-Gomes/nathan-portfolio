@@ -34,6 +34,7 @@
   <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:28px 0;border-bottom:1px solid #e6e2db">
     <a href="/" style="font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
     <nav style="display:flex;gap:26px;font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">
+      <a href="#focus" style="text-decoration:none;color:#7a7e83" style-hover="color:#16181a">Current focus</a>
       <a href="#projects" style="text-decoration:none;color:#7a7e83" style-hover="color:#16181a">Projects</a>
       <a href="#experience" style="text-decoration:none;color:#7a7e83" style-hover="color:#16181a">Experience</a>
       <a href="#certifications" style="text-decoration:none;color:#7a7e83" style-hover="color:#16181a">Certifications</a>
@@ -77,6 +78,33 @@
         <div class="hero-availability"><span aria-hidden="true"></span><p><strong>Available for opportunities</strong>Junior software development, data analysis, and automation roles</p></div>
       </sc-if>
     </aside>
+  </section>
+
+  <section id="focus" class="focus-section" aria-labelledby="focus-title">
+    <div class="focus-head">
+      <p class="focus-kicker"><span class="focus-pulse" aria-hidden="true"></span>Current focus</p>
+      <p class="focus-updated">In active development · updated September 2026</p>
+    </div>
+    <article class="focus-card">
+      <div class="focus-copy">
+        <p class="focus-eyebrow">Machine-learning equity research · FastAPI</p>
+        <h2 id="focus-title">AlphaCast</h2>
+        <p class="focus-lead">A research workstation that ranks 98 US large caps by expected sector-relative return, tests five models on embargoed walk-forward folds, and turns the signal into a cost-aware portfolio it keeps monitoring.</p>
+        <dl class="focus-stats">
+          <div><dt>Best out-of-sample Rank IC</dt><dd>0.024 <span>t = 2.4 · Random Forest</span></dd></div>
+          <div><dt>Net Sharpe</dt><dd>1.24 <span>vs 1.09 universe</span></dd></div>
+          <div><dt>Walk-forward folds</dt><dd>114 <span>monthly, 20-session embargo</span></dd></div>
+        </dl>
+        <div class="focus-actions">
+          <a class="focus-primary" href="https://alphacast.onrender.com" target="_blank" rel="noreferrer">Launch the app <span aria-hidden="true">↗</span></a>
+          <a href="Project-AlphaCast.dc.html">Read the case study</a>
+          <a href="https://github.com/Nathan-Gomes/alphacast" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <a class="focus-shot" href="https://alphacast.onrender.com" target="_blank" rel="noreferrer" aria-label="Open the AlphaCast app">
+        <img src="assets/alphacast-overview.png" alt="AlphaCast overview screen with the latest signal, model health, top-ranked stocks and a growth chart" loading="lazy">
+      </a>
+    </article>
   </section>
 
   <section id="projects" style="padding:24px 0 96px;border-top:1px solid #e6e2db">
@@ -127,6 +155,7 @@
         <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:12px">ML equity research · FastAPI</p>
         <h3 style="font-size:26px;line-height:1.14;letter-spacing:-0.015em;font-weight:600">AlphaCast</h3>
         <p style="margin-top:12px;max-width:62ch;font-size:16px;line-height:1.6;color:#3d4145">A machine-learning research workstation that ranks 98 US large caps by expected 20-session sector-relative return. Five models are tested on embargoed walk-forward folds against a momentum baseline, then turned into a cost-aware portfolio with live signals, per-stock attribution, and model monitoring.</p>
+        <p class="tile-metrics"><span>Rank IC <b>0.024</b> <i>t = 2.4, out of sample</i></span><span>Net Sharpe <b>1.24</b> <i>vs 1.09 universe</i></span><span>98 stocks · 5 models · live signal</span></p>
         <sc-if value="{{ showStack }}" hint-placeholder-val="{{ true }}">
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#3d4145">
             <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">Python</span>

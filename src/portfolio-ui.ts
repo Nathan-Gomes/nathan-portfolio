@@ -93,7 +93,7 @@ function enhance(root: HTMLElement) {
   const captions = [
     'A six-ETF portfolio re-optimized every quarter, tested on five years of returns it never saw.',
     'Four Canadian equity portfolios, historical risk analysis, and five-year scenarios.',
-    'Walk-forward systematic equity research with embargoed ranking tests and explicit synthetic-data limits.',
+    'Machine-learning stock rankings for 98 US large caps, tested walk-forward and monitored live.',
     'Property stress tests, debt analysis, and capital allocation scenarios.',
     'Cloud spending, resource utilization, and a prioritized savings queue.',
     'A study of AI operating costs, human labour, and break-even scenarios.',
