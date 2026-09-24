@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Strata: Quantitative Investment Analytics | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Strata: a portfolio construction and risk system by Nathan Gomes. Four allocation policies and walk-forward optimizers on eight TSX stocks against XIC, with trading costs, 5,000 five-year scenarios and a validated SQL data mart.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Strata: portfolio construction and risk">
+<meta property="og:description" content="Balanced earned the best risk-adjusted return of four allocation policies, Growth's extra return came with a {growth_dd} drawdown, and a minimum-variance optimizer lost to equal weighting out of sample.">
+<meta property="og:image" content="https://www.nathan-gomes.com/assets/strata-overview.png">
+<meta property="og:url" content="https://www.nathan-gomes.com/Project-Investment-Analytics.dc.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+{style}
+<style>
+  /* Text greys stepped to clear 4.5:1 on every surface of this page. */
+  :root {{ --muted: #686c71; --faint: #686c71; }}
+  .shot {{ margin-top: 26px; border: 1px solid #1c2631; background: #0b0f14; }}
+  .shot img {{ display: block; width: 100%; height: auto; }}
+  .shots {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }}
+  .shot figcaption {{ padding: 12px 14px; background: var(--card); border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; color: var(--body); }}
+  .views {{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 26px; }}
+  .views .step p {{ color: var(--body); }}
+  .fans {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }}
+  .fans .chart-card {{ margin-top: 0; }}
+  details.more {{ margin-top: 22px; border: 1px solid var(--line); background: var(--card); }}
+  details.more summary {{ cursor: pointer; padding: 14px 18px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }}
+  details.more .inner {{ padding: 4px 18px 18px; color: var(--body); font-size: 15px; line-height: 1.6; }}
+  .formulas {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }}
+  .formulas h4 {{ margin: 12px 0 4px; font-size: 15px; }}
+  .formulas code {{ font-family: var(--mono); font-size: 13px; color: var(--ink); }}
+  .formulas p {{ margin: 4px 0 0; font-size: 14px; }}
+  .results td:first-child {{ white-space: nowrap; }}
+  .links {{ margin-top: 14px; font-family: var(--mono); font-size: 12px; }}
+  .links a {{ color: var(--green-bright); }}
+  @media (max-width: 980px) {{ .views {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
+  @media (max-width: 760px) {{ .views, .shots, .fans, .formulas {{ grid-template-columns: minmax(0, 1fr); }} }}
+  /* Keep chart text legible on phones: scroll the plot instead of shrinking it. */
+  @media (max-width: 760px) {{ .chart-card {{ overflow-x: auto; }} .chart-card > svg {{ min-width: 600px; }} }}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:26px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <nav style="display:flex;gap:24px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">
+      <a href="/#projects" style="text-decoration:none;color:#686c71">Projects</a>
+      <a href="https://nathan-portfolio-lab.onrender.com/" target="_blank" rel="noreferrer" style="text-decoration:none;color:#1a6f57">Live app</a>
+      <a href="/investment-analytics/output/report.html" style="text-decoration:none;color:#686c71">Report</a>
+      <a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer" style="text-decoration:none;color:#686c71">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<nav class="skimnav" aria-label="Sections">
+  <div class="wrap">
+    <div class="skimnav-inner">
+      <a href="#result">01 &nbsp;Result</a>
+      <a href="#app">02 &nbsp;The app</a>
+      <a href="#history">03 &nbsp;History</a>
+      <a href="#construction">04 &nbsp;Optimizing</a>
+      <a href="#scenarios">05 &nbsp;Five years</a>
+      <a href="#system">06 &nbsp;How it works</a>
+      <a href="#production">07 &nbsp;Production</a>
+      <a href="#trust">08 &nbsp;Validation</a>
+      <a href="#next">09 &nbsp;Next</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <main>
+
+    <section class="hero">
+      <div class="herogrid">
+        <div>
+          <p class="eyebrow">Project 02 &nbsp;/&nbsp; Portfolio construction &amp; risk</p>
+          <h1>Strata</h1>
+          <p class="deck">A portfolio construction and risk system: build an allocation from any set of tickers, or let an optimizer solve for one, then see what the rule earned out of sample, what it cost to run, and the range of outcomes that could follow.</p>
+          <div class="verdict"><strong>The verdict:</strong> of four allocation policies on eight TSX stocks, Balanced earned the best risk-adjusted return (Sharpe {bal_sharpe} against {xic_sharpe} for XIC) with a shallower worst loss than the index. Growth's extra return came with a <b>{growth_dd}</b> drawdown. A minimum-variance optimizer delivered the lower volatility it promised but lost to plain equal weighting on Sharpe ({mv_sharpe} against {ew_sharpe}) while trading {mv_turnover_multiple}&times; as much.</div>
+          <div class="btnrow">
+            <a class="btn btn-primary" href="https://nathan-portfolio-lab.onrender.com/" target="_blank" rel="noreferrer">Launch Strata</a>
+            <a class="btn btn-ghost" href="/strata-demo.html">Try the browser demo</a>
+            <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">Source on GitHub</a>
+          </div>
+        </div>
+        <dl class="factlist">
+          <div><dt>Test window</dt><dd>{first} &ndash; {last}<br>{sessions} daily sessions, CAD</dd></div>
+          <div><dt>Universe</dt><dd>8 TSX stocks &middot; 5 sectors<br>XIC.TO benchmark</dd></div>
+          <div><dt>Rules</dt><dd>Growth &middot; Income &middot; Balanced<br>Low volatility &middot; 12 optimizers</dd></div>
+          <div><dt>Stack</dt><dd>Python &middot; pandas &middot; NumPy<br>SQLite &middot; cvxpy &middot; FastAPI</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="result" style="padding:56px 0 0">
+      <div class="scoreboard">
+        <div class="score">
+          <span class="score-label">Balanced &middot; Sharpe</span>
+          <strong class="score-value">{bal_sharpe}</strong>
+          <div class="score-vs">XIC {xic_sharpe} &middot; drawdown {bal_dd}</div>
+          <span class="pill pill-good">Best of the four policies</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Growth &middot; annual return</span>
+          <strong class="score-value">{growth_ann}</strong>
+          <div class="score-vs">XIC {xic_ann} &middot; volatility {growth_vol}</div>
+          <span class="pill pill-good">{growth_gap} pts ahead</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Growth &middot; worst drawdown</span>
+          <strong class="score-value">{growth_dd}</strong>
+          <div class="score-vs">XIC {xic_dd} &middot; Balanced {bal_dd}</div>
+          <span class="pill pill-cost">{growth_dd_gap} pts deeper than XIC</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Min variance &middot; Sharpe</span>
+          <strong class="score-value">{mv_sharpe}</strong>
+          <div class="score-vs">Equal weight {ew_sharpe} &middot; risk parity {rp_sharpe}</div>
+          <span class="pill pill-cost">Optimizer lost out of sample</span>
+        </div>
+      </div>
+      <p class="caption">CAD 100,000 per portfolio from {first} to {last}, rebalanced monthly to target, 10 bps on traded notional. Optimizers re-solve at each rebalance from the previous 252 sessions and are judged only on the returns that followed. Benchmark: XIC.TO, held without rebalancing.</p>
+    </section>
+
+    <section style="padding:56px 0 0">
+      <h2 class="eyebrow" style="margin-bottom:22px">The thirty-second version</h2>
+      <div class="takeaways">
+        <div class="takeaway">
+          <span class="takeaway-n">1</span>
+          <h3>Balance beat concentration on risk-adjusted terms</h3>
+          <p>Balanced returned <b>{bal_ann}</b> a year against XIC's {xic_ann} at almost the same volatility, and its worst loss was {bal_dd} against the index's {xic_dd}. One sample and one universe, so this is an observed result, not evidence of persistent skill.</p>
+        </div>
+        <div class="takeaway">
+          <span class="takeaway-n">2</span>
+          <h3>Growth's return came with half its value at risk</h3>
+          <p>A 65% technology target compounded at <b>{growth_ann}</b> a year but fell {growth_dd} from peak. In five-year scenarios it drops below 80% of the starting balance in <b>{growth_below80}</b> of paths, against {bal_below80} for Balanced, and finishes behind Balanced in {growth_under} of shared market paths.</p>
+        </div>
+        <div class="takeaway">
+          <span class="takeaway-n">3</span>
+          <h3>Optimizing did not beat equal weight</h3>
+          <p>Minimum variance achieved lower volatility ({mv_vol} against {ew_vol}) but a Sharpe of <b>{mv_sharpe}</b> against {ew_sharpe} for equal weighting, with {mv_turnover_multiple}&times; the turnover. An optimal answer to estimated inputs is not the best realized portfolio; the system reports that instead of assuming the sophisticated method wins.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="app" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">02</div>
+        <div>
+          <p class="eyebrow">The application</p>
+          <h2>Build a portfolio, test it, see where it could land</h2>
+          <p class="lede">Strata is the deployed version of the research: enter Yahoo Finance tickers and weights, or pick one of twelve registered construction methods, and a single run returns the realized history, the costs, a drawdown profile and 5,000 simulated five-year paths. Up to four portfolios run side by side in the same simulated markets, so differences come from construction rather than a luckier draw.</p>
+        </div>
+      </div>
+      <figure class="shot"><img src="assets/strata-overview.png" alt="Strata app: portfolio builder on the left; realized value since 2016 continuing into a five-year scenario fan, and a results table for Growth, Balanced, Income and XIC" loading="lazy"><figcaption><b>One continuous picture.</b> Realized value through today, then the five-year scenario fan, with costs, Sharpe, Sortino and drawdown for every portfolio.</figcaption></figure>
+      <div class="shots">
+        <figure class="shot"><img src="assets/strata-scenarios.png" alt="Strata scenario panel: median, weak and strong five-year outcomes, loss frequency and drawdown, with a range of final values per portfolio" loading="lazy"><figcaption><b>Where five years could land.</b> Median, weak and strong outcomes with their sampling intervals, loss frequency and typical worst drop.</figcaption></figure>
+        <figure class="shot"><img src="assets/strata-optimizer.png" alt="Strata optimizer panel: shrinkage, effective bets, diversification ratio, estimated against realized volatility and turnover for a walk-forward minimum-variance portfolio" loading="lazy"><figcaption><b>Optimization, out of sample.</b> What the risk model expected against what the portfolio realized, and how the answer was reached.</figcaption></figure>
+      </div>
+      <div class="views">
+        <div class="step"><span class="step-n">BUILD</span><h3>Portfolios &amp; strategy</h3><p>Tickers and weights, or a registered method: minimum variance, risk parity, maximum diversification, maximum Sharpe and their convex variants.</p></div>
+        <div class="step"><span class="step-n">MANDATE</span><h3>Constraints</h3><p>Position caps, sector and country limits, turnover budgets, tracking-error ceilings, and optional spread and impact costs.</p></div>
+        <div class="step"><span class="step-n">RISK</span><h3>Risk models</h3><p>Sample covariance, Ledoit-Wolf shrinkage, or a statistical factor model whose factor count follows the Marchenko-Pastur noise edge.</p></div>
+        <div class="step"><span class="step-n">REPLAY</span><h3>History &amp; drawdowns</h3><p>Monthly rebalancing with daily drift, costs on traded notional, rolling one- and three-year return ranges, depth of every drawdown.</p></div>
+        <div class="step"><span class="step-n">SIMULATE</span><h3>Five-year scenarios</h3><p>5,000 block-bootstrap paths shared across portfolios, head-to-head comparisons in the same markets, and sampling intervals on each percentile.</p></div>
+        <div class="step"><span class="step-n">RECORD</span><h3>Run records</h3><p>Every result carries an identifier built from the request, the price data and the source code, with library versions, and exports in full.</p></div>
+      </div>
+    </section>
+
+    <section id="history" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">03</div>
+        <div>
+          <p class="eyebrow">Historical results</p>
+          <h2>What CAD 100,000 in each policy became</h2>
+          <p class="lede">Growth, Income and Balanced hold fixed target weights; Low volatility weights by inverse volatility estimated from the first 252 sessions and then frozen. Weights drift daily and reset at the first close of each month, and costs come out of the portfolio before the next day's return. Log scale, so equal slopes mean equal percentage growth.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        {growth_svg}
+        {growth_legend}
+      </div>
+      <div class="chart-card">
+        <p class="eyebrow" style="color:var(--muted)">Drawdown from the running peak</p>
+        {drawdown_svg}
+        {drawdown_legend}
+        <div class="tablewrap">
+          <table class="results">
+            <thead><tr><th>Portfolio</th><th>Total return</th><th>Annual return</th><th>Volatility</th><th>Sharpe</th><th>Max drawdown</th><th>Costs paid</th></tr></thead>
+            <tbody>
+{history_rows}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>One comparison, several objectives.</b> Growth leads on return, Balanced on Sharpe, and Low volatility on realized volatility ({lv_vol} against XIC's {xic_vol}). Each answers a different investment question, so the useful output is the trade-off, not a winner. Income shows why a label needs testing against holdings: banks, utilities and energy gave it XIC's return and a smaller drawdown with no meaningful volatility advantage. Adjusted prices approximate reinvested dividends; judging it as an income strategy would need a cash-distribution ledger.</div>
+      <div class="readout"><b>How much is the benchmark choice doing?</b> XIC is the natural same-currency reference, but these portfolios hold eight names in five sectors against an index of more than 200, so every gap mixes sector exposure with security selection. They are observed differences for these chosen names, not isolated manager skill.</div>
+    </section>
+
+    <section id="construction" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">04</div>
+        <div>
+          <p class="eyebrow">Did optimizing help?</p>
+          <h2>Optimized weights, judged only on what came next</h2>
+          <p class="lede">Beyond fixed targets, Strata re-solves the weights at every monthly rebalance from the previous 252 sessions, using Ledoit-Wolf covariance and a 35% cap per holding, and holds them over returns the optimizer never saw. Equal weighting on the same dates is the honest control: it needs no estimates at all.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="tablewrap" style="margin-top:0">
+          <table class="results">
+            <thead><tr><th>Construction rule</th><th>Annual return</th><th>Volatility</th><th>Sharpe</th><th>Turnover a year</th><th>Costs paid</th></tr></thead>
+            <tbody>
+{construction_rows}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>Minimum variance did its job and still lost.</b> It ran at {mv_vol} volatility against equal weighting's {ew_vol}, but its Sharpe of {mv_sharpe} trailed equal weighting's {ew_sharpe}, and re-solving every month cost {mv_cost} against {ew_cost}. The app shows why on a longer 2017&ndash;2026 run of the same rule: the risk model expected 8.7% volatility and the portfolio realized 14.5%. Estimated covariance understates risk exactly when correlations rise. This is consistent with the estimation-error problem studied by <a href="https://doi.org/10.1093/rfs/hhm075" target="_blank" rel="noreferrer">DeMiguel, Garlappi and Uppal (2009)</a>, not a replication of it.</div>
+      <div class="readout"><b>Risk parity was the middle road.</b> It matched minimum variance's volatility ({rp_vol}) with a Sharpe of {rp_sharpe}, close to equal weighting, at the lowest turnover of the optimized rules. My <a href="/Project-Quant-Portfolio.dc.html">ETF research pipeline</a> runs the same class of optimizer on a less correlated six-ETF universe and reaches the opposite conclusion about whether optimizing helps, which is the point: the answer depends on the universe, not on the method's sophistication.</div>
+    </section>
+
+    <section id="scenarios" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">05</div>
+        <div>
+          <p class="eyebrow">Five-year scenarios</p>
+          <h2>The same CAD 100,000, five more years</h2>
+          <p class="lede">Every portfolio starts a fresh CAD 100,000 on {last} and is compounded through the same 5,000 sequences of 20-session blocks drawn from its completed history. Shared blocks mean Growth and Balanced face identical markets in each path, so they can be compared path by path. Shaded: 5th&ndash;95th and 25th&ndash;75th percentiles; line: median.</p>
+        </div>
+      </div>
+      <div class="fans" style="margin-top:32px">
+        <div class="chart-card"><p class="eyebrow" style="color:var(--muted)">Growth</p>{fan_growth}</div>
+        <div class="chart-card"><p class="eyebrow" style="color:var(--muted)">Balanced</p>{fan_balanced}</div>
+      </div>
+      <div class="chart-card">
+        <div class="tablewrap" style="margin-top:0">
+          <table class="results">
+            <thead><tr><th>Portfolio</th><th>5th percentile</th><th>Median</th><th>95th percentile</th><th>Ends below start</th><th>Below 80% at any point</th><th>Median worst drop</th></tr></thead>
+            <tbody>
+{scenario_rows}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>Compare in the same markets, not side by side.</b> Growth has the higher median, but it finishes behind Balanced in <b>{growth_under}</b> of shared paths, and at the 5th percentile of the path-by-path difference it trails by <b>{paired_p05}</b>. Subtracting the two portfolios' separate 5th percentiles would not give that number; pairing the paths does.</div>
+      <div class="readout"><b>How the history is sampled moves the downside.</b> With 126-session blocks instead of 20, which keep longer runs of history together, Growth's 5th-percentile ending value falls to <b>{growth_p05_126}</b>, below the starting CAD 100,000, and its chance of ending at a loss roughly doubles ({growth_loss_20} to {growth_loss_126}). It still keeps the higher median. The sample contains an unusually strong decade for Canadian equities, so these are ranges under a historical-repeat assumption, not forecasts, and they have not been validated against unseen five-year outcomes.</div>
+    </section>
+
+    <section id="system" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">06</div>
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>A traceable path from prices to a published data mart</h2>
+        </div>
+      </div>
+      <div class="pipeline" style="margin-top:32px">
+        <div class="step"><span class="step-n">01 &nbsp;EXTRACT</span><h3>Checksummed inputs</h3><p>Adjusted prices from yfinance or a frozen CSV verified by SHA-256, target holdings and a security master.</p><div class="step-tools"><span>yfinance</span><span>pandas</span></div></div>
+        <div class="step"><span class="step-n">02 &nbsp;VALIDATE</span><h3>Reject bad data</h3><p>Conflicting duplicates, missing or non-finite prices, unknown holdings and incomplete ticker-date coverage all stop the run.</p><div class="step-tools"><span>pandas</span><span>pytest</span></div></div>
+        <div class="step"><span class="step-n">03 &nbsp;CALCULATE</span><h3>Portfolio accounting</h3><p>Previous-close weights, daily drift, monthly resets, costs on traded notional, then returns, risk and drawdowns.</p><div class="step-tools"><span>NumPy</span><span>cvxpy</span></div></div>
+        <div class="step"><span class="step-n">04 &nbsp;PUBLISH</span><h3>SQL data mart</h3><p>Five tables replace the SQLite snapshot atomically after positions reconcile to NAV; failed runs keep the previous database.</p><div class="step-tools"><span>SQLite</span><span>SQL</span></div></div>
+      </div>
+      <details class="more">
+        <summary>Accounting conventions</summary>
+        <div class="inner">
+          <div class="formulas">
+            <div><h4>Portfolio return</h4><code>r<sub>p,t</sub> = &sum; w<sub>i,t&minus;1</sub> r<sub>i,t</sub></code><p>Weights from the previous close. End-of-day weights would let today's move choose the allocation that earned it.</p></div>
+            <div><h4>Trading cost</h4><code>cost = V &times; &sum; |w<sub>target</sub> &minus; w<sub>drifted</sub>| &times; 0.001</code><p>10 bps on total traded notional, purchases and sales, charged before the next return.</p></div>
+            <div><h4>Annualized return</h4><code>CAGR = (V<sub>end</sub> / V<sub>start</sub>)<sup>252/N</sup> &minus; 1</code><p>On net portfolio value over N observed daily returns.</p></div>
+            <div><h4>Sharpe ratio</h4><code>mean(r &minus; r<sub>f</sub>) / s(r) &times; &radic;252</code><p>A fixed 3% annual risk-free rate, converted to a daily compound rate.</p></div>
+            <div><h4>Drawdown</h4><code>D<sub>t</sub> = V<sub>t</sub> / max(V<sub>0</sub>&hellip;V<sub>t</sub>) &minus; 1</code><p>Starting capital counts as the first peak, so an immediate loss registers.</p></div>
+            <div><h4>Scenarios</h4><code>5,000 paths &times; 1,260 sessions</code><p>Blocks of 20 completed net returns, the same block draws for every portfolio; costs are embedded in the history sampled.</p></div>
+          </div>
+          <p style="margin-top:16px">The data mart holds <code>securities</code>, <code>security_daily_analytics</code>, <code>portfolio_positions</code>, <code>portfolio_daily_summary</code> and <code>pipeline_runs</code>. The analysis queries use CTEs, <code>ROW_NUMBER</code> for month-end NAV, <code>LAG</code> for compounded returns and <code>DENSE_RANK</code> for volatility ranking.</p>
+        </div>
+      </details>
+    </section>
+
+    <section id="production" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">07</div>
+        <div>
+          <p class="eyebrow">Research to production</p>
+          <h2>A contract between a researcher's rule and running software</h2>
+          <p class="lede">Each construction method is a function from a context to a weight vector, registered with metadata. The API advertises the registry, the interface builds its menu from it, and the walk-forward loop calls the same contract, so a new method inherits every mandate limit and check without knowing they exist.</p>
+        </div>
+      </div>
+      <div class="evidence" style="margin-top:32px">
+        <div class="ecard"><p class="eyebrow">Conformance gate</p><h3>Fifteen checks on every method</h3><p>Valid weights, respected constraints, repeatable results, asset-order invariance, degenerate inputs and a solve-time budget. It runs in CI and fails the build; tests feed it deliberately broken methods to prove it rejects them.</p><span class="stat">12 of 12 registered methods pass</span></div>
+        <div class="ecard"><p class="eyebrow">What the gate caught</p><h3>Defects with investment consequences</h3><p>A maximum-Sharpe solver that blew its 750 ms budget with redundant restarts, mandate parameters leaking between objectives, and a ratio transform whose answer changed with the units of the returns.</p><span class="stat">Each now covered by a regression test</span></div>
+        <div class="ecard"><p class="eyebrow">Provenance</p><h3>Every result has a run record</h3><p>An identifier built from the request, the price data and the source code, with library versions. Two results are the same only if their records match, not because their links do.</p><span class="stat">Checksummed inputs &middot; <a href="/investment-analytics/output/run_manifest.json">run manifest</a></span></div>
+        <div class="ecard"><p class="eyebrow">Operations</p><h3>Honest failure modes</h3><p>Runs report progress, reuse cached results that match exactly, and surface data-source failures rather than silently substituting frozen prices. Solver status and constraint duals are reported, so infeasible is never shown as optimal.</p><span class="stat">Deployed on Render &middot; offline single-file demo</span></div>
+      </div>
+    </section>
+
+    <section id="trust" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">08</div>
+        <div>
+          <p class="eyebrow">Validation</p>
+          <h2>Tests aimed at the errors that would change the conclusion</h2>
+        </div>
+      </div>
+      <ul class="controls" style="margin-top:28px">
+        <li>Each day's return is earned by the weights held at the previous close</li>
+        <li>Low-volatility weights come from the first 252 sessions only; rewriting later prices leaves them unchanged</li>
+        <li>Rewriting the final month of prices leaves every earlier optimized weight unchanged</li>
+        <li>Scenarios start after the last completed backtest date and sample only completed returns</li>
+        <li>Positions reconcile to NAV before the data mart is published</li>
+        <li>Paired scenario differences are tested against subtracting separate percentiles</li>
+        <li>Three independent implementations of two optimizers agree, including a MATLAB cross-check under Octave</li>
+        <li>A 10% loss then a 10% gain compounds to a 1% loss; costs reduce final value</li>
+      </ul>
+      <div class="readout"><b>What the tests cannot remove.</b> The eight stocks and the four policies were chosen with hindsight, so results carry selection and survivorship bias even with correctly timed weights. Adjusted prices are today's snapshot, not a point-in-time archive, and the constant risk-free rate and flat costs are simplifications. {tests} automated tests across the research pipeline and the application run in GitHub Actions with the conformance gate, the MATLAB cross-check, a synthetic pipeline run and the demo build.</div>
+    </section>
+
+    <section id="next" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">09</div>
+        <div>
+          <p class="eyebrow">Next research iteration</p>
+          <h2>Test the downside harder before trusting the upside</h2>
+          <p class="lede">Rerun the scenarios under explicit adverse regimes and other historical windows, add a trading calendar and coverage audit, scale the market-impact model by average daily volume, replace the cardinality heuristic with a mixed-integer program, and use point-in-time universes once membership and delisting data are available. If an allocation only looks attractive under one set of assumptions, that dependence belongs in the decision.</p>
+          <p class="links"><a href="/investment-analytics/output/report.html">Interactive report</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/notebook.html">Executed notebook</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/portfolio_summary.csv">Performance CSV</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/construction-comparison.csv">Construction CSV</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/scenario_downside.csv">Scenario downside CSV</a> &nbsp;&middot;&nbsp; <a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl/blob/main/docs/OPTIMIZATION.md" target="_blank" rel="noreferrer">Optimization methods</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:80px 0 0">
+      <div class="skills">
+        <div class="skill"><h3>Portfolio construction</h3><p>Fixed-target and inverse-volatility policies, walk-forward convex optimization with mandates, shrinkage and factor risk models, cost-aware rebalancing.</p><div class="chips"><span>cvxpy</span><span>Ledoit-Wolf</span><span>Risk parity</span></div></div>
+        <div class="skill"><h3>Risk &amp; simulation</h3><p>Drawdown analysis, block-bootstrap scenarios shared across portfolios, paired comparisons, sampling sensitivity and percentile intervals.</p><div class="chips"><span>NumPy</span><span>Bootstrap</span><span>Drawdowns</span></div></div>
+        <div class="skill"><h3>Data engineering</h3><p>Validated ETL with checksums, an atomically published SQLite mart, reconciliation, run provenance, a strategy contract with a CI conformance gate.</p><div class="chips"><span>SQL</span><span>pytest</span><span>GitHub Actions</span></div></div>
+      </div>
+    </section>
+
+    <section style="padding:88px 0 96px;margin-top:80px;border-top:1px solid #e6e2db;text-align:center">
+      <p class="eyebrow">Try it</p>
+      <h2 style="margin:16px auto 16px;max-width:22ch;font-size:clamp(28px,3.6vw,40px);line-height:1.1;letter-spacing:-0.02em">Build a portfolio and see where five years could land</h2>
+      <p style="max-width:56ch;margin:0 auto;color:var(--body);font-size:17px;line-height:1.6">The free instance may take a minute to wake up; the browser demo runs instantly on nine frozen securities. Scenarios are simulations, not predictions, and nothing here is investment advice.</p>
+      <div class="btnrow" style="justify-content:center">
+        <a class="btn btn-primary" href="https://nathan-portfolio-lab.onrender.com/" target="_blank" rel="noreferrer">Launch Strata</a>
+        <a class="btn btn-ghost" href="/strata-demo.html">Browser demo</a>
+        <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">Source on GitHub</a>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="wrap">
+  <footer style="display:flex;justify-content:space-between;gap:24px;padding:26px 0;border-top:1px solid #e6e2db;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#686c71">
+    <span>Strata &middot; Nathan Gomes</span><a href="/#projects" style="color:#686c71;text-decoration:none">All projects</a>
+  </footer>
+</div>
+</body>
+</html>

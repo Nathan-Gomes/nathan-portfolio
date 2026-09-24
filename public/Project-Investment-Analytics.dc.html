@@ -1,336 +1,689 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <title>Strata: Quantitative Investment Analytics | Nathan Gomes</title>
-<meta name="description" content="A detailed investment research case study: Canadian equity portfolios, financial calculations, SQL data engineering, historical backtesting and five-year scenario analysis.">
-<link rel="icon" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Strata: a portfolio construction and risk system by Nathan Gomes. Four allocation policies and walk-forward optimizers on eight TSX stocks against XIC, with trading costs, 5,000 five-year scenarios and a validated SQL data mart.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Strata: portfolio construction and risk">
+<meta property="og:description" content="Balanced earned the best risk-adjusted return of four allocation policies, Growth's extra return came with a &minus;48.7% drawdown, and a minimum-variance optimizer lost to equal weighting out of sample.">
+<meta property="og:image" content="https://www.nathan-gomes.com/assets/strata-overview.png">
+<meta property="og:url" content="https://www.nathan-gomes.com/Project-Investment-Analytics.dc.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:#fbfaf8;color:#192326;font:17px/1.65 'IBM Plex Sans',system-ui,sans-serif;letter-spacing:0}h1,h2,h3,p{margin:0}a{color:#176c5b;text-underline-offset:4px}a:focus-visible,summary:focus-visible{outline:3px solid #417dab;outline-offset:5px}.shell{max-width:1200px;margin:auto;padding:0 32px}header{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:24px 0;border-bottom:1px solid #d7dddb;font-size:13px}header a{text-decoration:none}header nav{display:flex;gap:24px}.intro{padding:48px 0 28px}.eyebrow,.label{font:12px 'IBM Plex Mono',monospace;color:#176c5b;text-transform:uppercase;margin-bottom:16px}h1{font-size:44px;font-weight:600;line-height:1.12;max-width:25ch}.lead{font-size:20px;max-width:74ch;margin:22px 0;color:#465358}.actions{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}.actions a{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;text-decoration:none;border:1px solid #b7c3c1;font-size:15px}.actions .primary{background:#192326;border-color:#192326;color:white}.meta{font-size:13px;color:#626d72}.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;padding:22px 0;border-top:1px solid #192326;border-bottom:1px solid #d7dddb}.facts strong{font-size:27px;display:block}.facts span{font-size:13px;color:#626d72}.jump{position:sticky;top:0;z-index:3;display:flex;gap:24px;overflow-x:auto;white-space:nowrap;background:#fbfaf8;border-bottom:1px solid #d7dddb;padding:16px 0;font-size:13px}.jump a{text-decoration:none}.section{padding:42px 0;border-bottom:1px solid #d7dddb}h2{font-size:30px;line-height:1.25;max-width:36ch;margin-bottom:20px}h3{font-size:20px;line-height:1.4;margin:20px 0 8px}.section p{max-width:80ch;margin:14px 0;color:#465358}.columns{display:grid;grid-template-columns:1fr 1fr;gap:40px}.findings{margin:0;padding:0;list-style:none}.findings li{padding:18px 0;border-top:1px solid #d7dddb}.findings strong{display:block;color:#192326}.findings p{margin:6px 0}.table-wrap{overflow-x:auto;border-top:1px solid #aebbb8;margin:24px 0;outline-offset:4px}table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}th,td{padding:12px;border-bottom:1px solid #d7dddb;text-align:right;white-space:nowrap}th{font-size:12px;font-weight:500;background:#edf2f1}th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:#fbfaf8;z-index:1}th:first-child{background:#edf2f1}caption{text-align:left;font-size:13px;padding:12px 0;color:#626d72}figure{margin:28px 0}figure img{display:block;width:100%;height:auto;background:white}figcaption{font-size:13px;color:#626d72;margin-top:10px}.note{border-left:3px solid #417dab;padding:10px 20px;margin:22px 0;background:#f0f4f6}.note p{margin:0}.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:0;list-style:none;gap:28px;counter-reset:step}.steps li{border-top:2px solid #aebbb8;padding-top:14px;counter-increment:step}.steps li:before{content:counter(step,decimal-leading-zero);font:13px 'IBM Plex Mono',monospace;color:#176c5b}.steps h3{margin-top:10px}.steps p{font-size:15px}.timeline{display:grid;grid-template-columns:3fr 1fr 2fr;gap:8px;margin:24px 0}.timeline div{padding:16px;background:#e4efeb;border-top:3px solid #176c5b;font-size:14px}.timeline div:nth-child(2){background:#eef0f2;border-color:#7c858b}.timeline div:nth-child(3){background:#e8eff7;border-color:#417dab}.timeline strong,.timeline span{display:block}.equations{display:grid;grid-template-columns:1fr 1fr;gap:0 36px}.equations article{border-top:1px solid #d7dddb;padding:10px 0 20px}.formula{font-size:18px;color:#192326!important;overflow-wrap:anywhere}.equations article p:last-child{font-size:15px}details{border-top:1px solid #d7dddb;padding:18px 0}summary{cursor:pointer;font-weight:500}pre{overflow:auto;padding:20px;background:#edf2f1;font:13px/1.7 'IBM Plex Mono',monospace}code{font-family:'IBM Plex Mono',monospace}ul{padding-left:22px}footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;padding:28px 0;font-size:13px}.status{color:#176c5b}.negative{color:#9a3f49}
-@media(max-width:760px){.shell{padding:0 20px}h1{font-size:32px}.intro{padding-top:32px}.lead{font-size:18px}h2{font-size:25px}.columns,.equations{grid-template-columns:1fr;gap:12px}.facts{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}.timeline{grid-template-columns:1fr}.jump{gap:20px}.section{padding:32px 0}th,td{padding:10px;font-size:13px}header nav{gap:16px}.actions a{max-width:100%}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{.jump,header nav,.actions{display:none}.shell{max-width:none;padding:0}.section{break-inside:avoid}details{display:block}body{font-size:12px}}
-.app-launch{margin:28px 0;padding:24px 0;border-top:2px solid #176c5b;border-bottom:1px solid #d7dddb}.app-launch h2{margin-bottom:10px}.app-launch>p:not(.eyebrow){max-width:72ch;color:#465358}.app-launch>a{display:inline-flex;align-items:center;justify-content:center;gap:24px;min-height:60px;padding:14px 28px;margin:20px 0 12px;background:#176c5b;color:#fff;text-decoration:none;font-size:21px;font-weight:600;max-width:100%}.app-launch>a:hover{background:#125344}.app-launch .meta{font-size:13px}
-</style></head><body><div class="shell">
-<header><a href="/">NATHAN GOMES</a><nav aria-label="Portfolio"><a href="/#projects">All projects</a><a href="/investment-analytics/output/report.html">Interactive report</a><a href="/investment-analytics/output/notebook.html">Research notebook</a><a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">GitHub source</a></nav></header>
-<main>
-<section class="intro"><p class="eyebrow">Investment research / Python / SQL / Portfolio risk</p><h1>Strata: Quantitative Investment Analytics</h1><p class="lead">A portfolio construction and risk system: build an allocation from any set of tickers, or let it solve for one, and see what the rule earned out of sample, what it cost to run, and the range of outcomes that follow.</p><div class="app-launch"><p class="eyebrow">Quantitative Investment Analytics ETL Pipeline</p><h2>Build and compare your own portfolio.</h2><p>Enter supported Yahoo Finance tickers, or use a walk-forward optimizer that re-solves at each rebalance from a trailing window. Inspect realized risk, simulated outcomes and the run record behind the result.</p><a href="https://nathan-portfolio-lab.onrender.com/">Launch Strata <span aria-hidden="true">&#8599;</span></a> <a href="/strata-demo.html">Try browser demo</a><p class="meta">The live app includes Yahoo data and Python optimization. The browser demo uses nine frozen securities and supports walk-forward minimum-variance and risk-parity optimization. Other methods and supported live tickers require the live app. Yahoo Finance market data, subject to availability and sufficient shared history. The free server may take about a minute to wake up. Future scenarios are simulations, not predictions.</p></div><div class="actions"><a class="primary" href="/investment-analytics/output/report.html">Open interactive report</a><a href="/investment-analytics/output/notebook.html">Read code &amp; notebook</a><a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">View source on GitHub</a><a href="#scenarios">Read the scenarios</a></div><p class="meta">Independent research project by Nathan Gomes. This case study uses frozen Canadian market data through 31 August 2026; its values are in CAD. The live application can run other supported universes.</p></section>
-<div class="facts"><div><strong>19,575</strong><span>Validated price observations</span></div><div><strong>12</strong><span>Registered methodologies · 12/12 pass the conformance gate</span></div><div><strong>5,000</strong><span>Five-year scenario paths per portfolio</span></div><div><strong>168</strong><span>Automated tests passing</span></div></div>
-<nav class="jump" aria-label="Case study sections"><a href="#construction">Portfolio design</a><a href="#engineering">Data pipeline</a><a href="#methods">Financial calculations</a><a href="#assurance">Backtesting &amp; validation</a><a href="#findings">Historical results</a><a href="#optimization">Construction</a><a href="#production">Research to production</a><a href="#scenarios">Five-year scenarios</a><a href="#limitations">Limitations</a><a href="#takeaways">Lessons &amp; quant role</a><a href="#evidence">Explore the evidence</a></nav>
-<section class="section" id="overview"><p class="eyebrow">01 / Project question</p><h2>How does the way we invest change the return and risk we take?</h2><p>The goal is to make allocation rules testable: what did they earn, what risks and costs did they create, and how dependable is the evidence? The original study compares Growth, Income, Balanced and Low Volatility with XIC. The application extends that foundation to user-selected holdings and walk-forward portfolio construction.</p><p>I built a Python and SQL pipeline to validate market data, apply portfolio rules and trading costs, and calculate performance and scenario ranges. Strata adds a deployed interface, registered optimization methods, risk models and reproducible run records.</p><div class="note"><p><strong>What the reader can assess:</strong> which allocation best matches a stated objective and tolerance for losses, how sensitive that conclusion is to modeling assumptions, and whether the calculations and validation are reliable enough to support further research.</p></div></section>
-<section class="section" id="construction"><p class="eyebrow">02 / Portfolio design</p><h2>The original study: eight securities, four policies.</h2><p>Growth, Income and Balanced use manually specified target weights. Low volatility uses inverse sample volatility estimated from the first 252 return observations, then freezes those targets. All portfolios are long-only equities; Balanced has no bond allocation, and Income does not separately model dividend cash payments.</p>
-<div class="table-wrap" tabindex="0" role="region" aria-label="Portfolio target allocations"><table><caption>Rebalancing targets. Low-volatility percentages are rounded; full-precision targets sum to 100%.</caption><thead><tr><th>Security</th><th>Sector</th><th>Growth</th><th>Income</th><th>Balanced</th><th>Low volatility</th></tr></thead><tbody><tr><td>RY.TO · Royal Bank of Canada</td><td>Financials</td><td>15.00%</td><td>25.00%</td><td>15.00%</td><td>18.75%</td></tr><tr><td>TD.TO · Toronto-Dominion Bank</td><td>Financials</td><td>0.00%</td><td>20.00%</td><td>10.00%</td><td>19.72%</td></tr><tr><td>SHOP.TO · Shopify</td><td>Technology</td><td>35.00%</td><td>0.00%</td><td>10.00%</td><td>4.04%</td></tr><tr><td>CSU.TO · Constellation Software</td><td>Technology</td><td>30.00%</td><td>0.00%</td><td>10.00%</td><td>7.85%</td></tr><tr><td>ENB.TO · Enbridge</td><td>Energy</td><td>0.00%</td><td>20.00%</td><td>15.00%</td><td>8.82%</td></tr><tr><td>FTS.TO · Fortis</td><td>Utilities</td><td>0.00%</td><td>20.00%</td><td>15.00%</td><td>16.14%</td></tr><tr><td>EMA.TO · Emera</td><td>Utilities</td><td>0.00%</td><td>15.00%</td><td>10.00%</td><td>13.66%</td></tr><tr><td>CNR.TO · Canadian National Railway</td><td>Industrials</td><td>20.00%</td><td>0.00%</td><td>15.00%</td><td>11.03%</td></tr></tbody></table></div>
-<h3>Why XIC?</h3><p>XIC.TO, the iShares Core S&amp;P/TSX Capped Composite ETF, supplies a broad Canadian equity reference in the same currency. It answers whether these selected allocations improved on holding the Canadian market. The portfolios' sector concentrations differ from XIC, so return differences combine market exposure and security selection; they are not isolated manager skill.</p><p>VFV could be a useful secondary opportunity-cost comparison with US equities. It is not included in this experiment. A sector-matched benchmark would further help distinguish allocation effects from security selection.</p>
-<p><a href="/investment-analytics/output/target_weights.csv">Download exact target weights</a></p></section>
-<section class="section" id="engineering"><p class="eyebrow">03 / Data pipeline</p><h2>A traceable path from inputs to outputs.</h2><ol class="steps"><li><h3>Extract</h3><p>Read prices, target holdings and the security master. Download adjusted prices through yfinance or reuse a checksum-verified frozen CSV.</p></li><li><h3>Clean and validate</h3><p>Parse dates and numbers, count exact duplicates, reject conflicting records and missing prices, and verify the security universe and target weights.</p></li><li><h3>Calculate</h3><p>Pandas and NumPy calculate asset returns and rolling statistics, then simulate portfolio value, drifting allocations and transaction costs.</p></li><li><h3>Simulate scenarios</h3><p>Resample completed return blocks into five-year paths without accessing post-projection data.</p></li><li><h3>Compare downside</h3><p>Measure losses of principal, maximum drawdowns and paired strategy differences across shared simulated market paths.</p></li><li><h3>Publish the data mart</h3><p>Replace the SQLite snapshot atomically after integrity checks. Preserve successful run history and reconcile positions to portfolio NAV.</p></li></ol>
-<h3>SQL data model</h3><div class="table-wrap" tabindex="0" role="region" aria-label="SQL table grain"><table><thead><tr><th>Table</th><th>Grain</th><th>Research purpose</th></tr></thead><tbody><tr><td>securities</td><td>Security</td><td>Sector and currency dimension</td></tr><tr><td>security_daily_analytics</td><td>Security × date</td><td>Adjusted price, return and rolling risk</td></tr><tr><td>portfolio_positions</td><td>Portfolio × security × date</td><td>Position value, weight and sector</td></tr><tr><td>portfolio_daily_summary</td><td>Portfolio × date</td><td>NAV, return, costs and drawdown</td></tr><tr><td>pipeline_runs</td><td>Successful run</td><td>Configuration, provenance and hashes</td></tr></tbody></table></div>
-<details><summary>Inspect the implemented SQL queries</summary><p>CTEs and ROW_NUMBER select month-end NAV; LAG computes compounded monthly and 20-session returns; DENSE_RANK ranks assets by trailing volatility. Sector reporting joins positions to the security dimension. The first monthly return is undefined without a preceding month-end.</p><pre><code>-- Latest allocations, with sector names obtained from the security dimension.
-CREATE VIEW latest_sector_exposure AS
-WITH latest AS (SELECT MAX(date) AS date FROM portfolio_positions)
-SELECT p.portfolio_id, s.sector, SUM(p.market_value) AS market_value,
-       SUM(p.weight) AS weight
-FROM portfolio_positions p
-JOIN securities s ON s.ticker = p.ticker
-JOIN latest l ON l.date = p.date
-GROUP BY p.portfolio_id, s.sector;
+  :root {
+    --ink: #16181a;
+    --paper: #fbfaf8;
+    --card: #ffffff;
+    --line: #e6e2db;
+    --muted: #7a7e83;
+    --faint: #a2a5a8;
+    --body: #3d4145;
+    --green: #1a6f57;
+    --green-bright: #107a53;
+    --tint: #edf3f0;
+    --wash: #f4f2ee;
+    --warn: #a8551f;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4, p, ul, ol, figure { margin: 0; text-wrap: pretty; }
+  a { color: var(--ink); }
+  a:hover { color: var(--green); }
+  ::selection { background: #cfe3da; }
 
--- Compound monthly returns from month-end NAV using a window function.
-CREATE VIEW monthly_portfolio_returns AS
-WITH ranked AS (
- SELECT *, SUBSTR(date, 1, 7) AS month,
- ROW_NUMBER() OVER (PARTITION BY portfolio_id, SUBSTR(date, 1, 7) ORDER BY date DESC) AS rn
- FROM portfolio_daily_summary
-), endpoints AS (
- SELECT portfolio_id, month, nav FROM ranked WHERE rn = 1
-)
-SELECT portfolio_id, month, nav,
- nav / LAG(nav) OVER (PARTITION BY portfolio_id ORDER BY month) - 1 AS monthly_return
-FROM endpoints;
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 40px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--green);
+  }
+  .rule { border-top: 1px solid var(--line); }
+  section[id] { scroll-margin-top: 78px; }
 
--- Daily cross-sectional ranking by trailing annualized volatility.
-CREATE VIEW volatility_ranking AS
-SELECT date, ticker, rolling_volatility_20,
- DENSE_RANK() OVER (PARTITION BY date ORDER BY rolling_volatility_20) AS volatility_rank
-FROM security_daily_analytics WHERE rolling_volatility_20 IS NOT NULL;
+  /* ---------- sticky skim nav ---------- */
+  .skimnav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(251, 250, 248, 0.93);
+    -webkit-backdrop-filter: saturate(180%) blur(8px);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .skimnav-inner {
+    display: flex; align-items: center; gap: 4px;
+    overflow-x: auto; scrollbar-width: none;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .skimnav-inner::-webkit-scrollbar { display: none; }
+  .skimnav a {
+    padding: 13px 11px; color: var(--muted); text-decoration: none;
+    border-bottom: 2px solid transparent;
+  }
+  .skimnav a:hover { color: var(--green-bright); border-bottom-color: var(--green-bright); }
+  .skimnav a:first-child { padding-left: 0; }
 
-CREATE VIEW rolling_portfolio_returns AS
-SELECT date, portfolio_id,
- nav / LAG(nav, 20) OVER (PARTITION BY portfolio_id ORDER BY date) - 1 AS return_20_sessions
-FROM portfolio_daily_summary;
-</code></pre></details></section>
-<section class="section" id="methods"><p class="eyebrow">04 / Financial calculations</p><h2>Make the accounting conventions explicit.</h2><p>Historical adjusted closes approximate dividend-reinvested returns. Position quantities are adjusted-price accounting units, not actual broker share balances. Portfolios start at the calibration close; the first measured return is the following trading session.</p>
-<div class="equations">
-<article><h3>Daily asset return</h3><p class="formula">r<sub>t</sub> = P<sub>t</sub> / P<sub>t−1</sub> − 1</p><p>Today's adjusted close divided by yesterday's, minus one. This makes differently priced stocks comparable.</p></article>
-<article><h3>Portfolio return</h3><p class="formula">r<sub>p,t</sub> = ∑ w<sub>i,t−1</sub> r<sub>i,t</sub></p><p>Weight each asset's return by its previous-close portfolio weight. Using end-of-day weights would mix today's price movement into the allocation that supposedly earned it.</p></article>
-<article><h3>Annualized compound return</h3><p class="formula">CAGR = (V<sub>end</sub> / V<sub>start</sub>)<sup>252/N</sup> − 1</p><p>Converts growth over N observed daily returns into an annualized compound rate. V is net portfolio value.</p></article>
-<article><h3>Volatility and Sharpe</h3><p class="formula">σ<sub>annual</sub> = s(r) √252<br>Sharpe = mean(r − r<sub>f,daily</sub>) / s(r) × √252</p><p>s(r) is sample daily standard deviation. The fixed 3% annual risk-free assumption is converted to a daily compound rate. Zero volatility gives an undefined Sharpe ratio.</p></article>
-<article><h3>Maximum drawdown</h3><p class="formula">D<sub>t</sub> = V<sub>t</sub> / max(V<sub>0</sub>, …, V<sub>t</sub>) − 1</p><p>Maximum drawdown is the most negative D. Including starting capital ensures an immediate loss is counted.</p></article>
-<article><h3>Trading costs</h3><p class="formula">Cost = V<sub>before cost</sub> × ∑ |w<sub>target</sub> − w<sub>drifted</sub>| × 0.001</p><p>Ten basis points on total absolute traded notional, counting both purchases and sales. Costs reduce NAV before the next return is calculated.</p></article>
-</div><div class="note"><p><strong>Rebalance timing:</strong> weights drift daily and reset at the close of the first observed session of each month. XIC is held without rebalancing. Initial entry costs, taxes and additional market impact are excluded. The recorded costs are cumulative cash charges, not the full compounded performance drag.</p></div></section>
-<section class="section" id="assurance"><p class="eyebrow">05 / Backtesting &amp; validation</p><h2>Tests target errors that would change the conclusion.</h2><div class="columns"><div><h3>Calculation and chronology</h3><ul><li>A 10% loss followed by a 10% gain compounds to a 1% loss.</li><li>Initial losses count toward drawdown.</li><li>Portfolio returns use previous-close weights.</li><li>Trading costs reduce the final portfolio value.</li><li>Changing future prices leaves initial low-volatility weights unchanged.</li><li>Scenario dates begin only after the last completed backtest date.</li></ul></div><div><h3>Data and publication</h3><ul><li>Reject negative, missing and infinite price fields.</li><li>Reject conflicting duplicates and unknown holdings.</li><li>Count and remove exact duplicate records.</li><li>Reconcile position weights and values to NAV.</li><li>Reject incomplete ticker-date coverage.</li><li>Preserve the previous database when publication fails.</li></ul></div></div>
-<h3>Backtesting and controls against look-ahead bias</h3><p>A backtest replays historical prices under declared portfolio rules. Look-ahead bias occurs when a decision uses information that was only available later. We guard against that in return timing, weight calibration and scenario inputs. These controls do not prove the entire research design is bias-free.</p><p>At each historical return date, the portfolio uses the weights held at the <strong>previous close</strong>; it cannot use that day's market move to decide the weights that earned it. Low Volatility weights are calibrated once from only the initial 252 sessions, then frozen. Monthly rebalances are booked after the day's return and cost, affecting only future days. The five-year scenario engine starts after the final historical date and resamples only completed net-return history.</p>
-<p><strong>Remaining bias:</strong> the security universe and manual allocation policies were selected retrospectively. This creates selection and survivorship risk even when the calculations use correctly timed weights. Adjusted prices are a current historical snapshot, not a point-in-time archive. Five-year scenarios use all data available at August 2026 and are never fed back into earlier backtest decisions. The five-year scenario ranges have not been validated against unseen five-year outcomes.</p><p>The automated suite has 168 passing cases across two suites: the research pipeline's financial calculations, and the application's optimizers, strategy contracts, provenance and cross-language parity. They include checks that paired downside differs from subtracting separate percentiles, that rewriting the final month of prices leaves every earlier optimized weight unchanged, and that three independent implementations of the same two optimizers agree. Random-generator outputs agree bit for bit; financial outputs are compared with numerical tolerances.</p><p>A GitHub Actions workflow is configured to run the tests, the strategy conformance gate, the MATLAB cross-check under Octave, a synthetic pipeline run and the single-file demo build on every push. The application is deployed and fetches live prices; the frozen dataset and the offline build remain available for review.</p>
-<details><summary>Review the research calculation tests</summary><pre><code>&quot;&quot;&quot;Regression checks for the reproducible research pipeline.&quot;&quot;&quot;
+  /* ---------- hero ---------- */
+  .hero { padding: 64px 0 0; }
+  .herogrid { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 64px; align-items: end; }
+  .hero h1 {
+    font-size: clamp(38px, 5.2vw, 66px); line-height: 1.02;
+    letter-spacing: -0.015em; font-weight: 600; max-width: 16ch; margin-top: 22px;
+  }
+  .deck { margin-top: 26px; max-width: 60ch; font-size: 20px; line-height: 1.55; color: var(--body); }
+  .verdict {
+    margin-top: 26px; max-width: 66ch; padding: 18px 22px;
+    background: var(--tint); border-left: 3px solid var(--green-bright);
+    font-size: 17px; line-height: 1.55; color: #17372c;
+  }
+  .btnrow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+  .btn {
+    display: inline-flex; align-items: center; height: 48px; padding: 0 22px;
+    text-decoration: none; font-weight: 500; font-size: 15px;
+    border: 1px solid transparent; transition: background .16s, color .16s, border-color .16s;
+  }
+  .btn-primary { background: var(--ink); color: #fff; }
+  .btn-primary:hover { background: var(--green-bright); color: #fff; }
+  .btn-ghost { border-color: #d5d0c7; color: var(--ink); background: var(--card); }
+  .btn-ghost:hover { border-color: var(--green-bright); color: var(--green-bright); }
 
-import sqlite3
+  .factlist { display: grid; gap: 18px; font-family: var(--mono); font-size: 12px; line-height: 1.5; margin: 0; }
+  .factlist dt { color: var(--faint); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .factlist dd { margin: 0; color: var(--body); }
 
-import numpy as np
-import pandas as pd
-import pytest
+  /* ---------- scoreboard ---------- */
+  .scoreboard {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px; background: var(--line);
+    border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line);
+  }
+  .score { padding: 22px 24px 20px; background: var(--card); }
+  .score-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .score-value { display: block; margin-top: 10px; font-size: 38px; line-height: 1; font-weight: 600; letter-spacing: -0.02em; }
+  .score-vs { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .pill {
+    display: inline-block; margin-top: 10px; padding: 3px 8px;
+    font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
+  }
+  .pill-good { background: var(--tint); color: var(--green-bright); }
+  .pill-cost { background: #f7efe7; color: var(--warn); }
+  .pill-flat { background: var(--wash); color: var(--muted); }
 
-from src.analytics import metrics, portfolio_analytics
-from src.forward import forward_scenarios
-from src.scenario_risk import paired_outcomes, risk_review
-from src.load import load_mart
-from src.models import feature_frame, FEATURES
-from src.validation import clean_inputs, validate_outputs
+  /* ---------- 30-second read ---------- */
+  .takeaways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .takeaway { padding: 28px 26px 30px; background: var(--card); }
+  .takeaway-n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; background: var(--ink); color: #fff;
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+  }
+  .takeaway h3 { margin-top: 16px; font-size: 19px; line-height: 1.25; letter-spacing: -0.01em; }
+  .takeaway p { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--body); }
+  .takeaway b { font-weight: 600; color: var(--ink); }
 
+  /* ---------- charts ---------- */
+  .chart-card { margin-top: 26px; padding: 26px 26px 20px; background: var(--card); border: 1px solid var(--line); }
+  .legend { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .swatch { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 7px; }
+  .readout {
+    margin-top: 22px; padding: 18px 22px; background: var(--wash);
+    border-left: 3px solid var(--green-bright); font-size: 15px; line-height: 1.6; color: var(--body);
+  }
+  .readout b { color: var(--ink); }
+  .caption { margin-top: 12px; font-family: var(--mono); font-size: 11.5px; line-height: 1.55; color: var(--muted); }
 
-@pytest.fixture
-def inputs():
-    dates = pd.bdate_range(&quot;2020-01-01&quot;, periods=360)
-    frames = []
-    for i, ticker in enumerate([&quot;A&quot;, &quot;B&quot;, &quot;M&quot;]):
-        r = 0.0002 + (i + 1) * 0.002 * np.sin(np.arange(len(dates)) / 7)
-        frames.append(pd.DataFrame({&quot;date&quot;: dates, &quot;ticker&quot;: ticker,
-                                    &quot;adjusted_price&quot;: 100 * np.cumprod(1 + r), &quot;volume&quot;: 1000}))
-    prices = pd.concat(frames, ignore_index=True)
-    holdings = pd.DataFrame({&quot;portfolio_id&quot;: [&quot;Balanced&quot;] * 2, &quot;ticker&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;target_weight&quot;: [0.6, 0.4]})
-    securities = pd.DataFrame({&quot;ticker&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;M&quot;], &quot;sector&quot;: [&quot;Tech&quot;, &quot;Banks&quot;, &quot;Benchmark&quot;], &quot;currency&quot;: [&quot;CAD&quot;] * 3})
-    config = {&quot;warmup_days&quot;: 30, &quot;benchmark&quot;: &quot;M&quot;, &quot;initial_capital&quot;: 100000,
-              &quot;transaction_cost_bps&quot;: 10, &quot;risk_free_rate&quot;: 0.03}
-    return prices, holdings, securities, config
+  /* ---------- generic section head ---------- */
+  .sechead { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 28px; align-items: start; }
+  .secnum { font-family: var(--mono); font-size: 12px; color: var(--faint); padding-top: 8px; letter-spacing: 0.08em; }
+  .sechead h2 { margin-top: 12px; font-size: clamp(26px, 3vw, 34px); line-height: 1.16; letter-spacing: -0.015em; max-width: 24ch; }
+  .sechead .lede { margin-top: 14px; max-width: 74ch; font-size: 17px; line-height: 1.62; color: var(--body); }
 
+  /* ---------- pipeline ---------- */
+  .pipeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .step { position: relative; padding: 26px 24px 28px; background: var(--card); }
+  .step-n { font-family: var(--mono); font-size: 11px; color: var(--green-bright); letter-spacing: 0.1em; }
+  .step h3 { margin-top: 14px; font-size: 18px; line-height: 1.25; }
+  .step p { margin-top: 10px; font-size: 14.5px; line-height: 1.58; color: var(--muted); }
+  .step-tools { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .step-tools span {
+    padding: 3px 7px; background: var(--wash); color: var(--body);
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.02em;
+  }
 
-def test_compounding_and_initial_loss_drawdown():
-    result = metrics([-0.1, 0.1], 0)
-    assert result[&quot;cumulative_return&quot;] == pytest.approx(-0.01)
-    assert result[&quot;max_drawdown&quot;] == pytest.approx(-0.1)
-    assert result[&quot;annualized_return&quot;] == pytest.approx(0.99 ** 126 - 1)
+  /* ---------- table ---------- */
+  .tablewrap { overflow-x: auto; margin-top: 24px; }
+  table.results { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 620px; }
+  table.results th {
+    text-align: right; padding: 11px 14px; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500;
+    border-bottom: 1px solid var(--ink); white-space: nowrap;
+  }
+  table.results th:first-child, table.results td:first-child { text-align: left; }
+  table.results td { text-align: right; padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--body); }
+  table.results tr.win td { background: var(--tint); color: var(--ink); font-weight: 600; }
+  table.results tr.bench td { background: #fcfbf9; }
+  table.results tr.bench td:first-child { color: var(--muted); }
+  .tag {
+    display: inline-block; margin-left: 9px; padding: 2px 7px; vertical-align: 1px;
+    background: var(--green-bright); color: #fff; font-family: var(--mono);
+    font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;
+  }
 
+  /* ---------- evidence cards ---------- */
+  .evidence { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .ecard { padding: 32px 30px 34px; background: var(--card); }
+  .ecard h3 { margin-top: 14px; font-size: 21px; line-height: 1.25; }
+  .ecard p { margin-top: 14px; font-size: 15.5px; line-height: 1.65; color: var(--body); }
+  .ecard .stat { display: block; margin-top: 18px; font-family: var(--mono); font-size: 12px; color: var(--green-bright); }
 
-def test_zero_volatility_sharpe_is_undefined():
-    assert np.isnan(metrics([0., 0., 0.])[&quot;sharpe&quot;])
+  /* ---------- controls list ---------- */
+  .controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 44px; margin-top: 8px; padding: 0; list-style: none; }
+  .controls li {
+    display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 12px; align-items: start;
+    min-height: 60px; padding: 14px 0; border-bottom: 1px solid var(--line);
+    font-size: 15.5px; line-height: 1.5; color: var(--body);
+  }
+  .controls li::before { content: "\2713"; color: var(--green-bright); font-size: 13px; line-height: 1.6; }
 
+  /* ---------- skills ---------- */
+  .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .skill { padding: 26px 24px 28px; background: var(--card); }
+  .skill h3 { font-size: 16px; }
+  .skill p { margin-top: 9px; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .chips span { padding: 4px 8px; background: var(--wash); font-family: var(--mono); font-size: 10.5px; color: var(--body); }
 
-@pytest.mark.parametrize(&quot;fault&quot;, [&quot;negative&quot;, &quot;missing&quot;, &quot;infinite&quot;, &quot;conflict&quot;, &quot;gap&quot;, &quot;weights&quot;, &quot;unknown&quot;])
-def test_reject_bad_inputs(inputs, fault):
-    prices, holdings, securities, _ = inputs
-    if fault == &quot;negative&quot;:
-        prices.loc[0, &quot;adjusted_price&quot;] = -1
-    elif fault == &quot;missing&quot;:
-        prices.loc[0, &quot;volume&quot;] = np.nan
-    elif fault == &quot;infinite&quot;:
-        prices.loc[0, &quot;adjusted_price&quot;] = np.inf
-    elif fault == &quot;conflict&quot;:
-        prices = pd.concat([prices, prices.iloc[:1].assign(adjusted_price=999)])
-    elif fault == &quot;gap&quot;:
-        prices = prices.iloc[1:]
-    elif fault == &quot;weights&quot;:
-        holdings.loc[0, &quot;target_weight&quot;] = 0.8
-    elif fault == &quot;unknown&quot;:
-        holdings.loc[0, &quot;ticker&quot;] = &quot;UNKNOWN&quot;
-    with pytest.raises(ValueError):
-        clean_inputs(prices, holdings, securities)
+  /* ---------- responsive ---------- */
+  @media (max-width: 980px) {
+    .takeaways, .pipeline, .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .herogrid { gap: 40px; }
+    .scoreboard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .wrap { padding: 0 20px; }
+    .hero { padding-top: 40px; }
+    .deck { font-size: 17.5px; }
+    .takeaways, .pipeline, .skills, .evidence, .scoreboard, .controls, .herogrid { grid-template-columns: minmax(0, 1fr); }
+    .herogrid { gap: 36px; align-items: start; }
+    .factlist { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; }
+    .sechead { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .secnum { padding-top: 0; }
+    .chart-card { padding: 18px 16px 14px; }
+    .score-value { font-size: 32px; }
+    .btn { width: 100%; justify-content: center; }
+    .ecard { padding: 26px 22px 28px; }
+  }
+</style>
+<style>
+  /* Text greys stepped to clear 4.5:1 on every surface of this page. */
+  :root { --muted: #686c71; --faint: #686c71; }
+  .shot { margin-top: 26px; border: 1px solid #1c2631; background: #0b0f14; }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .shot figcaption { padding: 12px 14px; background: var(--card); border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; color: var(--body); }
+  .views { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 26px; }
+  .views .step p { color: var(--body); }
+  .fans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .fans .chart-card { margin-top: 0; }
+  details.more { margin-top: 22px; border: 1px solid var(--line); background: var(--card); }
+  details.more summary { cursor: pointer; padding: 14px 18px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+  details.more .inner { padding: 4px 18px 18px; color: var(--body); font-size: 15px; line-height: 1.6; }
+  .formulas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }
+  .formulas h4 { margin: 12px 0 4px; font-size: 15px; }
+  .formulas code { font-family: var(--mono); font-size: 13px; color: var(--ink); }
+  .formulas p { margin: 4px 0 0; font-size: 14px; }
+  .results td:first-child { white-space: nowrap; }
+  .links { margin-top: 14px; font-family: var(--mono); font-size: 12px; }
+  .links a { color: var(--green-bright); }
+  @media (max-width: 980px) { .views { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 760px) { .views, .shots, .fans, .formulas { grid-template-columns: minmax(0, 1fr); } }
+  /* Keep chart text legible on phones: scroll the plot instead of shrinking it. */
+  @media (max-width: 760px) { .chart-card { overflow-x: auto; } .chart-card > svg { min-width: 600px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding:26px 0;border-bottom:1px solid #e6e2db">
+    <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:#16181a;font-weight:500">Nathan&nbsp;Gomes</a>
+    <nav style="display:flex;gap:24px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">
+      <a href="/#projects" style="text-decoration:none;color:#686c71">Projects</a>
+      <a href="https://nathan-portfolio-lab.onrender.com/" target="_blank" rel="noreferrer" style="text-decoration:none;color:#1a6f57">Live app</a>
+      <a href="/investment-analytics/output/report.html" style="text-decoration:none;color:#686c71">Report</a>
+      <a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer" style="text-decoration:none;color:#686c71">GitHub</a>
+    </nav>
+  </header>
+</div>
 
+<nav class="skimnav" aria-label="Sections">
+  <div class="wrap">
+    <div class="skimnav-inner">
+      <a href="#result">01 &nbsp;Result</a>
+      <a href="#app">02 &nbsp;The app</a>
+      <a href="#history">03 &nbsp;History</a>
+      <a href="#construction">04 &nbsp;Optimizing</a>
+      <a href="#scenarios">05 &nbsp;Five years</a>
+      <a href="#system">06 &nbsp;How it works</a>
+      <a href="#production">07 &nbsp;Production</a>
+      <a href="#trust">08 &nbsp;Validation</a>
+      <a href="#next">09 &nbsp;Next</a>
+    </div>
+  </div>
+</nav>
 
-def test_exact_duplicates_are_audited(inputs):
-    p, h, s, _ = inputs
-    cleaned, audit = clean_inputs(pd.concat([p, p.iloc[:1]]), h, s)
-    assert len(cleaned) == len(p)
-    assert audit[&quot;exact_duplicates_removed&quot;] == 1
+<div class="wrap">
+  <main>
 
+    <section class="hero">
+      <div class="herogrid">
+        <div>
+          <p class="eyebrow">Project 02 &nbsp;/&nbsp; Portfolio construction &amp; risk</p>
+          <h1>Strata</h1>
+          <p class="deck">A portfolio construction and risk system: build an allocation from any set of tickers, or let an optimizer solve for one, then see what the rule earned out of sample, what it cost to run, and the range of outcomes that could follow.</p>
+          <div class="verdict"><strong>The verdict:</strong> of four allocation policies on eight TSX stocks, Balanced earned the best risk-adjusted return (Sharpe 0.97 against 0.82 for XIC) with a shallower worst loss than the index. Growth's extra return came with a <b>&minus;48.7%</b> drawdown. A minimum-variance optimizer delivered the lower volatility it promised but lost to plain equal weighting on Sharpe (0.79 against 1.00) while trading 2.7&times; as much.</div>
+          <div class="btnrow">
+            <a class="btn btn-primary" href="https://nathan-portfolio-lab.onrender.com/" target="_blank" rel="noreferrer">Launch Strata</a>
+            <a class="btn btn-ghost" href="/strata-demo.html">Try the browser demo</a>
+            <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">Source on GitHub</a>
+          </div>
+        </div>
+        <dl class="factlist">
+          <div><dt>Test window</dt><dd>Jan 2019 &ndash; Aug 2026<br>1,923 daily sessions, CAD</dd></div>
+          <div><dt>Universe</dt><dd>8 TSX stocks &middot; 5 sectors<br>XIC.TO benchmark</dd></div>
+          <div><dt>Rules</dt><dd>Growth &middot; Income &middot; Balanced<br>Low volatility &middot; 12 optimizers</dd></div>
+          <div><dt>Stack</dt><dd>Python &middot; pandas &middot; NumPy<br>SQLite &middot; cvxpy &middot; FastAPI</dd></div>
+        </dl>
+      </div>
+    </section>
 
-def test_previous_weights_and_reconciliation(inputs):
-    p, h, s, c = inputs
-    daily, positions, *_ = portfolio_analytics(p, h, s, c)
-    validate_outputs(daily, positions)
-    wide = p.pivot(index=&quot;date&quot;, columns=&quot;ticker&quot;, values=&quot;adjusted_price&quot;)
-    r = wide.pct_change().iloc[31]
-    observed = daily[daily.portfolio_id == &quot;Balanced&quot;].iloc[1]
-    assert observed.gross_return == pytest.approx(0.6 * r.A + 0.4 * r.B)
-    assert daily[daily.portfolio_id == &quot;Benchmark&quot;].cost.sum() == 0
+    <section id="result" style="padding:56px 0 0">
+      <div class="scoreboard">
+        <div class="score">
+          <span class="score-label">Balanced &middot; Sharpe</span>
+          <strong class="score-value">0.97</strong>
+          <div class="score-vs">XIC 0.82 &middot; drawdown &minus;28.7%</div>
+          <span class="pill pill-good">Best of the four policies</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Growth &middot; annual return</span>
+          <strong class="score-value">27.8%</strong>
+          <div class="score-vs">XIC 16.2% &middot; volatility 28.6%</div>
+          <span class="pill pill-good">11.6 pts ahead</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Growth &middot; worst drawdown</span>
+          <strong class="score-value">&minus;48.7%</strong>
+          <div class="score-vs">XIC &minus;37.2% &middot; Balanced &minus;28.7%</div>
+          <span class="pill pill-cost">11.5 pts deeper than XIC</span>
+        </div>
+        <div class="score">
+          <span class="score-label">Min variance &middot; Sharpe</span>
+          <strong class="score-value">0.79</strong>
+          <div class="score-vs">Equal weight 1.00 &middot; risk parity 0.98</div>
+          <span class="pill pill-cost">Optimizer lost out of sample</span>
+        </div>
+      </div>
+      <p class="caption">CAD 100,000 per portfolio from Jan 2019 to Aug 2026, rebalanced monthly to target, 10 bps on traded notional. Optimizers re-solve at each rebalance from the previous 252 sessions and are judged only on the returns that followed. Benchmark: XIC.TO, held without rebalancing.</p>
+    </section>
 
+    <section style="padding:56px 0 0">
+      <h2 class="eyebrow" style="margin-bottom:22px">The thirty-second version</h2>
+      <div class="takeaways">
+        <div class="takeaway">
+          <span class="takeaway-n">1</span>
+          <h3>Balance beat concentration on risk-adjusted terms</h3>
+          <p>Balanced returned <b>19.1%</b> a year against XIC's 16.2% at almost the same volatility, and its worst loss was &minus;28.7% against the index's &minus;37.2%. One sample and one universe, so this is an observed result, not evidence of persistent skill.</p>
+        </div>
+        <div class="takeaway">
+          <span class="takeaway-n">2</span>
+          <h3>Growth's return came with half its value at risk</h3>
+          <p>A 65% technology target compounded at <b>27.8%</b> a year but fell &minus;48.7% from peak. In five-year scenarios it drops below 80% of the starting balance in <b>24.2%</b> of paths, against 8.8% for Balanced, and finishes behind Balanced in 19.3% of shared market paths.</p>
+        </div>
+        <div class="takeaway">
+          <span class="takeaway-n">3</span>
+          <h3>Optimizing did not beat equal weight</h3>
+          <p>Minimum variance achieved lower volatility (15.2% against 16.9%) but a Sharpe of <b>0.79</b> against 1.00 for equal weighting, with 2.7&times; the turnover. An optimal answer to estimated inputs is not the best realized portfolio; the system reports that instead of assuming the sophisticated method wins.</p>
+        </div>
+      </div>
+    </section>
 
-def test_costs_reduce_nav(inputs):
-    p, h, s, c = inputs
-    cost = portfolio_analytics(p, h, s, c)[0]
-    free = portfolio_analytics(p, h, s, dict(c, transaction_cost_bps=0))[0]
-    a = cost[cost.portfolio_id == &quot;Balanced&quot;]
-    b = free[free.portfolio_id == &quot;Balanced&quot;]
-    assert a.cost.sum() &gt; 0
-    assert a.nav.iloc[-1] &lt; b.nav.iloc[-1]
+    <section id="app" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">02</div>
+        <div>
+          <p class="eyebrow">The application</p>
+          <h2>Build a portfolio, test it, see where it could land</h2>
+          <p class="lede">Strata is the deployed version of the research: enter Yahoo Finance tickers and weights, or pick one of twelve registered construction methods, and a single run returns the realized history, the costs, a drawdown profile and 5,000 simulated five-year paths. Up to four portfolios run side by side in the same simulated markets, so differences come from construction rather than a luckier draw.</p>
+        </div>
+      </div>
+      <figure class="shot"><img src="assets/strata-overview.png" alt="Strata app: portfolio builder on the left; realized value since 2016 continuing into a five-year scenario fan, and a results table for Growth, Balanced, Income and XIC" loading="lazy"><figcaption><b>One continuous picture.</b> Realized value through today, then the five-year scenario fan, with costs, Sharpe, Sortino and drawdown for every portfolio.</figcaption></figure>
+      <div class="shots">
+        <figure class="shot"><img src="assets/strata-scenarios.png" alt="Strata scenario panel: median, weak and strong five-year outcomes, loss frequency and drawdown, with a range of final values per portfolio" loading="lazy"><figcaption><b>Where five years could land.</b> Median, weak and strong outcomes with their sampling intervals, loss frequency and typical worst drop.</figcaption></figure>
+        <figure class="shot"><img src="assets/strata-optimizer.png" alt="Strata optimizer panel: shrinkage, effective bets, diversification ratio, estimated against realized volatility and turnover for a walk-forward minimum-variance portfolio" loading="lazy"><figcaption><b>Optimization, out of sample.</b> What the risk model expected against what the portfolio realized, and how the answer was reached.</figcaption></figure>
+      </div>
+      <div class="views">
+        <div class="step"><span class="step-n">BUILD</span><h3>Portfolios &amp; strategy</h3><p>Tickers and weights, or a registered method: minimum variance, risk parity, maximum diversification, maximum Sharpe and their convex variants.</p></div>
+        <div class="step"><span class="step-n">MANDATE</span><h3>Constraints</h3><p>Position caps, sector and country limits, turnover budgets, tracking-error ceilings, and optional spread and impact costs.</p></div>
+        <div class="step"><span class="step-n">RISK</span><h3>Risk models</h3><p>Sample covariance, Ledoit-Wolf shrinkage, or a statistical factor model whose factor count follows the Marchenko-Pastur noise edge.</p></div>
+        <div class="step"><span class="step-n">REPLAY</span><h3>History &amp; drawdowns</h3><p>Monthly rebalancing with daily drift, costs on traded notional, rolling one- and three-year return ranges, depth of every drawdown.</p></div>
+        <div class="step"><span class="step-n">SIMULATE</span><h3>Five-year scenarios</h3><p>5,000 block-bootstrap paths shared across portfolios, head-to-head comparisons in the same markets, and sampling intervals on each percentile.</p></div>
+        <div class="step"><span class="step-n">RECORD</span><h3>Run records</h3><p>Every result carries an identifier built from the request, the price data and the source code, with library versions, and exports in full.</p></div>
+      </div>
+    </section>
 
+    <section id="history" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">03</div>
+        <div>
+          <p class="eyebrow">Historical results</p>
+          <h2>What CAD 100,000 in each policy became</h2>
+          <p class="lede">Growth, Income and Balanced hold fixed target weights; Low volatility weights by inverse volatility estimated from the first 252 sessions and then frozen. Weights drift daily and reset at the first close of each month, and costs come out of the portfolio before the next day's return. Log scale, so equal slopes mean equal percentage growth.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        <svg viewBox="0 0 760 330" role="img" aria-label="Value of CAD 100,000 in each portfolio and XIC, log scale" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+<line x1="62" y1="265.9" x2="690" y2="265.9" stroke="#e6e2db"/>
+<text x="54" y="269.4" text-anchor="end" font-size="10" fill="#686c71">$100k</text>
+<line x1="62" y1="215.7" x2="690" y2="215.7" stroke="#e6e2db"/>
+<text x="54" y="219.2" text-anchor="end" font-size="10" fill="#686c71">$150k</text>
+<line x1="62" y1="180.1" x2="690" y2="180.1" stroke="#e6e2db"/>
+<text x="54" y="183.6" text-anchor="end" font-size="10" fill="#686c71">$200k</text>
+<line x1="62" y1="130.0" x2="690" y2="130.0" stroke="#e6e2db"/>
+<text x="54" y="133.5" text-anchor="end" font-size="10" fill="#686c71">$300k</text>
+<line x1="62" y1="94.4" x2="690" y2="94.4" stroke="#e6e2db"/>
+<text x="54" y="97.9" text-anchor="end" font-size="10" fill="#686c71">$400k</text>
+<line x1="62" y1="44.2" x2="690" y2="44.2" stroke="#e6e2db"/>
+<text x="54" y="47.7" text-anchor="end" font-size="10" fill="#686c71">$600k</text>
+<text x="62.0" y="314" text-anchor="middle" font-size="10" fill="#686c71">2019</text>
+<text x="143.6" y="314" text-anchor="middle" font-size="10" fill="#686c71">2020</text>
+<text x="226.7" y="314" text-anchor="middle" font-size="10" fill="#686c71">2021</text>
+<text x="308.3" y="314" text-anchor="middle" font-size="10" fill="#686c71">2022</text>
+<text x="389.9" y="314" text-anchor="middle" font-size="10" fill="#686c71">2023</text>
+<text x="471.4" y="314" text-anchor="middle" font-size="10" fill="#686c71">2024</text>
+<text x="553.0" y="314" text-anchor="middle" font-size="10" fill="#686c71">2025</text>
+<text x="636.2" y="314" text-anchor="middle" font-size="10" fill="#686c71">2026</text>
+<line x1="62" y1="265.9" x2="690" y2="265.9" stroke="#16181a"/>
+<path d="M62.0,265.9 L63.6,254.6 L65.3,250.2 L66.9,247.9 L68.5,244.9 L70.2,242.6 L71.8,236.6 L73.4,233.7 L75.0,231.5 L76.7,231.2 L78.3,227.7 L79.9,229.2 L81.6,226.3 L83.2,226.4 L84.8,221.5 L86.5,219.4 L88.1,217.7 L89.7,210.9 L91.4,215.2 L93.0,209.9 L94.6,208.3 L96.3,212.1 L97.9,205.5 L99.5,203.8 L101.1,209.3 L102.8,202.8 L104.4,202.8 L106.0,202.6 L107.7,199.5 L109.3,201.6 L110.9,195.9 L112.6,199.0 L114.2,192.4 L115.8,192.0 L117.5,193.1 L119.1,197.1 L120.7,199.7 L122.4,200.8 L124.0,198.6 L125.6,198.3 L127.2,200.2 L128.9,200.0 L130.5,200.2 L132.1,200.4 L133.8,196.0 L135.4,195.3 L137.0,194.5 L138.7,192.9 L140.3,191.1 L141.9,191.1 L143.6,189.7 L145.2,184.2 L146.8,181.4 L148.5,177.8 L150.1,177.2 L151.7,174.1 L153.3,168.5 L155.0,171.7 L156.6,181.5 L158.2,181.6 L159.9,192.6 L161.5,204.1 L163.1,194.1 L164.8,198.5 L166.4,186.8 L168.0,165.0 L169.7,166.3 L171.3,164.6 L172.9,154.5 L174.6,155.5 L176.2,150.8 L177.8,151.6 L179.4,153.4 L181.1,150.1 L182.7,144.6 L184.3,141.8 L186.0,136.2 L187.6,137.3 L189.2,137.8 L190.9,134.8 L192.5,130.9 L194.1,136.0 L195.8,133.0 L197.4,132.3 L199.0,135.6 L200.6,139.2 L202.3,141.3 L203.9,135.5 L205.5,133.6 L207.2,130.9 L208.8,131.6 L210.4,136.7 L212.1,143.8 L213.7,139.6 L215.3,138.0 L217.0,131.3 L218.6,129.2 L220.2,128.6 L221.9,128.8 L223.5,122.5 L225.1,125.2 L226.7,124.6 L228.4,125.0 L230.0,124.7 L231.6,128.3 L233.3,122.7 L234.9,115.3 L236.5,113.7 L238.2,119.7 L239.8,123.8 L241.4,122.1 L243.1,122.3 L244.7,123.5 L246.3,119.3 L248.0,114.5 L249.6,118.2 L251.2,119.5 L252.8,122.2 L254.5,125.0 L256.1,126.1 L257.7,120.2 L259.4,118.0 L261.0,118.6 L262.6,113.7 L264.3,106.9 L265.9,106.7 L267.5,105.0 L269.2,106.3 L270.8,103.4 L272.4,103.1 L274.1,100.7 L275.7,101.2 L277.3,100.3 L278.9,98.3 L280.6,94.2 L282.2,95.6 L283.8,96.3 L285.5,98.5 L287.1,102.7 L288.7,102.7 L290.4,96.4 L292.0,94.9 L293.6,93.5 L295.3,92.5 L296.9,89.7 L298.5,89.8 L300.2,90.8 L301.8,94.8 L303.4,96.5 L305.0,100.1 L306.7,93.1 L308.3,103.1 L309.9,107.6 L311.6,110.7 L313.2,119.5 L314.8,118.1 L316.5,112.8 L318.1,126.4 L319.7,124.7 L321.4,129.8 L323.0,134.4 L324.6,122.7 L326.2,123.8 L327.9,123.5 L329.5,130.1 L331.1,129.4 L332.8,140.1 L334.4,143.8 L336.0,158.6 L337.7,156.5 L339.3,160.8 L340.9,154.0 L342.6,154.6 L344.2,165.7 L345.8,162.4 L347.5,157.9 L349.1,159.2 L350.7,161.3 L352.3,151.0 L354.0,152.7 L355.6,143.1 L357.2,144.9 L358.9,146.5 L360.5,152.0 L362.1,159.2 L363.8,152.1 L365.4,157.8 L367.0,162.9 L368.7,164.7 L370.3,165.5 L371.9,164.5 L373.6,161.0 L375.2,150.9 L376.8,155.1 L378.4,145.9 L380.1,147.0 L381.7,142.0 L383.3,137.9 L385.0,139.8 L386.6,145.4 L388.2,149.0 L389.9,144.7 L391.5,141.5 L393.1,139.3 L394.8,128.4 L396.4,122.5 L398.0,125.4 L399.7,129.8 L401.3,134.3 L402.9,131.1 L404.5,133.2 L406.2,130.7 L407.8,129.7 L409.4,124.3 L411.1,125.6 L412.7,121.8 L414.3,120.6 L416.0,121.3 L417.6,108.4 L419.2,110.2 L420.9,114.9 L422.5,114.2 L424.1,109.5 L425.8,110.1 L427.4,110.5 L429.0,110.7 L430.6,109.2 L432.3,110.6 L433.9,105.7 L435.5,108.1 L437.2,110.9 L438.8,113.2 L440.4,118.3 L442.1,115.9 L443.7,107.7 L445.3,110.7 L447.0,107.4 L448.6,118.7 L450.2,116.4 L451.8,116.7 L453.5,116.9 L455.1,120.4 L456.7,124.0 L458.4,109.8 L460.0,104.5 L461.6,97.5 L463.3,95.6 L464.9,94.6 L466.5,92.7 L468.2,90.5 L469.8,89.1 L471.4,90.8 L473.1,84.6 L474.7,84.8 L476.3,82.9 L477.9,84.0 L479.6,78.1 L481.2,79.3 L482.8,82.5 L484.5,81.4 L486.1,82.5 L487.7,82.0 L489.4,80.1 L491.0,81.3 L492.6,83.4 L494.3,87.3 L495.9,85.3 L497.5,86.2 L499.2,80.8 L500.8,91.9 L502.4,92.8 L504.0,92.0 L505.7,89.3 L507.3,86.9 L508.9,88.4 L510.6,87.2 L512.2,83.1 L513.8,83.7 L515.5,82.0 L517.1,85.6 L518.7,83.4 L520.4,82.5 L522.0,76.0 L523.6,76.3 L525.3,76.2 L526.9,80.6 L528.5,75.0 L530.1,71.4 L531.8,71.5 L533.4,70.1 L535.0,67.3 L536.7,68.1 L538.3,70.0 L539.9,72.1 L541.6,63.1 L543.2,55.6 L544.8,51.2 L546.5,48.6 L548.1,48.4 L549.7,49.4 L551.4,52.8 L553.0,54.2 L554.6,54.9 L556.2,56.1 L557.9,52.5 L559.5,44.9 L561.1,46.0 L562.8,43.5 L564.4,48.3 L566.0,47.8 L567.7,54.0 L569.3,59.5 L570.9,56.2 L572.6,60.1 L574.2,72.0 L575.8,67.9 L577.4,68.7 L579.1,58.4 L580.7,57.0 L582.3,50.8 L584.0,49.5 L585.6,51.4 L587.2,52.3 L588.9,50.6 L590.5,53.7 L592.1,48.9 L593.8,48.2 L595.4,48.1 L597.0,46.4 L598.7,48.3 L600.3,47.3 L601.9,39.9 L603.5,44.0 L605.2,44.4 L606.8,42.0 L608.4,38.6 L610.1,42.0 L611.7,38.7 L613.3,48.5 L615.0,37.7 L616.6,42.0 L618.2,39.4 L619.9,35.4 L621.5,37.9 L623.1,45.1 L624.8,50.3 L626.4,45.3 L628.0,46.5 L629.6,42.7 L631.3,42.2 L632.9,39.7 L634.5,42.0 L636.2,39.0 L637.8,46.1 L639.4,55.3 L641.1,57.1 L642.7,67.5 L644.3,69.1 L646.0,59.3 L647.6,61.0 L649.2,53.3 L650.9,61.6 L652.5,65.9 L654.1,68.5 L655.7,62.8 L657.4,62.6 L659.0,52.5 L660.6,58.9 L662.3,58.6 L663.9,67.3 L665.5,61.4 L667.2,59.0 L668.8,50.8 L670.4,50.7 L672.1,50.8 L673.7,53.1 L675.3,51.0 L677.0,47.4 L678.6,46.7 L680.2,49.0 L681.8,38.7 L683.5,31.8 L685.1,28.7 L686.7,34.9 L688.4,32.1 L690.0,34.5" fill="none" stroke="#eb6834" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="696" y="38.0" font-size="10" fill="#3d4145">$649k</text>
+<path d="M62.0,265.9 L63.6,258.7 L65.3,255.4 L66.9,253.9 L68.5,252.0 L70.2,249.9 L71.8,248.8 L73.4,246.6 L75.0,245.3 L76.7,245.0 L78.3,242.8 L79.9,243.1 L81.6,242.7 L83.2,241.0 L84.8,239.1 L86.5,237.9 L88.1,237.1 L89.7,235.2 L91.4,236.8 L93.0,234.1 L94.6,233.0 L96.3,235.7 L97.9,234.0 L99.5,232.3 L101.1,234.4 L102.8,231.0 L104.4,231.1 L106.0,231.9 L107.7,230.8 L109.3,231.8 L110.9,229.7 L112.6,231.7 L114.2,228.9 L115.8,228.8 L117.5,227.8 L119.1,227.8 L120.7,227.6 L122.4,227.3 L124.0,228.3 L125.6,228.0 L127.2,228.6 L128.9,229.1 L130.5,227.9 L132.1,228.1 L133.8,225.2 L135.4,225.2 L137.0,225.7 L138.7,225.5 L140.3,224.1 L141.9,224.3 L143.6,224.2 L145.2,221.5 L146.8,219.2 L148.5,216.1 L150.1,215.9 L151.7,214.0 L153.3,211.9 L155.0,212.5 L156.6,222.7 L158.2,221.0 L159.9,233.9 L161.5,247.7 L163.1,240.0 L164.8,239.7 L166.4,232.6 L168.0,225.4 L169.7,225.2 L171.3,225.0 L172.9,219.1 L174.6,222.0 L176.2,218.8 L177.8,217.0 L179.4,216.4 L181.1,217.0 L182.7,216.9 L184.3,216.4 L186.0,214.6 L187.6,212.0 L189.2,212.0 L190.9,210.5 L192.5,209.1 L194.1,209.3 L195.8,208.7 L197.4,207.2 L199.0,209.8 L200.6,210.9 L202.3,212.7 L203.9,210.3 L205.5,209.8 L207.2,207.9 L208.8,209.4 L210.4,212.1 L212.1,216.0 L213.7,210.9 L215.3,208.9 L217.0,205.2 L218.6,205.1 L220.2,203.2 L221.9,202.9 L223.5,202.1 L225.1,202.9 L226.7,201.7 L228.4,200.3 L230.0,200.9 L231.6,203.0 L233.3,200.3 L234.9,198.0 L236.5,197.7 L238.2,200.3 L239.8,198.7 L241.4,195.7 L243.1,194.6 L244.7,193.7 L246.3,192.3 L248.0,190.6 L249.6,191.4 L251.2,192.7 L252.8,192.9 L254.5,192.7 L256.1,193.2 L257.7,191.7 L259.4,190.4 L261.0,189.6 L262.6,186.7 L264.3,185.6 L265.9,185.9 L267.5,184.9 L269.2,185.4 L270.8,185.2 L272.4,184.1 L274.1,182.5 L275.7,181.4 L277.3,181.2 L278.9,180.2 L280.6,177.6 L282.2,178.3 L283.8,179.0 L285.5,179.9 L287.1,181.4 L288.7,180.8 L290.4,177.0 L292.0,175.4 L293.6,175.6 L295.3,174.4 L296.9,173.8 L298.5,173.5 L300.2,174.6 L301.8,175.3 L303.4,175.6 L305.0,175.9 L306.7,172.0 L308.3,174.3 L309.9,174.7 L311.6,176.0 L313.2,178.2 L314.8,175.7 L316.5,174.2 L318.1,179.0 L319.7,178.3 L321.4,178.3 L323.0,179.8 L324.6,175.8 L326.2,175.2 L327.9,175.1 L329.5,176.4 L331.1,176.8 L332.8,181.2 L334.4,183.9 L336.0,187.7 L337.7,187.0 L339.3,186.9 L340.9,184.4 L342.6,184.7 L344.2,192.6 L345.8,193.2 L347.5,190.2 L349.1,191.0 L350.7,191.7 L352.3,188.7 L354.0,187.1 L355.6,184.0 L357.2,183.8 L358.9,182.7 L360.5,185.2 L362.1,190.0 L363.8,185.9 L365.4,189.0 L367.0,192.9 L368.7,195.6 L370.3,197.6 L371.9,196.2 L373.6,194.8 L375.2,190.0 L376.8,191.1 L378.4,187.4 L380.1,186.2 L381.7,183.6 L383.3,182.1 L385.0,182.3 L386.6,187.2 L388.2,187.5 L389.9,186.2 L391.5,182.6 L393.1,181.6 L394.8,179.0 L396.4,176.6 L398.0,178.5 L399.7,178.6 L401.3,180.7 L402.9,179.5 L404.5,182.1 L406.2,181.3 L407.8,182.0 L409.4,178.3 L411.1,176.8 L412.7,174.6 L414.3,173.7 L416.0,174.2 L417.6,170.1 L419.2,170.6 L420.9,175.2 L422.5,177.0 L424.1,174.8 L425.8,174.9 L427.4,175.7 L429.0,175.8 L430.6,173.9 L432.3,175.5 L433.9,172.5 L435.5,172.3 L437.2,175.0 L438.8,175.7 L440.4,179.1 L442.1,179.2 L443.7,176.5 L445.3,178.8 L447.0,173.8 L448.6,179.9 L450.2,181.9 L451.8,182.6 L453.5,180.8 L455.1,184.7 L456.7,184.8 L458.4,176.8 L460.0,175.0 L461.6,170.9 L463.3,171.7 L464.9,169.8 L466.5,168.8 L468.2,167.4 L469.8,165.9 L471.4,165.3 L473.1,164.1 L474.7,165.2 L476.3,164.5 L477.9,164.8 L479.6,164.9 L481.2,163.9 L482.8,163.6 L484.5,163.9 L486.1,162.8 L487.7,163.1 L489.4,162.1 L491.0,162.5 L492.6,163.2 L494.3,166.4 L495.9,164.0 L497.5,164.2 L499.2,161.7 L500.8,163.1 L502.4,162.6 L504.0,164.7 L505.7,162.9 L507.3,163.1 L508.9,165.9 L510.6,164.9 L512.2,162.6 L513.8,162.3 L515.5,159.5 L517.1,160.0 L518.7,157.5 L520.4,157.7 L522.0,154.4 L523.6,154.0 L525.3,153.3 L526.9,153.0 L528.5,149.2 L530.1,148.7 L531.8,148.4 L533.4,148.6 L535.0,148.3 L536.7,146.9 L538.3,148.2 L539.9,150.6 L541.6,145.3 L543.2,142.6 L544.8,140.2 L546.5,138.4 L548.1,139.3 L549.7,141.0 L551.4,142.1 L553.0,142.3 L554.6,141.7 L556.2,141.5 L557.9,138.6 L559.5,135.4 L561.1,136.5 L562.8,135.2 L564.4,137.1 L566.0,135.7 L567.7,138.1 L569.3,140.2 L570.9,138.7 L572.6,139.2 L574.2,143.9 L575.8,143.8 L577.4,141.8 L579.1,137.4 L580.7,136.2 L582.3,134.4 L584.0,131.8 L585.6,131.6 L587.2,131.8 L588.9,132.5 L590.5,133.7 L592.1,132.1 L593.8,131.5 L595.4,131.5 L597.0,130.4 L598.7,130.8 L600.3,129.9 L601.9,126.3 L603.5,126.3 L605.2,125.3 L606.8,125.2 L608.4,123.4 L610.1,124.1 L611.7,122.9 L613.3,124.7 L615.0,120.0 L616.6,122.1 L618.2,120.6 L619.9,119.3 L621.5,120.8 L623.1,122.2 L624.8,122.3 L626.4,121.4 L628.0,120.3 L629.6,119.4 L631.3,118.4 L632.9,117.8 L634.5,117.6 L636.2,117.0 L637.8,118.4 L639.4,121.0 L641.1,121.9 L642.7,122.5 L644.3,121.6 L646.0,117.0 L647.6,116.7 L649.2,115.0 L650.9,117.1 L652.5,121.1 L654.1,120.2 L655.7,116.5 L657.4,115.0 L659.0,112.4 L660.6,114.2 L662.3,113.6 L663.9,115.6 L665.5,111.6 L667.2,108.8 L668.8,106.7 L670.4,105.2 L672.1,103.9 L673.7,103.4 L675.3,102.3 L677.0,100.8 L678.6,99.4 L680.2,99.9 L681.8,97.9 L683.5,97.8 L685.1,97.0 L686.7,100.5 L688.4,100.3 L690.0,100.8" fill="none" stroke="#1a6f57" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="696" y="104.3" font-size="10" fill="#3d4145">$380k</text>
+<path d="M62.0,265.9 L63.6,261.2 L65.3,258.3 L66.9,257.0 L68.5,255.3 L70.2,253.3 L71.8,254.5 L73.4,252.9 L75.0,251.9 L76.7,252.0 L78.3,250.4 L79.9,250.4 L81.6,251.8 L83.2,249.1 L84.8,248.5 L86.5,247.7 L88.1,247.3 L89.7,247.2 L91.4,248.0 L93.0,246.5 L94.6,245.3 L96.3,247.3 L97.9,247.6 L99.5,245.9 L101.1,246.5 L102.8,244.7 L104.4,244.5 L106.0,245.7 L107.7,245.5 L109.3,246.3 L110.9,246.1 L112.6,247.7 L114.2,246.7 L115.8,246.8 L117.5,244.9 L119.1,242.5 L120.7,240.3 L122.4,239.6 L124.0,241.6 L125.6,241.5 L127.2,241.4 L128.9,242.5 L130.5,241.0 L132.1,241.3 L133.8,239.2 L135.4,239.0 L137.0,240.0 L138.7,240.9 L140.3,239.6 L141.9,240.1 L143.6,240.5 L145.2,239.2 L146.8,237.3 L148.5,234.4 L150.1,234.6 L151.7,233.2 L153.3,232.3 L155.0,231.3 L156.6,241.9 L158.2,240.4 L159.9,254.1 L161.5,270.0 L163.1,263.0 L164.8,261.8 L166.4,255.8 L168.0,255.6 L169.7,255.1 L171.3,255.2 L172.9,251.7 L174.6,255.6 L176.2,252.8 L177.8,249.0 L179.4,247.4 L181.1,249.7 L182.7,251.7 L184.3,252.7 L186.0,252.9 L187.6,248.7 L189.2,249.0 L190.9,248.7 L192.5,248.2 L194.1,246.0 L195.8,246.7 L197.4,244.1 L199.0,246.7 L200.6,247.4 L202.3,249.3 L203.9,249.0 L205.5,248.7 L207.2,247.2 L208.8,249.6 L210.4,249.9 L212.1,252.7 L213.7,247.1 L215.3,244.2 L217.0,241.1 L218.6,241.1 L220.2,239.1 L221.9,238.7 L223.5,240.3 L225.1,240.1 L226.7,238.4 L228.4,236.0 L230.0,236.6 L231.6,237.8 L233.3,236.2 L234.9,236.5 L236.5,236.4 L238.2,237.6 L239.8,233.5 L241.4,229.8 L243.1,228.5 L244.7,226.8 L246.3,226.5 L248.0,226.0 L249.6,225.7 L251.2,225.6 L252.8,224.5 L254.5,222.9 L256.1,222.0 L257.7,221.8 L259.4,221.6 L261.0,220.2 L262.6,218.1 L264.3,219.1 L265.9,219.9 L267.5,219.2 L269.2,219.1 L270.8,220.4 L272.4,219.1 L274.1,218.1 L275.7,215.8 L277.3,216.2 L278.9,215.8 L280.6,216.4 L282.2,216.3 L283.8,217.1 L285.5,217.0 L287.1,217.6 L288.7,216.0 L290.4,213.8 L292.0,213.1 L293.6,214.0 L295.3,212.3 L296.9,212.1 L298.5,212.1 L300.2,213.3 L301.8,212.8 L303.4,212.1 L305.0,210.5 L306.7,207.5 L308.3,205.9 L309.9,204.0 L311.6,204.6 L313.2,204.5 L314.8,201.1 L316.5,201.2 L318.1,203.4 L319.7,203.1 L321.4,202.2 L323.0,202.6 L324.6,201.3 L326.2,200.6 L327.9,200.2 L329.5,199.3 L331.1,200.7 L332.8,202.9 L334.4,204.7 L336.0,203.7 L337.7,203.7 L339.3,201.6 L340.9,200.2 L342.6,200.6 L344.2,207.7 L345.8,210.0 L347.5,208.3 L349.1,209.6 L350.7,209.4 L352.3,210.2 L354.0,208.1 L355.6,208.0 L357.2,206.6 L358.9,204.2 L360.5,205.9 L362.1,209.2 L363.8,206.1 L365.4,207.6 L367.0,211.1 L368.7,214.0 L370.3,217.1 L371.9,215.1 L373.6,214.8 L375.2,212.6 L376.8,212.2 L378.4,210.6 L380.1,208.8 L381.7,207.5 L383.3,207.2 L385.0,207.0 L386.6,211.6 L388.2,210.3 L389.9,210.1 L391.5,206.2 L393.1,205.5 L394.8,205.5 L396.4,204.6 L398.0,205.5 L399.7,204.0 L401.3,205.2 L402.9,205.7 L404.5,209.1 L406.2,209.9 L407.8,211.2 L409.4,208.3 L411.1,205.6 L412.7,204.1 L414.3,203.6 L416.0,203.4 L417.6,203.2 L419.2,203.2 L420.9,207.4 L422.5,211.0 L424.1,209.8 L425.8,209.3 L427.4,210.4 L429.0,210.7 L430.6,208.3 L432.3,209.6 L433.9,206.9 L435.5,205.6 L437.2,208.2 L438.8,208.6 L440.4,211.6 L442.1,212.8 L443.7,212.3 L445.3,214.1 L447.0,209.0 L448.6,212.7 L450.2,216.4 L451.8,217.7 L453.5,215.2 L455.1,219.4 L456.7,218.5 L458.4,212.6 L460.0,212.7 L461.6,209.6 L463.3,211.6 L464.9,209.8 L466.5,209.1 L468.2,207.3 L469.8,205.8 L471.4,204.5 L473.1,205.7 L474.7,207.7 L476.3,207.0 L477.9,207.5 L479.6,210.6 L481.2,208.5 L482.8,206.9 L484.5,207.9 L486.1,205.6 L487.7,206.2 L489.4,206.0 L491.0,205.8 L492.6,205.6 L494.3,209.0 L495.9,206.3 L497.5,205.4 L499.2,204.6 L500.8,201.7 L502.4,200.5 L504.0,203.7 L505.7,202.1 L507.3,203.5 L508.9,206.4 L510.6,205.2 L512.2,203.5 L513.8,202.5 L515.5,199.4 L517.1,198.1 L518.7,195.1 L520.4,195.7 L522.0,193.7 L523.6,193.1 L525.3,191.7 L526.9,189.0 L528.5,185.8 L530.1,186.4 L531.8,185.7 L533.4,186.2 L535.0,187.9 L536.7,185.1 L538.3,185.9 L539.9,188.2 L541.6,184.7 L543.2,183.9 L544.8,182.9 L546.5,181.3 L548.1,182.3 L549.7,183.7 L551.4,184.1 L553.0,183.8 L554.6,182.4 L556.2,181.6 L557.9,179.3 L559.5,177.5 L561.1,178.7 L562.8,177.5 L564.4,178.5 L566.0,176.4 L567.7,177.7 L569.3,178.3 L570.9,177.0 L572.6,176.4 L574.2,178.7 L575.8,180.2 L577.4,176.6 L579.1,173.6 L580.7,172.5 L582.3,173.7 L584.0,170.2 L585.6,168.0 L587.2,168.0 L588.9,169.5 L590.5,169.5 L592.1,169.0 L593.8,168.7 L595.4,168.1 L597.0,167.1 L598.7,165.6 L600.3,164.8 L601.9,162.4 L603.5,160.0 L605.2,158.8 L606.8,159.2 L608.4,158.3 L610.1,157.1 L611.7,156.4 L613.3,154.6 L615.0,152.8 L616.6,154.1 L618.2,152.5 L619.9,152.0 L621.5,153.1 L623.1,152.1 L624.8,150.3 L626.4,149.9 L628.0,148.5 L629.6,148.0 L631.3,146.3 L632.9,146.2 L634.5,144.8 L636.2,145.2 L637.8,144.2 L639.4,144.1 L641.1,144.8 L642.7,141.5 L644.3,140.7 L646.0,138.4 L647.6,138.0 L649.2,138.8 L650.9,138.0 L652.5,141.3 L654.1,139.3 L655.7,136.3 L657.4,134.0 L659.0,133.8 L660.6,134.3 L662.3,132.7 L663.9,132.0 L665.5,129.1 L667.2,125.8 L668.8,127.0 L670.4,124.4 L672.1,121.7 L673.7,119.5 L675.3,118.8 L677.0,119.0 L678.6,116.3 L680.2,117.2 L681.8,119.7 L683.5,121.5 L685.1,121.4 L686.7,124.7 L688.4,125.2 L690.0,124.7" fill="none" stroke="#2a78d6" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="696" y="128.2" font-size="10" fill="#3d4145">$313k</text>
+<path d="M62.0,265.9 L63.6,260.0 L65.3,257.0 L66.9,255.4 L68.5,253.6 L70.2,251.8 L71.8,251.1 L73.4,249.2 L75.0,248.4 L76.7,248.0 L78.3,246.2 L79.9,246.5 L81.6,246.8 L83.2,244.5 L84.8,243.3 L86.5,242.2 L88.1,241.6 L89.7,240.7 L91.4,242.3 L93.0,240.2 L94.6,239.2 L96.3,241.1 L97.9,239.9 L99.5,238.0 L101.1,239.4 L102.8,236.9 L104.4,237.1 L106.0,238.0 L107.7,236.8 L109.3,237.3 L110.9,236.5 L112.6,238.7 L114.2,236.8 L115.8,236.8 L117.5,235.5 L119.1,234.3 L120.7,233.3 L122.4,232.8 L124.0,234.5 L125.6,234.4 L127.2,234.5 L128.9,235.4 L130.5,233.9 L132.1,234.4 L133.8,232.0 L135.4,231.8 L137.0,232.7 L138.7,233.9 L140.3,232.6 L141.9,233.1 L143.6,233.2 L145.2,231.1 L146.8,229.0 L148.5,226.2 L150.1,226.3 L151.7,224.6 L153.3,223.5 L155.0,223.2 L156.6,233.4 L158.2,232.4 L159.9,244.5 L161.5,258.6 L163.1,251.5 L164.8,250.6 L166.4,243.9 L168.0,240.9 L169.7,240.6 L171.3,240.8 L172.9,236.7 L174.6,240.1 L176.2,236.2 L177.8,233.9 L179.4,232.0 L181.1,233.6 L182.7,234.5 L184.3,234.6 L186.0,233.6 L187.6,230.1 L189.2,230.3 L190.9,230.0 L192.5,228.9 L194.1,227.8 L195.8,227.8 L197.4,225.3 L199.0,228.0 L200.6,228.5 L202.3,230.3 L203.9,228.8 L205.5,228.0 L207.2,226.5 L208.8,228.3 L210.4,230.1 L212.1,233.1 L213.7,227.4 L215.3,224.9 L217.0,221.3 L218.6,222.1 L220.2,220.4 L221.9,219.8 L223.5,220.0 L225.1,220.1 L226.7,219.0 L228.4,217.6 L230.0,218.2 L231.6,219.8 L233.3,218.2 L234.9,217.2 L236.5,216.5 L238.2,218.1 L239.8,215.3 L241.4,211.8 L243.1,210.5 L244.7,209.3 L246.3,208.3 L248.0,207.0 L249.6,207.5 L251.2,208.2 L252.8,208.1 L254.5,207.3 L256.1,207.1 L257.7,206.3 L259.4,205.5 L261.0,204.6 L262.6,202.5 L264.3,202.6 L265.9,203.1 L267.5,202.4 L269.2,202.5 L270.8,203.1 L272.4,201.9 L274.1,200.3 L275.7,198.6 L277.3,198.3 L278.9,198.0 L280.6,196.6 L282.2,197.0 L283.8,197.9 L285.5,198.3 L287.1,199.1 L288.7,198.2 L290.4,195.1 L292.0,193.4 L293.6,193.9 L295.3,192.5 L296.9,192.0 L298.5,191.6 L300.2,192.4 L301.8,192.2 L303.4,192.1 L305.0,191.5 L306.7,188.0 L308.3,188.6 L309.9,188.1 L311.6,189.1 L313.2,190.2 L314.8,187.2 L316.5,186.3 L318.1,189.4 L319.7,189.2 L321.4,189.5 L323.0,190.4 L324.6,187.5 L326.2,187.1 L327.9,187.1 L329.5,187.6 L331.1,188.3 L332.8,191.2 L334.4,193.7 L336.0,195.3 L337.7,195.3 L339.3,194.3 L340.9,192.2 L342.6,192.9 L344.2,200.0 L345.8,201.2 L347.5,199.1 L349.1,199.9 L350.7,200.5 L352.3,199.4 L354.0,197.3 L355.6,195.4 L357.2,194.6 L358.9,192.5 L360.5,195.0 L362.1,198.8 L363.8,195.0 L365.4,197.4 L367.0,200.8 L368.7,203.5 L370.3,206.1 L371.9,204.3 L373.6,203.4 L375.2,200.2 L376.8,200.7 L378.4,198.2 L380.1,196.4 L381.7,194.6 L383.3,193.4 L385.0,193.1 L386.6,197.9 L388.2,197.6 L389.9,197.1 L391.5,193.5 L393.1,192.6 L394.8,191.2 L396.4,189.5 L398.0,190.7 L399.7,189.9 L401.3,191.4 L402.9,191.4 L404.5,194.7 L406.2,194.6 L407.8,195.6 L409.4,192.1 L411.1,190.2 L412.7,188.3 L414.3,187.3 L416.0,187.7 L417.6,185.8 L419.2,185.9 L420.9,189.9 L422.5,192.6 L424.1,191.3 L425.8,191.0 L427.4,191.6 L429.0,191.7 L430.6,189.4 L432.3,191.1 L433.9,187.7 L435.5,187.1 L437.2,189.7 L438.8,190.1 L440.4,193.4 L442.1,194.1 L443.7,192.7 L445.3,194.6 L447.0,189.3 L448.6,194.4 L450.2,196.8 L451.8,197.4 L453.5,195.6 L455.1,199.6 L456.7,199.3 L458.4,192.7 L460.0,191.4 L461.6,187.8 L463.3,189.5 L464.9,187.8 L466.5,186.8 L468.2,185.3 L469.8,183.5 L471.4,182.7 L473.1,182.9 L474.7,184.1 L476.3,183.3 L477.9,183.5 L479.6,185.0 L481.2,183.3 L482.8,182.4 L484.5,183.0 L486.1,181.7 L487.7,182.1 L489.4,181.5 L491.0,181.7 L492.6,181.9 L494.3,184.9 L495.9,182.6 L497.5,182.7 L499.2,181.6 L500.8,180.8 L502.4,179.8 L504.0,182.4 L505.7,180.7 L507.3,181.5 L508.9,184.4 L510.6,183.3 L512.2,181.3 L513.8,180.5 L515.5,177.2 L517.1,177.1 L518.7,174.4 L520.4,176.0 L522.0,173.2 L523.6,172.8 L525.3,171.6 L526.9,170.3 L528.5,166.7 L530.1,166.5 L531.8,166.2 L533.4,166.7 L535.0,168.0 L536.7,166.2 L538.3,167.2 L539.9,169.8 L541.6,165.6 L543.2,164.4 L544.8,162.7 L546.5,161.0 L548.1,162.2 L549.7,163.7 L551.4,164.6 L553.0,164.8 L554.6,164.1 L556.2,163.3 L557.9,160.5 L559.5,157.9 L561.1,158.8 L562.8,157.7 L564.4,158.3 L566.0,156.9 L567.7,158.4 L569.3,160.2 L570.9,159.2 L572.6,159.1 L574.2,162.6 L575.8,162.8 L577.4,160.2 L579.1,156.8 L580.7,155.4 L582.3,154.4 L584.0,151.7 L585.6,150.5 L587.2,150.5 L588.9,151.3 L590.5,152.1 L592.1,150.8 L593.8,149.9 L595.4,149.4 L597.0,148.8 L598.7,148.6 L600.3,147.9 L601.9,146.0 L603.5,145.1 L605.2,144.0 L606.8,144.1 L608.4,142.7 L610.1,142.7 L611.7,141.8 L613.3,142.3 L615.0,138.7 L616.6,140.1 L618.2,138.6 L619.9,137.6 L621.5,138.9 L623.1,139.7 L624.8,138.9 L626.4,138.2 L628.0,137.1 L629.6,135.9 L631.3,134.2 L632.9,133.7 L634.5,133.0 L636.2,132.3 L637.8,133.2 L639.4,134.6 L641.1,135.9 L642.7,134.7 L644.3,134.1 L646.0,130.4 L647.6,130.1 L649.2,129.6 L650.9,131.0 L652.5,134.8 L654.1,133.7 L655.7,129.8 L657.4,127.2 L659.0,125.2 L660.6,126.4 L662.3,126.0 L663.9,126.3 L665.5,122.9 L667.2,119.7 L668.8,118.8 L670.4,116.4 L672.1,114.5 L673.7,113.3 L675.3,112.1 L677.0,111.6 L678.6,109.6 L680.2,110.3 L681.8,109.9 L683.5,110.0 L685.1,109.6 L686.7,113.2 L688.4,113.0 L690.0,113.2" fill="none" stroke="#4a3aa7" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="696" y="116.7" font-size="10" fill="#3d4145">$344k</text>
+<path d="M62.0,265.9 L63.6,259.9 L65.3,257.3 L66.9,256.6 L68.5,254.4 L70.2,253.2 L71.8,253.1 L73.4,250.6 L75.0,250.1 L76.7,250.5 L78.3,249.3 L79.9,249.6 L81.6,249.4 L83.2,247.2 L84.8,246.4 L86.5,245.6 L88.1,245.3 L89.7,246.2 L91.4,248.3 L93.0,246.3 L94.6,247.7 L96.3,248.3 L97.9,247.5 L99.5,245.5 L101.1,246.4 L102.8,244.8 L104.4,244.8 L106.0,245.4 L107.7,244.3 L109.3,245.8 L110.9,245.9 L112.6,248.7 L114.2,246.8 L115.8,245.7 L117.5,244.5 L119.1,243.2 L120.7,241.7 L122.4,243.0 L124.0,244.7 L125.6,245.0 L127.2,244.9 L128.9,245.1 L130.5,242.9 L132.1,241.3 L133.8,240.2 L135.4,240.0 L137.0,240.3 L138.7,240.4 L140.3,239.5 L141.9,239.0 L143.6,239.1 L145.2,237.9 L146.8,236.2 L148.5,235.2 L150.1,235.9 L151.7,234.2 L153.3,233.6 L155.0,233.3 L156.6,244.6 L158.2,245.2 L159.9,265.8 L161.5,283.3 L163.1,275.0 L164.8,272.1 L166.4,261.8 L168.0,259.1 L169.7,256.8 L171.3,256.0 L172.9,252.8 L174.6,254.5 L176.2,252.3 L177.8,250.2 L179.4,246.6 L181.1,249.0 L182.7,248.4 L184.3,248.8 L186.0,247.9 L187.6,244.5 L189.2,243.5 L190.9,242.5 L192.5,240.4 L194.1,240.6 L195.8,240.0 L197.4,239.0 L199.0,241.1 L200.6,242.7 L202.3,242.8 L203.9,243.7 L205.5,242.6 L207.2,239.7 L208.8,241.8 L210.4,243.3 L212.1,246.2 L213.7,240.2 L215.3,237.0 L217.0,235.5 L218.6,234.4 L220.2,231.9 L221.9,233.1 L223.5,232.2 L225.1,231.7 L226.7,228.3 L228.4,228.8 L230.0,229.0 L231.6,230.7 L233.3,227.9 L234.9,225.6 L236.5,225.5 L238.2,227.9 L239.8,225.4 L241.4,222.2 L243.1,222.2 L244.7,222.6 L246.3,220.7 L248.0,219.5 L249.6,219.5 L251.2,219.8 L252.8,219.4 L254.5,218.4 L256.1,217.6 L257.7,217.0 L259.4,214.4 L261.0,213.7 L262.6,212.6 L264.3,212.7 L265.9,212.8 L267.5,212.0 L269.2,212.9 L270.8,213.1 L272.4,212.2 L274.1,211.4 L275.7,210.4 L277.3,212.2 L278.9,210.4 L280.6,208.5 L282.2,209.5 L283.8,210.3 L285.5,210.8 L287.1,212.2 L288.7,210.4 L290.4,207.1 L292.0,205.2 L293.6,205.4 L295.3,203.6 L296.9,202.8 L298.5,204.3 L300.2,205.8 L301.8,207.3 L303.4,208.1 L305.0,209.2 L306.7,204.4 L308.3,207.4 L309.9,206.1 L311.6,207.4 L313.2,210.4 L314.8,207.1 L316.5,204.5 L318.1,206.6 L319.7,206.8 L321.4,205.0 L323.0,204.6 L324.6,202.5 L326.2,201.3 L327.9,201.5 L329.5,201.9 L331.1,201.9 L332.8,206.8 L334.4,208.6 L336.0,212.8 L337.7,211.4 L339.3,210.8 L340.9,208.1 L342.6,206.9 L344.2,215.3 L345.8,217.0 L347.5,217.2 L349.1,220.2 L350.7,220.9 L352.3,218.2 L354.0,216.6 L355.6,214.4 L357.2,211.9 L358.9,210.1 L360.5,210.5 L362.1,216.9 L363.8,212.9 L365.4,215.2 L367.0,221.1 L368.7,221.2 L370.3,220.1 L371.9,219.8 L373.6,217.9 L375.2,214.5 L376.8,213.7 L378.4,211.3 L380.1,210.9 L381.7,209.4 L383.3,209.1 L385.0,210.4 L386.6,215.4 L388.2,214.8 L389.9,213.1 L391.5,208.8 L393.1,207.9 L394.8,205.6 L396.4,205.3 L398.0,206.2 L399.7,206.0 L401.3,208.4 L402.9,206.0 L404.5,210.9 L406.2,213.2 L407.8,212.5 L409.4,208.6 L411.1,207.3 L412.7,205.2 L414.3,204.8 L416.0,205.1 L417.6,205.4 L419.2,205.6 L420.9,207.8 L422.5,210.3 L424.1,208.2 L425.8,208.6 L427.4,209.9 L429.0,209.9 L430.6,207.5 L432.3,207.6 L433.9,205.1 L435.5,204.5 L437.2,206.5 L438.8,205.8 L440.4,208.9 L442.1,209.0 L443.7,205.7 L445.3,207.0 L447.0,203.8 L448.6,208.7 L450.2,210.0 L451.8,211.7 L453.5,209.4 L455.1,213.0 L456.7,214.1 L458.4,208.4 L460.0,208.6 L461.6,205.2 L463.3,206.4 L464.9,204.0 L466.5,204.5 L468.2,202.5 L469.8,200.2 L471.4,200.8 L473.1,200.5 L474.7,201.4 L476.3,199.3 L477.9,199.1 L479.6,200.3 L481.2,198.5 L482.8,197.3 L484.5,196.3 L486.1,195.3 L487.7,194.4 L489.4,193.7 L491.0,192.3 L492.6,191.8 L494.3,194.8 L495.9,194.0 L497.5,193.2 L499.2,191.7 L500.8,191.7 L502.4,190.4 L504.0,191.5 L505.7,193.0 L507.3,193.4 L508.9,194.8 L510.6,193.8 L512.2,191.1 L513.8,190.4 L515.5,187.6 L517.1,188.8 L518.7,186.2 L520.4,190.9 L522.0,186.5 L523.6,186.4 L525.3,185.3 L526.9,187.7 L528.5,183.2 L530.1,181.7 L531.8,181.0 L533.4,179.9 L535.0,178.3 L536.7,177.0 L538.3,177.8 L539.9,179.2 L541.6,176.6 L543.2,175.6 L544.8,173.4 L546.5,172.4 L548.1,172.2 L549.7,174.4 L551.4,176.3 L553.0,175.4 L554.6,174.5 L556.2,175.5 L557.9,172.6 L559.5,170.7 L561.1,172.1 L562.8,171.3 L564.4,173.8 L566.0,172.6 L567.7,175.7 L569.3,176.5 L570.9,174.4 L572.6,175.4 L574.2,183.3 L575.8,181.1 L577.4,178.9 L579.1,174.8 L580.7,174.0 L582.3,171.1 L584.0,168.6 L585.6,167.5 L587.2,166.7 L588.9,166.6 L590.5,166.0 L592.1,165.2 L593.8,164.2 L595.4,163.7 L597.0,162.9 L598.7,161.7 L600.3,161.7 L601.9,160.0 L603.5,159.3 L605.2,158.6 L606.8,156.9 L608.4,154.1 L610.1,153.1 L611.7,151.1 L613.3,151.0 L615.0,147.9 L616.6,150.5 L618.2,148.1 L619.9,148.6 L621.5,148.6 L623.1,148.3 L624.8,149.3 L626.4,147.2 L628.0,145.0 L629.6,144.7 L631.3,143.4 L632.9,141.3 L634.5,142.4 L636.2,139.8 L637.8,137.2 L639.4,137.3 L641.1,137.2 L642.7,141.1 L644.3,139.1 L646.0,134.0 L647.6,132.1 L649.2,136.7 L650.9,138.7 L652.5,143.4 L654.1,140.7 L655.7,136.1 L657.4,133.3 L659.0,131.6 L660.6,133.5 L662.3,134.1 L663.9,132.3 L665.5,133.7 L667.2,130.3 L668.8,128.4 L670.4,131.1 L672.1,127.5 L673.7,129.1 L675.3,129.3 L677.0,129.0 L678.6,127.3 L680.2,127.0 L681.8,127.5 L683.5,124.6 L685.1,122.5 L686.7,123.8 L688.4,122.1 L690.0,124.0" fill="none" stroke="#8b96a1" stroke-width="1.6" stroke-linejoin="round" stroke-dasharray="5 4"/>
+<text x="696" y="127.5" font-size="10" fill="#3d4145">$315k</text>
+</svg>
+        <div class="legend"><span><span class="swatch" style="background:#eb6834"></span>Growth</span><span><span class="swatch" style="background:#1a6f57"></span>Balanced</span><span><span class="swatch" style="background:#2a78d6"></span>Income</span><span><span class="swatch" style="background:#4a3aa7"></span>Low volatility</span><span><span class="swatch" style="background:repeating-linear-gradient(90deg,#8b96a1 0 5px,transparent 5px 9px)"></span>XIC benchmark</span></div>
+      </div>
+      <div class="chart-card">
+        <p class="eyebrow" style="color:var(--muted)">Drawdown from the running peak</p>
+        <svg viewBox="0 0 760 250" role="img" aria-label="Drawdown from the running peak for Growth, Balanced and XIC" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+<line x1="62" y1="179.1" x2="690" y2="179.1" stroke="#e6e2db"/>
+<text x="54" y="182.6" text-anchor="end" font-size="10" fill="#686c71">-40%</text>
+<line x1="62" y1="102.1" x2="690" y2="102.1" stroke="#e6e2db"/>
+<text x="54" y="105.6" text-anchor="end" font-size="10" fill="#686c71">-20%</text>
+<line x1="62" y1="25.1" x2="690" y2="25.1" stroke="#e6e2db"/>
+<text x="54" y="28.6" text-anchor="end" font-size="10" fill="#686c71">0%</text>
+<text x="62.0" y="234" text-anchor="middle" font-size="10" fill="#686c71">2019</text>
+<text x="143.6" y="234" text-anchor="middle" font-size="10" fill="#686c71">2020</text>
+<text x="226.7" y="234" text-anchor="middle" font-size="10" fill="#686c71">2021</text>
+<text x="308.3" y="234" text-anchor="middle" font-size="10" fill="#686c71">2022</text>
+<text x="389.9" y="234" text-anchor="middle" font-size="10" fill="#686c71">2023</text>
+<text x="471.4" y="234" text-anchor="middle" font-size="10" fill="#686c71">2024</text>
+<text x="553.0" y="234" text-anchor="middle" font-size="10" fill="#686c71">2025</text>
+<text x="636.2" y="234" text-anchor="middle" font-size="10" fill="#686c71">2026</text>
+<line x1="62" y1="25.1" x2="690" y2="25.1" stroke="#16181a"/>
+<path d="M62.0,25.1 L63.6,25.1 L65.3,25.1 L66.9,25.1 L68.5,25.1 L70.2,25.1 L71.8,25.1 L73.4,25.1 L75.0,25.1 L76.7,26.8 L78.3,25.6 L79.9,32.3 L81.6,25.1 L83.2,28.6 L84.8,25.1 L86.5,25.1 L88.1,25.1 L89.7,25.1 L91.4,38.1 L93.0,30.4 L94.6,25.4 L96.3,37.1 L97.9,25.1 L99.5,25.1 L101.1,49.3 L102.8,29.8 L104.4,29.9 L106.0,29.3 L107.7,25.1 L109.3,35.8 L110.9,25.1 L112.6,36.5 L114.2,25.3 L115.8,28.1 L117.5,31.7 L119.1,44.0 L120.7,51.6 L122.4,54.7 L124.0,48.3 L125.6,47.3 L127.2,53.0 L128.9,52.3 L130.5,52.8 L132.1,53.5 L133.8,40.5 L135.4,38.6 L137.0,36.1 L138.7,31.2 L140.3,25.7 L141.9,29.6 L143.6,26.3 L145.2,25.1 L146.8,25.1 L148.5,25.1 L150.1,25.1 L151.7,25.3 L153.3,25.1 L155.0,35.0 L156.6,63.4 L158.2,63.8 L159.9,93.3 L161.5,121.5 L163.1,97.0 L164.8,107.9 L166.4,78.1 L168.0,25.1 L169.7,28.9 L171.3,25.1 L172.9,25.1 L174.6,28.3 L176.2,38.3 L177.8,40.8 L179.4,46.1 L181.1,36.3 L182.7,25.1 L184.3,25.1 L186.0,25.1 L187.6,31.9 L189.2,34.8 L190.9,25.7 L192.5,25.1 L194.1,40.9 L195.8,31.8 L197.4,31.5 L199.0,42.5 L200.6,53.1 L202.3,59.1 L203.9,42.2 L205.5,36.5 L207.2,28.1 L208.8,31.3 L210.4,46.7 L212.1,66.8 L213.7,54.9 L215.3,50.6 L217.0,30.5 L218.6,25.1 L220.2,25.1 L221.9,28.6 L223.5,25.1 L225.1,47.9 L226.7,46.3 L228.4,47.4 L230.0,46.5 L231.6,56.9 L233.3,40.7 L234.9,25.1 L236.5,25.1 L238.2,43.4 L239.8,55.4 L241.4,50.4 L243.1,50.9 L244.7,54.5 L246.3,42.1 L248.0,27.5 L249.6,39.3 L251.2,43.3 L252.8,51.0 L254.5,59.1 L256.1,62.3 L257.7,45.4 L259.4,38.8 L261.0,40.6 L262.6,25.7 L264.3,25.1 L265.9,25.1 L267.5,25.1 L269.2,30.2 L270.8,25.1 L272.4,33.2 L274.1,25.7 L275.7,28.3 L277.3,25.3 L278.9,28.0 L280.6,25.1 L282.2,31.8 L283.8,33.9 L285.5,40.5 L287.1,52.9 L288.7,53.1 L290.4,34.2 L292.0,30.1 L293.6,25.7 L295.3,25.1 L296.9,28.9 L298.5,34.9 L300.2,37.7 L301.8,49.7 L303.4,54.7 L305.0,64.9 L306.7,44.8 L308.3,73.1 L309.9,85.0 L311.6,93.1 L313.2,114.8 L314.8,111.6 L316.5,98.4 L318.1,130.9 L319.7,127.2 L321.4,138.5 L323.0,148.3 L324.6,122.5 L326.2,125.0 L327.9,124.3 L329.5,139.2 L331.1,137.7 L332.8,160.1 L334.4,167.6 L336.0,194.9 L337.7,191.2 L339.3,198.8 L340.9,186.7 L342.6,187.8 L344.2,206.9 L345.8,201.5 L347.5,193.7 L349.1,195.9 L350.7,199.6 L352.3,181.2 L354.0,184.4 L355.6,166.1 L357.2,169.7 L358.9,172.9 L360.5,183.1 L362.1,196.0 L363.8,183.3 L365.4,193.6 L367.0,202.3 L368.7,205.2 L370.3,206.6 L371.9,205.0 L373.6,199.0 L375.2,181.2 L376.8,188.7 L378.4,171.6 L380.1,173.7 L381.7,164.1 L383.3,155.8 L385.0,159.6 L386.6,170.8 L388.2,177.5 L389.9,169.3 L391.5,163.0 L393.1,158.5 L394.8,135.3 L396.4,122.1 L398.0,128.7 L399.7,138.4 L401.3,148.2 L402.9,141.4 L404.5,146.0 L406.2,140.5 L407.8,138.2 L409.4,126.2 L411.1,129.1 L412.7,120.2 L414.3,117.4 L416.0,119.3 L417.6,87.3 L419.2,91.9 L420.9,103.8 L422.5,102.1 L424.1,90.1 L425.8,91.6 L427.4,92.6 L429.0,93.0 L430.6,89.4 L432.3,93.0 L433.9,79.9 L435.5,86.4 L437.2,93.5 L438.8,99.4 L440.4,112.1 L442.1,106.3 L443.7,85.4 L445.3,93.2 L447.0,84.4 L448.6,112.9 L450.2,107.4 L451.8,108.1 L453.5,108.6 L455.1,117.0 L456.7,125.3 L458.4,90.8 L460.0,76.8 L461.6,57.5 L463.3,52.0 L464.9,49.0 L466.5,43.5 L468.2,36.8 L469.8,32.5 L471.4,37.6 L473.1,25.1 L474.7,31.5 L476.3,27.2 L477.9,36.2 L479.6,25.1 L481.2,35.8 L482.8,45.2 L484.5,42.1 L486.1,45.1 L487.7,43.8 L489.4,38.1 L491.0,41.8 L492.6,47.8 L494.3,59.1 L495.9,53.4 L497.5,56.0 L499.2,40.2 L500.8,71.8 L502.4,74.3 L504.0,72.3 L505.7,64.7 L507.3,58.1 L508.9,62.2 L510.6,58.7 L512.2,47.1 L513.8,48.7 L515.5,43.7 L517.1,54.1 L518.7,47.7 L520.4,45.3 L522.0,25.6 L523.6,29.0 L525.3,30.3 L526.9,43.6 L528.5,26.9 L530.1,27.3 L531.8,29.8 L533.4,25.6 L535.0,25.1 L536.7,27.6 L538.3,33.6 L539.9,39.7 L541.6,25.1 L543.2,42.9 L544.8,29.9 L546.5,27.3 L548.1,28.2 L549.7,31.1 L551.4,41.6 L553.0,45.7 L554.6,47.7 L556.2,51.3 L557.9,40.5 L559.5,25.1 L561.1,28.6 L562.8,25.1 L564.4,41.9 L566.0,40.5 L567.7,58.5 L569.3,73.9 L570.9,64.8 L572.6,75.5 L574.2,106.2 L575.8,95.9 L577.4,97.9 L579.1,70.7 L580.7,67.0 L582.3,49.4 L584.0,45.6 L585.6,51.2 L587.2,53.6 L588.9,48.9 L590.5,57.6 L592.1,43.8 L593.8,41.6 L595.4,41.3 L597.0,36.1 L598.7,41.9 L600.3,38.8 L601.9,31.8 L603.5,44.0 L605.2,45.3 L606.8,38.0 L608.4,27.7 L610.1,38.2 L611.7,28.1 L613.3,57.2 L615.0,25.1 L616.6,38.6 L618.2,30.5 L619.9,25.1 L621.5,32.9 L623.1,54.2 L624.8,68.9 L626.4,54.6 L628.0,58.2 L629.6,47.1 L631.3,45.8 L632.9,38.2 L634.5,45.3 L636.2,36.2 L637.8,57.2 L639.4,82.3 L641.1,87.2 L642.7,113.2 L644.3,116.9 L646.0,92.9 L647.6,97.2 L649.2,76.9 L650.9,98.7 L652.5,109.3 L654.1,115.5 L655.7,101.6 L657.4,101.1 L659.0,75.0 L660.6,91.7 L662.3,91.0 L663.9,112.6 L665.5,98.2 L667.2,92.1 L668.8,70.2 L670.4,69.9 L672.1,70.3 L673.7,76.5 L675.3,70.8 L677.0,60.6 L678.6,58.7 L680.2,65.1 L681.8,35.2 L683.5,25.1 L685.1,25.1 L686.7,43.8 L688.4,35.4 L690.0,42.5" fill="none" stroke="#eb6834" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M62.0,25.1 L63.6,25.1 L65.3,25.1 L66.9,25.1 L68.5,25.1 L70.2,25.1 L71.8,25.1 L73.4,25.1 L75.0,25.1 L76.7,26.5 L78.3,25.1 L79.9,28.0 L81.6,27.3 L83.2,25.1 L84.8,25.1 L86.5,25.5 L88.1,25.3 L89.7,25.1 L91.4,30.0 L93.0,26.3 L94.6,25.1 L96.3,33.4 L97.9,28.2 L99.5,25.1 L101.1,35.4 L102.8,25.1 L104.4,26.2 L106.0,29.0 L107.7,25.5 L109.3,28.7 L110.9,25.1 L112.6,32.0 L114.2,27.2 L115.8,26.8 L117.5,27.0 L119.1,26.8 L120.7,26.2 L122.4,26.0 L124.0,29.1 L125.6,28.2 L127.2,29.9 L128.9,31.6 L130.5,27.7 L132.1,28.3 L133.8,25.1 L135.4,25.1 L137.0,29.9 L138.7,29.3 L140.3,25.1 L141.9,27.2 L143.6,26.9 L145.2,25.1 L146.8,25.1 L148.5,25.1 L150.1,25.1 L151.7,25.1 L153.3,25.1 L155.0,26.8 L156.6,57.3 L158.2,52.4 L159.9,87.7 L161.5,121.8 L163.1,103.3 L164.8,102.6 L166.4,84.3 L168.0,64.9 L169.7,64.3 L171.3,63.7 L172.9,46.8 L174.6,55.1 L176.2,45.9 L177.8,40.7 L179.4,38.8 L181.1,40.5 L182.7,40.3 L184.3,38.7 L186.0,33.4 L187.6,25.4 L189.2,28.2 L190.9,25.1 L192.5,25.1 L194.1,28.4 L195.8,26.4 L197.4,27.1 L199.0,34.9 L200.6,38.2 L202.3,43.7 L203.9,36.5 L205.5,34.9 L207.2,29.3 L208.8,33.8 L210.4,42.0 L212.1,53.2 L213.7,38.4 L215.3,32.2 L217.0,25.1 L218.6,30.8 L220.2,25.1 L221.9,27.2 L223.5,26.5 L225.1,31.7 L226.7,27.9 L228.4,25.1 L230.0,28.2 L231.6,34.5 L233.3,26.4 L234.9,25.1 L236.5,26.7 L238.2,34.7 L239.8,29.8 L241.4,25.1 L243.1,25.6 L244.7,25.1 L246.3,25.1 L248.0,25.1 L249.6,28.8 L251.2,33.0 L252.8,33.6 L254.5,32.9 L256.1,34.5 L257.7,29.9 L259.4,26.0 L261.0,25.1 L262.6,25.1 L264.3,25.5 L265.9,26.4 L267.5,25.1 L269.2,26.8 L270.8,26.4 L272.4,25.6 L274.1,25.1 L275.7,25.1 L277.3,25.3 L278.9,26.1 L280.6,25.1 L282.2,28.1 L283.8,30.3 L285.5,33.2 L287.1,37.7 L288.7,35.7 L290.4,25.1 L292.0,25.4 L293.6,25.8 L295.3,26.1 L296.9,26.3 L298.5,27.4 L300.2,32.2 L301.8,34.1 L303.4,35.0 L305.0,35.9 L306.7,25.1 L308.3,32.0 L309.9,33.5 L311.6,37.2 L313.2,44.0 L314.8,36.3 L316.5,31.9 L318.1,46.1 L319.7,44.1 L321.4,44.1 L323.0,48.5 L324.6,36.6 L326.2,34.8 L327.9,34.5 L329.5,38.6 L331.1,39.7 L332.8,52.6 L334.4,60.4 L336.0,71.0 L337.7,69.0 L339.3,68.8 L340.9,61.7 L342.6,62.6 L344.2,84.1 L345.8,85.7 L347.5,77.7 L349.1,79.8 L350.7,81.7 L352.3,73.8 L354.0,69.3 L355.6,60.7 L357.2,60.1 L358.9,57.0 L360.5,64.0 L362.1,77.2 L363.8,66.1 L365.4,74.4 L367.0,84.8 L368.7,92.0 L370.3,97.1 L371.9,93.6 L373.6,89.9 L375.2,77.1 L376.8,80.1 L378.4,70.2 L380.1,66.8 L381.7,59.5 L383.3,55.3 L385.0,55.7 L386.6,69.6 L388.2,70.3 L389.9,66.8 L391.5,56.6 L393.1,53.8 L394.8,46.1 L396.4,39.1 L398.0,44.9 L399.7,44.9 L401.3,51.1 L402.9,47.7 L404.5,55.3 L406.2,52.9 L407.8,54.9 L409.4,44.2 L411.1,39.8 L412.7,33.1 L414.3,30.3 L416.0,32.0 L417.6,25.1 L419.2,26.5 L420.9,40.6 L422.5,45.8 L424.1,39.3 L425.8,39.7 L427.4,42.0 L429.0,42.4 L430.6,36.7 L432.3,41.6 L433.9,32.5 L435.5,31.8 L437.2,39.9 L438.8,42.1 L440.4,52.2 L442.1,52.4 L443.7,44.4 L445.3,51.2 L447.0,36.3 L448.6,54.4 L450.2,60.1 L451.8,62.1 L453.5,57.0 L455.1,67.8 L456.7,68.2 L458.4,45.4 L460.0,39.9 L461.6,27.6 L463.3,30.0 L464.9,25.1 L466.5,25.1 L468.2,28.2 L469.8,25.1 L471.4,25.1 L473.1,28.0 L474.7,32.0 L476.3,29.8 L477.9,30.5 L479.6,31.1 L481.2,27.7 L482.8,26.9 L484.5,27.8 L486.1,25.1 L487.7,28.0 L489.4,26.6 L491.0,27.7 L492.6,30.0 L494.3,39.5 L495.9,32.3 L497.5,32.9 L499.2,25.2 L500.8,30.4 L502.4,29.0 L504.0,35.5 L505.7,30.0 L507.3,30.5 L508.9,38.9 L510.6,36.1 L512.2,29.0 L513.8,28.0 L515.5,25.9 L517.1,29.0 L518.7,25.1 L520.4,25.7 L522.0,25.1 L523.6,26.5 L525.3,26.3 L526.9,28.3 L528.5,25.1 L530.1,26.8 L531.8,25.8 L533.4,26.8 L535.0,25.9 L536.7,26.8 L538.3,30.7 L539.9,37.9 L541.6,25.1 L543.2,28.8 L544.8,25.1 L546.5,25.1 L548.1,28.6 L549.7,33.9 L551.4,37.0 L553.0,37.6 L554.6,35.9 L556.2,35.3 L557.9,26.5 L559.5,25.1 L561.1,28.5 L562.8,25.1 L564.4,31.2 L566.0,26.9 L567.7,34.3 L569.3,40.5 L570.9,35.9 L572.6,37.4 L574.2,51.5 L575.8,51.0 L577.4,45.3 L579.1,32.0 L580.7,28.3 L582.3,25.1 L584.0,26.0 L585.6,25.1 L587.2,25.8 L588.9,27.9 L590.5,31.9 L592.1,26.7 L593.8,26.6 L595.4,27.0 L597.0,25.1 L598.7,29.3 L600.3,26.5 L601.9,26.8 L603.5,27.1 L605.2,25.1 L606.8,27.7 L608.4,25.5 L610.1,27.6 L611.7,25.1 L613.3,30.6 L615.0,25.1 L616.6,31.8 L618.2,26.9 L619.9,25.1 L621.5,29.7 L623.1,34.2 L624.8,34.3 L626.4,31.5 L628.0,28.3 L629.6,26.9 L631.3,25.1 L632.9,25.5 L634.5,27.0 L636.2,25.1 L637.8,30.1 L639.4,37.7 L641.1,40.6 L642.7,42.3 L644.3,39.7 L646.0,25.7 L647.6,26.3 L649.2,27.6 L650.9,34.0 L652.5,46.1 L654.1,43.3 L655.7,32.4 L657.4,27.8 L659.0,25.1 L660.6,30.6 L662.3,28.9 L663.9,35.0 L665.5,25.1 L667.2,27.7 L668.8,25.1 L670.4,25.1 L672.1,25.1 L673.7,25.1 L675.3,30.0 L677.0,28.8 L678.6,26.5 L680.2,32.1 L681.8,29.0 L683.5,28.7 L685.1,26.2 L686.7,36.9 L688.4,36.2 L690.0,37.7" fill="none" stroke="#1a6f57" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M62.0,25.1 L63.6,25.1 L65.3,25.1 L66.9,25.6 L68.5,25.1 L70.2,25.2 L71.8,25.1 L73.4,25.4 L75.0,25.1 L76.7,27.2 L78.3,25.2 L79.9,28.8 L81.6,28.0 L83.2,25.1 L84.8,25.1 L86.5,25.7 L88.1,26.3 L89.7,28.9 L91.4,35.5 L93.0,29.3 L94.6,33.5 L96.3,35.5 L97.9,33.1 L99.5,26.8 L101.1,29.7 L102.8,25.1 L104.4,25.4 L106.0,27.3 L107.7,25.1 L109.3,29.7 L110.9,29.9 L112.6,38.5 L114.2,32.8 L115.8,29.3 L117.5,26.0 L119.1,25.1 L120.7,25.1 L122.4,29.2 L124.0,34.3 L125.6,35.2 L127.2,34.9 L128.9,35.3 L130.5,28.9 L132.1,25.1 L133.8,25.2 L135.4,25.1 L137.0,28.5 L138.7,28.8 L140.3,26.1 L141.9,25.1 L143.6,26.5 L145.2,25.1 L146.8,25.1 L148.5,25.1 L150.1,27.4 L151.7,25.1 L153.3,25.4 L155.0,27.0 L156.6,60.2 L158.2,62.1 L159.9,115.5 L161.5,154.3 L163.1,136.5 L164.8,130.2 L166.4,105.7 L168.0,99.0 L169.7,93.3 L171.3,91.3 L172.9,82.8 L174.6,87.3 L176.2,81.5 L177.8,75.7 L179.4,66.0 L181.1,72.5 L182.7,71.0 L184.3,72.1 L186.0,69.5 L187.6,59.9 L189.2,57.3 L190.9,54.4 L192.5,48.1 L194.1,48.9 L195.8,47.0 L197.4,44.3 L199.0,50.2 L200.6,54.8 L202.3,55.3 L203.9,57.9 L205.5,54.7 L207.2,46.2 L208.8,52.3 L210.4,56.6 L212.1,64.8 L213.7,47.8 L215.3,38.1 L217.0,33.7 L218.6,30.2 L220.2,25.1 L221.9,30.4 L223.5,28.4 L225.1,26.7 L226.7,25.1 L228.4,26.7 L230.0,27.2 L231.6,32.6 L233.3,25.1 L234.9,26.3 L236.5,27.2 L238.2,34.4 L239.8,26.8 L241.4,25.1 L243.1,27.6 L244.7,29.0 L246.3,25.1 L248.0,25.5 L249.6,28.1 L251.2,28.8 L252.8,27.7 L254.5,27.1 L256.1,25.1 L257.7,25.1 L259.4,25.1 L261.0,25.1 L262.6,25.1 L264.3,25.3 L265.9,25.7 L267.5,25.2 L269.2,28.0 L270.8,28.7 L272.4,26.0 L274.1,25.1 L275.7,25.6 L277.3,31.0 L278.9,26.3 L280.6,25.1 L282.2,28.2 L283.8,30.8 L285.5,32.2 L287.1,36.6 L288.7,31.1 L290.4,25.1 L292.0,25.1 L293.6,25.5 L295.3,25.1 L296.9,26.6 L298.5,31.2 L300.2,35.7 L301.8,40.5 L303.4,42.7 L305.0,46.0 L306.7,31.5 L308.3,40.7 L309.9,36.6 L311.6,40.7 L313.2,49.5 L314.8,39.7 L316.5,31.9 L318.1,38.4 L319.7,39.0 L321.4,33.4 L323.0,32.3 L324.6,25.6 L326.2,26.1 L327.9,27.3 L329.5,28.4 L331.1,28.4 L332.8,43.1 L334.4,48.6 L336.0,60.6 L337.7,56.7 L339.3,55.0 L340.9,47.1 L342.6,43.5 L344.2,67.5 L345.8,72.3 L347.5,72.7 L349.1,80.8 L350.7,82.7 L352.3,75.6 L354.0,71.1 L355.6,65.2 L357.2,57.9 L358.9,52.9 L360.5,54.2 L362.1,72.0 L363.8,60.9 L365.4,67.3 L367.0,83.2 L368.7,83.6 L370.3,80.6 L371.9,79.9 L373.6,74.7 L375.2,65.4 L376.8,63.1 L378.4,56.2 L380.1,55.2 L381.7,50.8 L383.3,49.9 L385.0,53.7 L386.6,67.9 L388.2,66.2 L389.9,61.4 L391.5,49.0 L393.1,46.6 L394.8,39.7 L396.4,38.8 L398.0,41.4 L399.7,41.0 L401.3,47.9 L402.9,41.0 L404.5,55.1 L406.2,61.8 L407.8,59.7 L409.4,48.6 L411.1,44.8 L412.7,38.4 L414.3,37.2 L416.0,38.3 L417.6,39.0 L419.2,39.5 L420.9,46.2 L422.5,53.3 L424.1,47.4 L425.8,48.4 L427.4,52.2 L429.0,52.4 L430.6,45.2 L432.3,45.7 L433.9,38.0 L435.5,36.4 L437.2,42.5 L438.8,40.2 L440.4,49.4 L442.1,49.7 L443.7,40.1 L445.3,43.9 L447.0,34.2 L448.6,48.7 L450.2,52.5 L451.8,57.6 L453.5,50.8 L455.1,61.2 L456.7,64.2 L458.4,47.9 L460.0,48.5 L461.6,38.6 L463.3,42.1 L464.9,34.9 L466.5,36.3 L468.2,30.3 L469.8,25.1 L471.4,27.1 L473.1,27.6 L474.7,30.8 L476.3,25.1 L477.9,26.9 L479.6,30.6 L481.2,25.1 L482.8,25.1 L484.5,25.1 L486.1,26.1 L487.7,26.8 L489.4,26.9 L491.0,25.1 L492.6,25.1 L494.3,35.9 L495.9,33.5 L497.5,31.1 L499.2,26.4 L500.8,27.2 L502.4,25.1 L504.0,28.6 L505.7,33.1 L507.3,34.4 L508.9,38.7 L510.6,35.5 L512.2,27.4 L513.8,25.2 L515.5,27.6 L517.1,31.3 L518.7,25.1 L520.4,39.7 L522.0,26.1 L523.6,26.4 L525.3,26.8 L526.9,34.2 L528.5,25.1 L530.1,25.1 L531.8,25.8 L533.4,25.1 L535.0,25.1 L536.7,26.6 L538.3,29.0 L539.9,33.4 L541.6,26.2 L543.2,25.9 L544.8,25.6 L546.5,26.0 L548.1,26.0 L549.7,32.7 L551.4,38.5 L553.0,35.9 L554.6,33.1 L556.2,36.2 L557.9,27.4 L559.5,25.1 L561.1,29.3 L562.8,26.9 L564.4,34.7 L566.0,31.0 L567.7,40.2 L569.3,42.7 L570.9,36.5 L572.6,39.3 L574.2,62.3 L575.8,56.1 L577.4,49.7 L579.1,37.6 L580.7,35.1 L582.3,26.4 L584.0,25.1 L585.6,25.1 L587.2,25.1 L588.9,25.1 L590.5,25.9 L592.1,25.1 L593.8,25.1 L595.4,26.1 L597.0,25.9 L598.7,25.1 L600.3,27.3 L601.9,27.3 L603.5,26.2 L605.2,25.1 L606.8,25.1 L608.4,25.1 L610.1,26.6 L611.7,25.1 L613.3,27.5 L615.0,25.1 L616.6,33.6 L618.2,27.8 L619.9,29.3 L621.5,29.4 L623.1,28.6 L624.8,34.1 L626.4,27.8 L628.0,28.5 L629.6,28.8 L631.3,27.1 L632.9,25.1 L634.5,29.1 L636.2,25.5 L637.8,25.1 L639.4,26.3 L641.1,27.0 L642.7,38.8 L644.3,34.1 L646.0,25.1 L647.6,26.9 L649.2,41.3 L650.9,47.2 L652.5,60.8 L654.1,53.1 L655.7,39.4 L657.4,31.2 L659.0,25.9 L660.6,31.8 L662.3,33.5 L663.9,28.0 L665.5,32.2 L667.2,27.4 L668.8,25.1 L670.4,34.0 L672.1,25.1 L673.7,30.1 L675.3,30.6 L677.0,29.6 L678.6,25.1 L680.2,25.1 L681.8,30.4 L683.5,25.2 L685.1,25.1 L686.7,29.3 L688.4,26.3 L690.0,32.1" fill="none" stroke="#8b96a1" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="5 4"/>
+</svg>
+        <div class="legend"><span><span class="swatch" style="background:#eb6834"></span>Growth</span><span><span class="swatch" style="background:#1a6f57"></span>Balanced</span><span><span class="swatch" style="background:repeating-linear-gradient(90deg,#8b96a1 0 5px,transparent 5px 9px)"></span>XIC benchmark</span></div>
+        <div class="tablewrap">
+          <table class="results">
+            <thead><tr><th>Portfolio</th><th>Total return</th><th>Annual return</th><th>Volatility</th><th>Sharpe</th><th>Max drawdown</th><th>Costs paid</th></tr></thead>
+            <tbody>
+<tr><td><span class="swatch" style="background:#eb6834"></span>Growth</td><td>549%</td><td>27.8%</td><td>28.6%</td><td>0.90</td><td>&minus;48.7%</td><td>$1,857</td></tr>
+<tr class="win"><td><span class="swatch" style="background:#1a6f57"></span>Balanced</td><td>280%</td><td>19.1%</td><td>16.3%</td><td>0.97</td><td>&minus;28.7%</td><td>$777</td></tr>
+<tr><td><span class="swatch" style="background:#2a78d6"></span>Income</td><td>213%</td><td>16.1%</td><td>16.1%</td><td>0.83</td><td>&minus;33.1%</td><td>$396</td></tr>
+<tr><td><span class="swatch" style="background:#4a3aa7"></span>Low volatility</td><td>244%</td><td>17.6%</td><td>15.3%</td><td>0.94</td><td>&minus;29.7%</td><td>$574</td></tr>
+<tr class="bench"><td><span class="swatch" style="background:#8b96a1"></span>XIC benchmark</td><td>215%</td><td>16.2%</td><td>16.4%</td><td>0.82</td><td>&minus;37.2%</td><td>$0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>One comparison, several objectives.</b> Growth leads on return, Balanced on Sharpe, and Low volatility on realized volatility (15.3% against XIC's 16.4%). Each answers a different investment question, so the useful output is the trade-off, not a winner. Income shows why a label needs testing against holdings: banks, utilities and energy gave it XIC's return and a smaller drawdown with no meaningful volatility advantage. Adjusted prices approximate reinvested dividends; judging it as an income strategy would need a cash-distribution ledger.</div>
+      <div class="readout"><b>How much is the benchmark choice doing?</b> XIC is the natural same-currency reference, but these portfolios hold eight names in five sectors against an index of more than 200, so every gap mixes sector exposure with security selection. They are observed differences for these chosen names, not isolated manager skill.</div>
+    </section>
 
-def test_low_vol_weights_ignore_future_prices(inputs):
-    p, h, s, c = inputs
-    first = portfolio_analytics(p, h, s, c)[-1]
-    altered = p.copy()
-    mask = altered.date &gt; sorted(p.date.unique())[c[&quot;warmup_days&quot;]]
-    altered.loc[mask &amp; (altered.ticker == &quot;A&quot;), &quot;adjusted_price&quot;] *= 2
-    second = portfolio_analytics(altered, h, s, c)[-1]
-    pd.testing.assert_frame_equal(first, second)
+    <section id="construction" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">04</div>
+        <div>
+          <p class="eyebrow">Did optimizing help?</p>
+          <h2>Optimized weights, judged only on what came next</h2>
+          <p class="lede">Beyond fixed targets, Strata re-solves the weights at every monthly rebalance from the previous 252 sessions, using Ledoit-Wolf covariance and a 35% cap per holding, and holds them over returns the optimizer never saw. Equal weighting on the same dates is the honest control: it needs no estimates at all.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="tablewrap" style="margin-top:0">
+          <table class="results">
+            <thead><tr><th>Construction rule</th><th>Annual return</th><th>Volatility</th><th>Sharpe</th><th>Turnover a year</th><th>Costs paid</th></tr></thead>
+            <tbody>
+<tr><td>Minimum variance</td><td>14.9%</td><td>15.2%</td><td>0.79</td><td>1.40</td><td>$1,698</td></tr>
+<tr><td>Risk parity</td><td>18.1%</td><td>15.2%</td><td>0.98</td><td>0.55</td><td>$826</td></tr>
+<tr class="win"><td>Equal weight</td><td>20.2%</td><td>16.9%</td><td>1.00</td><td>0.51</td><td>$886</td></tr>
+<tr class="bench"><td>XIC benchmark</td><td>16.2%</td><td>16.4%</td><td>0.82</td><td>0.00</td><td>$0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>Minimum variance did its job and still lost.</b> It ran at 15.2% volatility against equal weighting's 16.9%, but its Sharpe of 0.79 trailed equal weighting's 1.00, and re-solving every month cost $1,698 against $886. The app shows why on a longer 2017&ndash;2026 run of the same rule: the risk model expected 8.7% volatility and the portfolio realized 14.5%. Estimated covariance understates risk exactly when correlations rise. This is consistent with the estimation-error problem studied by <a href="https://doi.org/10.1093/rfs/hhm075" target="_blank" rel="noreferrer">DeMiguel, Garlappi and Uppal (2009)</a>, not a replication of it.</div>
+      <div class="readout"><b>Risk parity was the middle road.</b> It matched minimum variance's volatility (15.2%) with a Sharpe of 0.98, close to equal weighting, at the lowest turnover of the optimized rules. My <a href="/Project-Quant-Portfolio.dc.html">ETF research pipeline</a> runs the same class of optimizer on a less correlated six-ETF universe and reaches the opposite conclusion about whether optimizing helps, which is the point: the answer depends on the universe, not on the method's sophistication.</div>
+    </section>
 
+    <section id="scenarios" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">05</div>
+        <div>
+          <p class="eyebrow">Five-year scenarios</p>
+          <h2>The same CAD 100,000, five more years</h2>
+          <p class="lede">Every portfolio starts a fresh CAD 100,000 on Aug 2026 and is compounded through the same 5,000 sequences of 20-session blocks drawn from its completed history. Shared blocks mean Growth and Balanced face identical markets in each path, so they can be compared path by path. Shaded: 5th&ndash;95th and 25th&ndash;75th percentiles; line: median.</p>
+        </div>
+      </div>
+      <div class="fans" style="margin-top:32px">
+        <div class="chart-card"><p class="eyebrow" style="color:var(--muted)">Growth</p><svg viewBox="0 0 380 250" role="img" aria-label="Growth five-year scenario percentiles from CAD 100,000" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+<line x1="54" y1="222.0" x2="364" y2="222.0" stroke="#e6e2db"/>
+<text x="48" y="225.5" text-anchor="end" font-size="10" fill="#686c71">$0k</text>
+<line x1="54" y1="180.0" x2="364" y2="180.0" stroke="#e6e2db"/>
+<text x="48" y="183.5" text-anchor="end" font-size="10" fill="#686c71">$200k</text>
+<line x1="54" y1="138.0" x2="364" y2="138.0" stroke="#e6e2db"/>
+<text x="48" y="141.5" text-anchor="end" font-size="10" fill="#686c71">$400k</text>
+<line x1="54" y1="96.0" x2="364" y2="96.0" stroke="#e6e2db"/>
+<text x="48" y="99.5" text-anchor="end" font-size="10" fill="#686c71">$600k</text>
+<line x1="54" y1="54.0" x2="364" y2="54.0" stroke="#e6e2db"/>
+<text x="48" y="57.5" text-anchor="end" font-size="10" fill="#686c71">$800k</text>
+<line x1="54" y1="12.0" x2="364" y2="12.0" stroke="#e6e2db"/>
+<text x="48" y="15.5" text-anchor="end" font-size="10" fill="#686c71">$1,000k</text>
+<line x1="54" y1="201.0" x2="364" y2="201.0" stroke="#16181a" stroke-dasharray="3 3"/>
+<path d="M54.0,201.0 L56.0,199.2 L57.9,198.4 L59.9,197.6 L61.8,196.9 L63.8,196.2 L65.8,195.5 L67.7,194.9 L69.7,194.3 L71.7,193.7 L73.6,193.1 L75.6,192.7 L77.5,192.1 L79.5,191.4 L81.5,191.0 L83.4,190.4 L85.4,189.5 L87.4,189.0 L89.3,188.6 L91.3,188.2 L93.2,187.7 L95.2,187.2 L97.2,186.6 L99.1,186.1 L101.1,185.7 L103.1,185.2 L105.0,184.3 L107.0,183.8 L108.9,183.1 L110.9,182.4 L112.9,181.9 L114.8,181.4 L116.8,180.8 L118.7,180.4 L120.7,179.7 L122.7,179.1 L124.6,178.5 L126.6,177.5 L128.6,176.8 L130.5,176.2 L132.5,175.9 L134.4,175.0 L136.4,174.6 L138.4,174.0 L140.3,173.0 L142.3,172.5 L144.3,171.7 L146.2,171.6 L148.2,170.5 L150.1,169.7 L152.1,168.9 L154.1,168.4 L156.0,167.3 L158.0,166.7 L159.9,165.9 L161.9,165.2 L163.9,164.2 L165.8,163.6 L167.8,163.1 L169.8,162.6 L171.7,161.7 L173.7,160.5 L175.6,160.6 L177.6,159.9 L179.6,159.3 L181.5,158.2 L183.5,157.8 L185.5,156.8 L187.4,156.6 L189.4,155.4 L191.3,154.8 L193.3,153.8 L195.3,153.1 L197.2,152.1 L199.2,150.5 L201.2,150.2 L203.1,149.2 L205.1,148.4 L207.0,147.3 L209.0,146.4 L211.0,146.1 L212.9,144.9 L214.9,144.0 L216.8,142.8 L218.8,141.8 L220.8,140.9 L222.7,139.4 L224.7,138.4 L226.7,137.6 L228.6,137.2 L230.6,136.2 L232.5,136.1 L234.5,134.0 L236.5,132.7 L238.4,132.0 L240.4,131.2 L242.4,129.6 L244.3,128.2 L246.3,126.7 L248.2,125.5 L250.2,124.2 L252.2,123.0 L254.1,121.7 L256.1,121.2 L258.1,119.0 L260.0,118.3 L262.0,116.7 L263.9,116.3 L265.9,114.4 L267.9,112.8 L269.8,111.9 L271.8,111.0 L273.7,109.8 L275.7,109.6 L277.7,108.7 L279.6,107.7 L281.6,105.3 L283.6,105.0 L285.5,103.7 L287.5,102.7 L289.4,99.9 L291.4,98.7 L293.4,97.2 L295.3,96.4 L297.3,96.6 L299.3,94.9 L301.2,92.8 L303.2,91.4 L305.1,90.5 L307.1,88.6 L309.1,86.2 L311.0,84.5 L313.0,84.4 L314.9,82.9 L316.9,80.6 L318.9,77.7 L320.8,75.5 L322.8,73.5 L324.8,72.4 L326.7,70.1 L328.7,68.1 L330.6,66.2 L332.6,65.6 L334.6,65.1 L336.5,62.4 L338.5,60.6 L340.5,59.6 L342.4,57.7 L344.4,57.7 L346.3,54.2 L348.3,51.0 L350.3,50.5 L352.2,47.4 L354.2,46.0 L356.2,45.7 L358.1,43.6 L360.1,43.4 L362.0,39.6 L364.0,38.8 L364.0,197.9 L362.0,197.7 L360.1,198.0 L358.1,198.2 L356.2,198.2 L354.2,198.8 L352.2,198.8 L350.3,198.6 L348.3,198.6 L346.3,198.6 L344.4,198.8 L342.4,199.0 L340.5,199.1 L338.5,198.8 L336.5,198.9 L334.6,198.9 L332.6,199.3 L330.6,199.4 L328.7,199.4 L326.7,199.5 L324.8,199.8 L322.8,199.6 L320.8,199.7 L318.9,199.7 L316.9,199.9 L314.9,199.9 L313.0,199.9 L311.0,200.0 L309.1,199.9 L307.1,200.2 L305.1,200.4 L303.2,200.6 L301.2,200.6 L299.3,200.5 L297.3,200.6 L295.3,200.8 L293.4,200.9 L291.4,201.0 L289.4,201.0 L287.5,201.2 L285.5,201.4 L283.6,201.2 L281.6,201.4 L279.6,201.5 L277.7,201.8 L275.7,201.6 L273.7,201.6 L271.8,201.9 L269.8,202.0 L267.9,202.0 L265.9,202.0 L263.9,202.0 L262.0,202.0 L260.0,202.0 L258.1,202.0 L256.1,202.2 L254.1,202.2 L252.2,202.2 L250.2,202.3 L248.2,202.2 L246.3,202.4 L244.3,202.4 L242.4,202.4 L240.4,202.5 L238.4,202.6 L236.5,202.5 L234.5,202.8 L232.5,203.0 L230.6,203.0 L228.6,203.2 L226.7,203.3 L224.7,203.4 L222.7,203.3 L220.8,203.3 L218.8,203.4 L216.8,203.7 L214.9,203.8 L212.9,203.7 L211.0,203.8 L209.0,203.8 L207.0,203.8 L205.1,204.0 L203.1,203.9 L201.2,204.0 L199.2,204.1 L197.2,204.2 L195.3,204.2 L193.3,204.0 L191.3,204.2 L189.4,204.2 L187.4,204.3 L185.5,204.3 L183.5,204.4 L181.5,204.5 L179.6,204.5 L177.6,204.6 L175.6,204.6 L173.7,204.6 L171.7,204.7 L169.8,204.7 L167.8,204.7 L165.8,204.6 L163.9,204.6 L161.9,204.7 L159.9,204.8 L158.0,204.6 L156.0,204.6 L154.1,204.7 L152.1,204.7 L150.1,204.6 L148.2,204.6 L146.2,204.7 L144.3,204.7 L142.3,204.8 L140.3,204.7 L138.4,204.7 L136.4,204.7 L134.4,204.8 L132.5,204.9 L130.5,204.9 L128.6,204.8 L126.6,204.8 L124.6,204.8 L122.7,205.1 L120.7,205.1 L118.7,205.1 L116.8,205.0 L114.8,205.1 L112.9,205.1 L110.9,205.2 L108.9,205.1 L107.0,205.1 L105.0,205.2 L103.1,205.1 L101.1,205.1 L99.1,205.1 L97.2,205.1 L95.2,205.0 L93.2,204.9 L91.3,204.9 L89.3,204.9 L87.4,204.8 L85.4,204.7 L83.4,204.8 L81.5,204.8 L79.5,204.7 L77.5,204.7 L75.6,204.6 L73.6,204.5 L71.7,204.4 L69.7,204.4 L67.7,204.3 L65.8,204.1 L63.8,203.9 L61.8,203.7 L59.9,203.4 L57.9,203.1 L56.0,202.5 L54.0,201.0 Z" fill="#eb6834" fill-opacity="0.14"/>
+<path d="M54.0,201.0 L56.0,200.2 L57.9,199.8 L59.9,199.3 L61.8,198.9 L63.8,198.6 L65.8,198.3 L67.7,197.9 L69.7,197.5 L71.7,197.2 L73.6,196.9 L75.6,196.6 L77.5,196.2 L79.5,196.0 L81.5,195.6 L83.4,195.3 L85.4,195.0 L87.4,194.7 L89.3,194.5 L91.3,194.1 L93.2,193.8 L95.2,193.5 L97.2,193.2 L99.1,193.0 L101.1,192.6 L103.1,192.3 L105.0,191.8 L107.0,191.6 L108.9,191.2 L110.9,191.0 L112.9,190.6 L114.8,190.3 L116.8,190.0 L118.7,189.5 L120.7,189.3 L122.7,189.0 L124.6,188.6 L126.6,188.4 L128.6,188.0 L130.5,187.5 L132.5,187.3 L134.4,186.8 L136.4,186.6 L138.4,186.2 L140.3,185.9 L142.3,185.5 L144.3,184.9 L146.2,184.6 L148.2,184.2 L150.1,183.9 L152.1,183.5 L154.1,182.9 L156.0,182.5 L158.0,182.1 L159.9,181.9 L161.9,181.4 L163.9,181.0 L165.8,180.6 L167.8,180.1 L169.8,179.9 L171.7,179.5 L173.7,179.2 L175.6,178.5 L177.6,178.0 L179.6,177.7 L181.5,177.1 L183.5,176.8 L185.5,176.2 L187.4,175.7 L189.4,175.2 L191.3,174.6 L193.3,174.4 L195.3,174.2 L197.2,173.5 L199.2,173.2 L201.2,172.8 L203.1,172.1 L205.1,171.5 L207.0,171.1 L209.0,170.8 L211.0,170.4 L212.9,169.8 L214.9,169.6 L216.8,169.1 L218.8,168.7 L220.8,168.2 L222.7,167.7 L224.7,167.2 L226.7,166.7 L228.6,166.4 L230.6,165.7 L232.5,165.2 L234.5,164.5 L236.5,163.9 L238.4,163.3 L240.4,162.8 L242.4,162.2 L244.3,161.9 L246.3,161.4 L248.2,161.0 L250.2,160.4 L252.2,159.7 L254.1,159.3 L256.1,158.7 L258.1,158.0 L260.0,158.1 L262.0,157.0 L263.9,156.9 L265.9,155.9 L267.9,155.1 L269.8,154.1 L271.8,153.8 L273.7,153.2 L275.7,152.7 L277.7,152.1 L279.6,151.5 L281.6,151.1 L283.6,150.4 L285.5,149.4 L287.5,149.1 L289.4,148.4 L291.4,148.0 L293.4,147.2 L295.3,146.2 L297.3,145.3 L299.3,144.8 L301.2,143.9 L303.2,143.2 L305.1,142.2 L307.1,141.6 L309.1,140.9 L311.0,140.2 L313.0,139.4 L314.9,138.3 L316.9,137.6 L318.9,137.1 L320.8,135.9 L322.8,135.7 L324.8,134.3 L326.7,133.5 L328.7,132.5 L330.6,131.9 L332.6,131.1 L334.6,130.0 L336.5,129.5 L338.5,128.5 L340.5,127.2 L342.4,126.9 L344.4,126.4 L346.3,126.3 L348.3,125.0 L350.3,123.9 L352.2,123.6 L354.2,122.9 L356.2,121.7 L358.1,121.0 L360.1,120.0 L362.0,119.0 L364.0,118.7 L364.0,176.7 L362.0,176.6 L360.1,176.9 L358.1,177.3 L356.2,177.8 L354.2,178.2 L352.2,178.0 L350.3,178.3 L348.3,178.6 L346.3,178.8 L344.4,179.0 L342.4,179.4 L340.5,179.7 L338.5,179.8 L336.5,180.0 L334.6,180.3 L332.6,180.6 L330.6,181.0 L328.7,181.1 L326.7,181.4 L324.8,181.5 L322.8,181.6 L320.8,181.7 L318.9,182.2 L316.9,182.7 L314.9,183.1 L313.0,183.3 L311.0,183.5 L309.1,183.8 L307.1,183.9 L305.1,184.0 L303.2,184.2 L301.2,184.5 L299.3,184.8 L297.3,185.2 L295.3,185.4 L293.4,185.7 L291.4,185.9 L289.4,186.0 L287.5,186.1 L285.5,186.3 L283.6,186.7 L281.6,186.7 L279.6,186.8 L277.7,187.2 L275.7,187.4 L273.7,187.4 L271.8,187.8 L269.8,187.8 L267.9,188.1 L265.9,188.4 L263.9,188.6 L262.0,188.9 L260.0,189.2 L258.1,189.3 L256.1,189.5 L254.1,189.7 L252.2,189.8 L250.2,190.0 L248.2,189.9 L246.3,190.3 L244.3,190.5 L242.4,190.8 L240.4,190.8 L238.4,191.0 L236.5,191.1 L234.5,191.3 L232.5,191.4 L230.6,191.7 L228.6,191.7 L226.7,192.0 L224.7,192.1 L222.7,192.3 L220.8,192.6 L218.8,192.8 L216.8,192.9 L214.9,193.1 L212.9,193.2 L211.0,193.5 L209.0,193.7 L207.0,193.9 L205.1,194.0 L203.1,194.3 L201.2,194.4 L199.2,194.7 L197.2,194.7 L195.3,194.8 L193.3,194.9 L191.3,195.0 L189.4,195.1 L187.4,195.3 L185.5,195.3 L183.5,195.6 L181.5,195.7 L179.6,195.7 L177.6,195.8 L175.6,196.0 L173.7,196.1 L171.7,196.2 L169.8,196.4 L167.8,196.5 L165.8,196.6 L163.9,196.9 L161.9,197.0 L159.9,197.0 L158.0,197.2 L156.0,197.3 L154.1,197.5 L152.1,197.6 L150.1,197.7 L148.2,197.9 L146.2,197.9 L144.3,198.1 L142.3,198.2 L140.3,198.3 L138.4,198.5 L136.4,198.5 L134.4,198.7 L132.5,198.7 L130.5,198.9 L128.6,199.0 L126.6,199.0 L124.6,199.2 L122.7,199.3 L120.7,199.4 L118.7,199.5 L116.8,199.7 L114.8,199.9 L112.9,199.9 L110.9,200.0 L108.9,200.0 L107.0,200.1 L105.0,200.2 L103.1,200.3 L101.1,200.4 L99.1,200.5 L97.2,200.5 L95.2,200.6 L93.2,200.7 L91.3,200.8 L89.3,200.9 L87.4,201.0 L85.4,201.1 L83.4,201.1 L81.5,201.3 L79.5,201.3 L77.5,201.4 L75.6,201.5 L73.6,201.6 L71.7,201.5 L69.7,201.6 L67.7,201.7 L65.8,201.7 L63.8,201.6 L61.8,201.6 L59.9,201.6 L57.9,201.5 L56.0,201.4 L54.0,201.0 Z" fill="#eb6834" fill-opacity="0.28"/>
+<path d="M54.0,201.0 L56.0,200.8 L57.9,200.5 L59.9,200.4 L61.8,200.2 L63.8,200.1 L65.8,200.0 L67.7,199.8 L69.7,199.6 L71.7,199.4 L73.6,199.3 L75.6,199.1 L77.5,199.0 L79.5,198.8 L81.5,198.6 L83.4,198.4 L85.4,198.2 L87.4,198.1 L89.3,197.9 L91.3,197.7 L93.2,197.4 L95.2,197.3 L97.2,197.0 L99.1,196.8 L101.1,196.7 L103.1,196.4 L105.0,196.2 L107.0,196.0 L108.9,195.9 L110.9,195.7 L112.9,195.6 L114.8,195.3 L116.8,195.1 L118.7,194.8 L120.7,194.6 L122.7,194.4 L124.6,194.2 L126.6,194.0 L128.6,193.9 L130.5,193.6 L132.5,193.3 L134.4,193.1 L136.4,192.9 L138.4,192.7 L140.3,192.6 L142.3,192.4 L144.3,192.2 L146.2,191.8 L148.2,191.7 L150.1,191.5 L152.1,191.2 L154.1,191.0 L156.0,190.8 L158.0,190.5 L159.9,190.2 L161.9,190.0 L163.9,189.7 L165.8,189.5 L167.8,189.2 L169.8,189.0 L171.7,188.7 L173.7,188.5 L175.6,188.2 L177.6,188.1 L179.6,187.7 L181.5,187.4 L183.5,187.2 L185.5,187.0 L187.4,186.6 L189.4,186.3 L191.3,186.1 L193.3,185.9 L195.3,185.6 L197.2,185.4 L199.2,185.0 L201.2,184.8 L203.1,184.5 L205.1,184.2 L207.0,184.0 L209.0,183.8 L211.0,183.4 L212.9,183.1 L214.9,182.7 L216.8,182.5 L218.8,182.2 L220.8,182.0 L222.7,181.6 L224.7,181.3 L226.7,181.0 L228.6,180.6 L230.6,180.5 L232.5,180.2 L234.5,179.9 L236.5,179.6 L238.4,179.2 L240.4,179.0 L242.4,178.7 L244.3,178.3 L246.3,178.1 L248.2,177.7 L250.2,177.5 L252.2,177.1 L254.1,176.5 L256.1,175.9 L258.1,175.6 L260.0,175.3 L262.0,175.2 L263.9,174.7 L265.9,174.2 L267.9,174.1 L269.8,173.6 L271.8,173.1 L273.7,172.7 L275.7,172.2 L277.7,171.9 L279.6,171.6 L281.6,171.1 L283.6,170.8 L285.5,170.5 L287.5,170.2 L289.4,169.6 L291.4,169.3 L293.4,169.0 L295.3,168.6 L297.3,168.4 L299.3,168.2 L301.2,167.6 L303.2,167.2 L305.1,166.8 L307.1,166.1 L309.1,165.8 L311.0,165.6 L313.0,165.1 L314.9,164.5 L316.9,164.2 L318.9,163.8 L320.8,163.5 L322.8,163.0 L324.8,162.4 L326.7,161.9 L328.7,161.5 L330.6,161.1 L332.6,160.5 L334.6,160.3 L336.5,159.9 L338.5,159.2 L340.5,158.9 L342.4,157.9 L344.4,157.9 L346.3,157.3 L348.3,157.4 L350.3,156.7 L352.2,155.8 L354.2,155.3 L356.2,155.0 L358.1,154.9 L360.1,154.0 L362.0,153.3 L364.0,152.9" fill="none" stroke="#eb6834" stroke-width="2"/>
+<text x="54.0" y="240" text-anchor="middle" font-size="10" fill="#686c71">Start</text>
+<text x="116.8" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 1</text>
+<text x="177.6" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 2</text>
+<text x="240.4" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 3</text>
+<text x="301.2" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 4</text>
+<text x="364.0" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 5</text>
+<text x="362" y="33.8" text-anchor="end" font-size="10" fill="#3d4145">$872k</text>
+<text x="362" y="147.9" text-anchor="end" font-size="10" fill="#3d4145">$329k</text>
+<text x="362" y="192.9" text-anchor="end" font-size="10" fill="#3d4145">$115k</text>
+</svg></div>
+        <div class="chart-card"><p class="eyebrow" style="color:var(--muted)">Balanced</p><svg viewBox="0 0 380 250" role="img" aria-label="Balanced five-year scenario percentiles from CAD 100,000" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+<line x1="54" y1="222.0" x2="364" y2="222.0" stroke="#e6e2db"/>
+<text x="48" y="225.5" text-anchor="end" font-size="10" fill="#686c71">$0k</text>
+<line x1="54" y1="180.0" x2="364" y2="180.0" stroke="#e6e2db"/>
+<text x="48" y="183.5" text-anchor="end" font-size="10" fill="#686c71">$200k</text>
+<line x1="54" y1="138.0" x2="364" y2="138.0" stroke="#e6e2db"/>
+<text x="48" y="141.5" text-anchor="end" font-size="10" fill="#686c71">$400k</text>
+<line x1="54" y1="96.0" x2="364" y2="96.0" stroke="#e6e2db"/>
+<text x="48" y="99.5" text-anchor="end" font-size="10" fill="#686c71">$600k</text>
+<line x1="54" y1="54.0" x2="364" y2="54.0" stroke="#e6e2db"/>
+<text x="48" y="57.5" text-anchor="end" font-size="10" fill="#686c71">$800k</text>
+<line x1="54" y1="12.0" x2="364" y2="12.0" stroke="#e6e2db"/>
+<text x="48" y="15.5" text-anchor="end" font-size="10" fill="#686c71">$1,000k</text>
+<line x1="54" y1="201.0" x2="364" y2="201.0" stroke="#16181a" stroke-dasharray="3 3"/>
+<path d="M54.0,201.0 L56.0,200.2 L57.9,199.7 L59.9,199.3 L61.8,198.9 L63.8,198.6 L65.8,198.2 L67.7,197.8 L69.7,197.5 L71.7,197.3 L73.6,197.0 L75.6,196.7 L77.5,196.4 L79.5,196.1 L81.5,195.9 L83.4,195.7 L85.4,195.3 L87.4,195.2 L89.3,194.8 L91.3,194.6 L93.2,194.4 L95.2,194.1 L97.2,193.7 L99.1,193.4 L101.1,193.2 L103.1,192.9 L105.0,192.6 L107.0,192.3 L108.9,192.1 L110.9,191.8 L112.9,191.6 L114.8,191.2 L116.8,190.8 L118.7,190.5 L120.7,190.3 L122.7,189.9 L124.6,189.6 L126.6,189.3 L128.6,189.0 L130.5,188.8 L132.5,188.5 L134.4,188.1 L136.4,187.8 L138.4,187.6 L140.3,187.3 L142.3,187.0 L144.3,186.6 L146.2,186.3 L148.2,185.9 L150.1,185.7 L152.1,185.3 L154.1,185.1 L156.0,184.8 L158.0,184.5 L159.9,184.1 L161.9,183.9 L163.9,183.6 L165.8,183.4 L167.8,183.1 L169.8,182.7 L171.7,182.2 L173.7,182.0 L175.6,181.6 L177.6,181.5 L179.6,181.0 L181.5,180.7 L183.5,180.4 L185.5,180.1 L187.4,179.9 L189.4,179.6 L191.3,179.2 L193.3,178.9 L195.3,178.4 L197.2,178.1 L199.2,177.8 L201.2,177.3 L203.1,176.9 L205.1,176.5 L207.0,176.1 L209.0,175.8 L211.0,175.6 L212.9,175.2 L214.9,174.9 L216.8,174.6 L218.8,174.1 L220.8,173.9 L222.7,173.5 L224.7,173.0 L226.7,172.7 L228.6,172.2 L230.6,172.2 L232.5,171.7 L234.5,171.4 L236.5,171.1 L238.4,170.7 L240.4,170.4 L242.4,169.7 L244.3,169.2 L246.3,168.8 L248.2,168.5 L250.2,168.2 L252.2,167.7 L254.1,167.2 L256.1,166.4 L258.1,166.3 L260.0,165.7 L262.0,165.5 L263.9,164.9 L265.9,164.2 L267.9,164.0 L269.8,163.6 L271.8,163.1 L273.7,162.6 L275.7,162.1 L277.7,161.6 L279.6,161.1 L281.6,160.7 L283.6,160.1 L285.5,159.8 L287.5,159.4 L289.4,158.8 L291.4,158.7 L293.4,158.1 L295.3,157.6 L297.3,157.0 L299.3,156.6 L301.2,156.2 L303.2,156.3 L305.1,155.6 L307.1,154.9 L309.1,154.8 L311.0,154.3 L313.0,153.7 L314.9,152.5 L316.9,152.0 L318.9,151.3 L320.8,151.0 L322.8,150.6 L324.8,150.3 L326.7,149.6 L328.7,148.8 L330.6,148.4 L332.6,147.8 L334.6,147.3 L336.5,146.6 L338.5,146.4 L340.5,146.0 L342.4,145.4 L344.4,144.3 L346.3,144.0 L348.3,143.4 L350.3,142.7 L352.2,142.4 L354.2,142.3 L356.2,141.6 L358.1,140.5 L360.1,140.1 L362.0,139.6 L364.0,139.1 L364.0,194.4 L362.0,194.4 L360.1,194.6 L358.1,194.7 L356.2,194.8 L354.2,194.8 L352.2,194.8 L350.3,195.0 L348.3,195.1 L346.3,195.3 L344.4,195.4 L342.4,195.4 L340.5,195.5 L338.5,195.6 L336.5,195.7 L334.6,195.8 L332.6,195.9 L330.6,196.0 L328.7,196.1 L326.7,196.1 L324.8,196.3 L322.8,196.5 L320.8,196.5 L318.9,196.7 L316.9,196.9 L314.9,196.8 L313.0,196.9 L311.0,197.0 L309.1,197.0 L307.1,197.2 L305.1,197.2 L303.2,197.3 L301.2,197.3 L299.3,197.3 L297.3,197.5 L295.3,197.6 L293.4,197.5 L291.4,197.7 L289.4,197.8 L287.5,198.0 L285.5,198.1 L283.6,198.2 L281.6,198.2 L279.6,198.4 L277.7,198.5 L275.7,198.4 L273.7,198.5 L271.8,198.6 L269.8,198.7 L267.9,198.8 L265.9,198.8 L263.9,198.9 L262.0,199.0 L260.0,199.1 L258.1,199.2 L256.1,199.2 L254.1,199.2 L252.2,199.2 L250.2,199.3 L248.2,199.4 L246.3,199.5 L244.3,199.6 L242.4,199.6 L240.4,199.8 L238.4,199.8 L236.5,199.8 L234.5,200.0 L232.5,200.0 L230.6,200.0 L228.6,200.1 L226.7,200.1 L224.7,200.3 L222.7,200.4 L220.8,200.5 L218.8,200.5 L216.8,200.6 L214.9,200.7 L212.9,200.8 L211.0,200.9 L209.0,201.0 L207.0,200.9 L205.1,201.0 L203.1,201.0 L201.2,201.0 L199.2,201.0 L197.2,201.0 L195.3,201.0 L193.3,201.0 L191.3,201.2 L189.4,201.2 L187.4,201.3 L185.5,201.3 L183.5,201.3 L181.5,201.4 L179.6,201.6 L177.6,201.6 L175.6,201.6 L173.7,201.7 L171.7,201.8 L169.8,201.8 L167.8,201.8 L165.8,201.7 L163.9,201.9 L161.9,202.0 L159.9,201.9 L158.0,201.9 L156.0,202.0 L154.1,202.1 L152.1,202.0 L150.1,202.1 L148.2,202.2 L146.2,202.1 L144.3,202.2 L142.3,202.3 L140.3,202.4 L138.4,202.3 L136.4,202.3 L134.4,202.4 L132.5,202.4 L130.5,202.4 L128.6,202.5 L126.6,202.5 L124.6,202.6 L122.7,202.7 L120.7,202.7 L118.7,202.7 L116.8,202.7 L114.8,202.8 L112.9,202.8 L110.9,202.9 L108.9,202.8 L107.0,202.8 L105.0,202.8 L103.1,202.9 L101.1,202.9 L99.1,202.8 L97.2,202.8 L95.2,202.8 L93.2,202.9 L91.3,202.8 L89.3,202.9 L87.4,202.9 L85.4,202.8 L83.4,202.8 L81.5,202.9 L79.5,202.8 L77.5,202.7 L75.6,202.7 L73.6,202.7 L71.7,202.6 L69.7,202.6 L67.7,202.5 L65.8,202.5 L63.8,202.4 L61.8,202.3 L59.9,202.1 L57.9,202.0 L56.0,201.7 L54.0,201.0 Z" fill="#1a6f57" fill-opacity="0.14"/>
+<path d="M54.0,201.0 L56.0,200.6 L57.9,200.3 L59.9,200.1 L61.8,199.8 L63.8,199.7 L65.8,199.4 L67.7,199.3 L69.7,199.0 L71.7,198.9 L73.6,198.7 L75.6,198.5 L77.5,198.3 L79.5,198.1 L81.5,197.9 L83.4,197.7 L85.4,197.5 L87.4,197.4 L89.3,197.2 L91.3,197.0 L93.2,196.8 L95.2,196.6 L97.2,196.4 L99.1,196.2 L101.1,196.0 L103.1,195.8 L105.0,195.6 L107.0,195.4 L108.9,195.3 L110.9,195.1 L112.9,194.8 L114.8,194.6 L116.8,194.4 L118.7,194.3 L120.7,194.1 L122.7,193.9 L124.6,193.7 L126.6,193.5 L128.6,193.3 L130.5,193.1 L132.5,192.9 L134.4,192.7 L136.4,192.5 L138.4,192.4 L140.3,192.2 L142.3,192.0 L144.3,191.8 L146.2,191.6 L148.2,191.4 L150.1,191.2 L152.1,191.0 L154.1,190.7 L156.0,190.5 L158.0,190.3 L159.9,190.1 L161.9,189.9 L163.9,189.6 L165.8,189.4 L167.8,189.3 L169.8,189.0 L171.7,188.7 L173.7,188.5 L175.6,188.3 L177.6,187.9 L179.6,187.7 L181.5,187.5 L183.5,187.3 L185.5,187.0 L187.4,186.8 L189.4,186.6 L191.3,186.4 L193.3,186.1 L195.3,185.8 L197.2,185.5 L199.2,185.3 L201.2,185.1 L203.1,184.8 L205.1,184.6 L207.0,184.4 L209.0,184.2 L211.0,184.0 L212.9,183.7 L214.9,183.5 L216.8,183.3 L218.8,183.0 L220.8,182.8 L222.7,182.5 L224.7,182.3 L226.7,182.2 L228.6,181.8 L230.6,181.6 L232.5,181.3 L234.5,181.1 L236.5,180.8 L238.4,180.5 L240.4,180.3 L242.4,180.1 L244.3,179.8 L246.3,179.6 L248.2,179.2 L250.2,179.0 L252.2,178.6 L254.1,178.4 L256.1,178.0 L258.1,177.7 L260.0,177.5 L262.0,177.2 L263.9,176.9 L265.9,176.6 L267.9,176.2 L269.8,176.0 L271.8,175.7 L273.7,175.4 L275.7,175.0 L277.7,174.8 L279.6,174.3 L281.6,174.2 L283.6,173.9 L285.5,173.4 L287.5,173.3 L289.4,172.9 L291.4,172.6 L293.4,172.5 L295.3,172.1 L297.3,171.8 L299.3,171.5 L301.2,171.2 L303.2,170.9 L305.1,170.7 L307.1,170.3 L309.1,170.0 L311.0,169.7 L313.0,169.1 L314.9,169.0 L316.9,168.4 L318.9,168.2 L320.8,167.9 L322.8,167.7 L324.8,167.4 L326.7,167.2 L328.7,166.8 L330.6,166.4 L332.6,165.9 L334.6,165.7 L336.5,165.4 L338.5,165.1 L340.5,164.7 L342.4,164.4 L344.4,164.1 L346.3,163.9 L348.3,163.5 L350.3,163.1 L352.2,162.7 L354.2,162.4 L356.2,162.0 L358.1,161.7 L360.1,161.3 L362.0,160.8 L364.0,160.5 L364.0,182.4 L362.0,182.6 L360.1,182.7 L358.1,183.0 L356.2,183.1 L354.2,183.2 L352.2,183.4 L350.3,183.5 L348.3,183.8 L346.3,183.9 L344.4,184.1 L342.4,184.3 L340.5,184.4 L338.5,184.5 L336.5,184.8 L334.6,184.9 L332.6,185.1 L330.6,185.3 L328.7,185.4 L326.7,185.6 L324.8,185.8 L322.8,185.9 L320.8,186.0 L318.9,186.2 L316.9,186.4 L314.9,186.5 L313.0,186.7 L311.0,187.0 L309.1,187.1 L307.1,187.2 L305.1,187.4 L303.2,187.5 L301.2,187.6 L299.3,187.9 L297.3,188.0 L295.3,188.1 L293.4,188.3 L291.4,188.4 L289.4,188.5 L287.5,188.7 L285.5,188.9 L283.6,189.0 L281.6,189.1 L279.6,189.4 L277.7,189.5 L275.7,189.7 L273.7,189.8 L271.8,190.0 L269.8,190.2 L267.9,190.3 L265.9,190.4 L263.9,190.6 L262.0,190.7 L260.0,190.8 L258.1,191.0 L256.1,191.0 L254.1,191.2 L252.2,191.3 L250.2,191.5 L248.2,191.7 L246.3,191.7 L244.3,191.9 L242.4,192.2 L240.4,192.2 L238.4,192.4 L236.5,192.5 L234.5,192.6 L232.5,192.7 L230.6,192.8 L228.6,193.0 L226.7,193.1 L224.7,193.2 L222.7,193.4 L220.8,193.5 L218.8,193.7 L216.8,193.8 L214.9,193.9 L212.9,194.1 L211.0,194.2 L209.0,194.3 L207.0,194.4 L205.1,194.5 L203.1,194.6 L201.2,194.8 L199.2,194.9 L197.2,195.0 L195.3,195.0 L193.3,195.2 L191.3,195.3 L189.4,195.5 L187.4,195.6 L185.5,195.7 L183.5,195.7 L181.5,195.8 L179.6,196.0 L177.6,196.1 L175.6,196.1 L173.7,196.3 L171.7,196.5 L169.8,196.6 L167.8,196.7 L165.8,196.7 L163.9,196.8 L161.9,197.0 L159.9,197.1 L158.0,197.1 L156.0,197.3 L154.1,197.4 L152.1,197.5 L150.1,197.6 L148.2,197.7 L146.2,197.8 L144.3,197.9 L142.3,198.0 L140.3,198.1 L138.4,198.2 L136.4,198.3 L134.4,198.4 L132.5,198.5 L130.5,198.6 L128.6,198.7 L126.6,198.7 L124.6,198.7 L122.7,198.9 L120.7,199.0 L118.7,199.1 L116.8,199.2 L114.8,199.3 L112.9,199.3 L110.9,199.4 L108.9,199.5 L107.0,199.6 L105.0,199.7 L103.1,199.8 L101.1,199.8 L99.1,199.9 L97.2,199.9 L95.2,200.0 L93.2,200.1 L91.3,200.2 L89.3,200.3 L87.4,200.4 L85.4,200.4 L83.4,200.5 L81.5,200.6 L79.5,200.6 L77.5,200.7 L75.6,200.8 L73.6,200.8 L71.7,200.9 L69.7,201.0 L67.7,201.1 L65.8,201.1 L63.8,201.1 L61.8,201.1 L59.9,201.2 L57.9,201.1 L56.0,201.1 L54.0,201.0 Z" fill="#1a6f57" fill-opacity="0.28"/>
+<path d="M54.0,201.0 L56.0,200.9 L57.9,200.7 L59.9,200.6 L61.8,200.5 L63.8,200.4 L65.8,200.3 L67.7,200.1 L69.7,200.0 L71.7,199.8 L73.6,199.7 L75.6,199.6 L77.5,199.5 L79.5,199.4 L81.5,199.2 L83.4,199.1 L85.4,199.0 L87.4,198.8 L89.3,198.7 L91.3,198.6 L93.2,198.5 L95.2,198.4 L97.2,198.2 L99.1,198.1 L101.1,197.9 L103.1,197.8 L105.0,197.7 L107.0,197.5 L108.9,197.4 L110.9,197.3 L112.9,197.2 L114.8,197.1 L116.8,196.9 L118.7,196.7 L120.7,196.6 L122.7,196.4 L124.6,196.3 L126.6,196.1 L128.6,196.0 L130.5,195.9 L132.5,195.8 L134.4,195.7 L136.4,195.5 L138.4,195.3 L140.3,195.2 L142.3,195.0 L144.3,194.9 L146.2,194.7 L148.2,194.6 L150.1,194.5 L152.1,194.3 L154.1,194.1 L156.0,194.0 L158.0,193.8 L159.9,193.6 L161.9,193.5 L163.9,193.3 L165.8,193.1 L167.8,193.0 L169.8,192.8 L171.7,192.6 L173.7,192.5 L175.6,192.4 L177.6,192.3 L179.6,192.1 L181.5,191.9 L183.5,191.7 L185.5,191.6 L187.4,191.5 L189.4,191.3 L191.3,191.2 L193.3,191.0 L195.3,190.9 L197.2,190.7 L199.2,190.5 L201.2,190.3 L203.1,190.2 L205.1,190.0 L207.0,189.8 L209.0,189.6 L211.0,189.4 L212.9,189.3 L214.9,189.1 L216.8,188.9 L218.8,188.7 L220.8,188.4 L222.7,188.3 L224.7,188.1 L226.7,187.8 L228.6,187.7 L230.6,187.6 L232.5,187.3 L234.5,187.2 L236.5,187.0 L238.4,186.9 L240.4,186.6 L242.4,186.4 L244.3,186.3 L246.3,186.2 L248.2,185.9 L250.2,185.7 L252.2,185.5 L254.1,185.3 L256.1,185.2 L258.1,184.9 L260.0,184.7 L262.0,184.4 L263.9,184.2 L265.9,184.0 L267.9,183.7 L269.8,183.5 L271.8,183.3 L273.7,183.1 L275.7,182.8 L277.7,182.6 L279.6,182.5 L281.6,182.4 L283.6,182.2 L285.5,182.0 L287.5,181.7 L289.4,181.5 L291.4,181.2 L293.4,181.1 L295.3,180.8 L297.3,180.6 L299.3,180.2 L301.2,180.0 L303.2,179.7 L305.1,179.3 L307.1,179.1 L309.1,178.9 L311.0,178.7 L313.0,178.5 L314.9,178.4 L316.9,178.0 L318.9,177.9 L320.8,177.6 L322.8,177.4 L324.8,177.3 L326.7,176.9 L328.7,176.6 L330.6,176.3 L332.6,176.1 L334.6,175.9 L336.5,175.6 L338.5,175.4 L340.5,175.2 L342.4,175.0 L344.4,174.7 L346.3,174.5 L348.3,174.4 L350.3,174.0 L352.2,173.9 L354.2,173.6 L356.2,173.5 L358.1,173.1 L360.1,172.8 L362.0,172.5 L364.0,172.5" fill="none" stroke="#1a6f57" stroke-width="2"/>
+<text x="54.0" y="240" text-anchor="middle" font-size="10" fill="#686c71">Start</text>
+<text x="116.8" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 1</text>
+<text x="177.6" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 2</text>
+<text x="240.4" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 3</text>
+<text x="301.2" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 4</text>
+<text x="364.0" y="240" text-anchor="middle" font-size="10" fill="#686c71">Yr 5</text>
+<text x="362" y="134.1" text-anchor="end" font-size="10" fill="#3d4145">$395k</text>
+<text x="362" y="167.5" text-anchor="end" font-size="10" fill="#3d4145">$236k</text>
+<text x="362" y="189.4" text-anchor="end" font-size="10" fill="#3d4145">$132k</text>
+</svg></div>
+      </div>
+      <div class="chart-card">
+        <div class="tablewrap" style="margin-top:0">
+          <table class="results">
+            <thead><tr><th>Portfolio</th><th>5th percentile</th><th>Median</th><th>95th percentile</th><th>Ends below start</th><th>Below 80% at any point</th><th>Median worst drop</th></tr></thead>
+            <tbody>
+<tr><td><span class="swatch" style="background:#eb6834"></span>Growth</td><td>$114,708</td><td>$329,002</td><td>$872,362</td><td>3.1%</td><td>24.2%</td><td>&minus;33.5%</td></tr>
+<tr><td><span class="swatch" style="background:#1a6f57"></span>Balanced</td><td>$131,665</td><td>$235,938</td><td>$394,953</td><td>0.7%</td><td>8.8%</td><td>&minus;20.3%</td></tr>
+<tr><td><span class="swatch" style="background:#2a78d6"></span>Income</td><td>$119,698</td><td>$211,349</td><td>$341,758</td><td>1.6%</td><td>12.2%</td><td>&minus;22.1%</td></tr>
+<tr><td><span class="swatch" style="background:#4a3aa7"></span>Low volatility</td><td>$129,046</td><td>$222,660</td><td>$355,250</td><td>0.8%</td><td>9.2%</td><td>&minus;19.4%</td></tr>
+<tr class="bench"><td><span class="swatch" style="background:#8b96a1"></span>XIC benchmark</td><td>$106,182</td><td>$213,678</td><td>$360,350</td><td>3.9%</td><td>16.1%</td><td>&minus;24.2%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="readout"><b>Compare in the same markets, not side by side.</b> Growth has the higher median, but it finishes behind Balanced in <b>19.3%</b> of shared paths, and at the 5th percentile of the path-by-path difference it trails by <b>$50,893</b>. Subtracting the two portfolios' separate 5th percentiles would not give that number; pairing the paths does.</div>
+      <div class="readout"><b>How the history is sampled moves the downside.</b> With 126-session blocks instead of 20, which keep longer runs of history together, Growth's 5th-percentile ending value falls to <b>$90,882</b>, below the starting CAD 100,000, and its chance of ending at a loss roughly doubles (3.1% to 6.2%). It still keeps the higher median. The sample contains an unusually strong decade for Canadian equities, so these are ranges under a historical-repeat assumption, not forecasts, and they have not been validated against unseen five-year outcomes.</div>
+    </section>
 
-def test_forward_scenarios_start_after_completed_backtest_and_are_reproducible(inputs):
-    p, h, s, c = inputs
-    daily = portfolio_analytics(p, h, s, c)[0]
-    config = dict(c, seed=7, simulation_years=1, simulation_paths=100, bootstrap_block_days=5, trading_days=10)
-    bands, summary = forward_scenarios(daily, config)
-    repeat_bands, repeat_summary = forward_scenarios(daily, config)
-    assert bands.date.min() == daily.date.max()
-    assert bands.date.max() == daily.date.max() + pd.DateOffset(years=1)
-    assert len(bands) == 11 * 3
-    for name, group in bands.groupby(&#x27;portfolio_id&#x27;):
-        start = config[&#x27;initial_capital&#x27;]
-        np.testing.assert_allclose(group.iloc[0][[&#x27;p05&#x27;, &#x27;p25&#x27;, &#x27;median&#x27;, &#x27;p75&#x27;, &#x27;p95&#x27;]].astype(float), start)
-    assert (summary.scenario_paths == 100).all()
-    pd.testing.assert_frame_equal(bands, repeat_bands)
-    pd.testing.assert_frame_equal(summary, repeat_summary)
+    <section id="system" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">06</div>
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>A traceable path from prices to a published data mart</h2>
+        </div>
+      </div>
+      <div class="pipeline" style="margin-top:32px">
+        <div class="step"><span class="step-n">01 &nbsp;EXTRACT</span><h3>Checksummed inputs</h3><p>Adjusted prices from yfinance or a frozen CSV verified by SHA-256, target holdings and a security master.</p><div class="step-tools"><span>yfinance</span><span>pandas</span></div></div>
+        <div class="step"><span class="step-n">02 &nbsp;VALIDATE</span><h3>Reject bad data</h3><p>Conflicting duplicates, missing or non-finite prices, unknown holdings and incomplete ticker-date coverage all stop the run.</p><div class="step-tools"><span>pandas</span><span>pytest</span></div></div>
+        <div class="step"><span class="step-n">03 &nbsp;CALCULATE</span><h3>Portfolio accounting</h3><p>Previous-close weights, daily drift, monthly resets, costs on traded notional, then returns, risk and drawdowns.</p><div class="step-tools"><span>NumPy</span><span>cvxpy</span></div></div>
+        <div class="step"><span class="step-n">04 &nbsp;PUBLISH</span><h3>SQL data mart</h3><p>Five tables replace the SQLite snapshot atomically after positions reconcile to NAV; failed runs keep the previous database.</p><div class="step-tools"><span>SQLite</span><span>SQL</span></div></div>
+      </div>
+      <details class="more">
+        <summary>Accounting conventions</summary>
+        <div class="inner">
+          <div class="formulas">
+            <div><h4>Portfolio return</h4><code>r<sub>p,t</sub> = &sum; w<sub>i,t&minus;1</sub> r<sub>i,t</sub></code><p>Weights from the previous close. End-of-day weights would let today's move choose the allocation that earned it.</p></div>
+            <div><h4>Trading cost</h4><code>cost = V &times; &sum; |w<sub>target</sub> &minus; w<sub>drifted</sub>| &times; 0.001</code><p>10 bps on total traded notional, purchases and sales, charged before the next return.</p></div>
+            <div><h4>Annualized return</h4><code>CAGR = (V<sub>end</sub> / V<sub>start</sub>)<sup>252/N</sup> &minus; 1</code><p>On net portfolio value over N observed daily returns.</p></div>
+            <div><h4>Sharpe ratio</h4><code>mean(r &minus; r<sub>f</sub>) / s(r) &times; &radic;252</code><p>A fixed 3% annual risk-free rate, converted to a daily compound rate.</p></div>
+            <div><h4>Drawdown</h4><code>D<sub>t</sub> = V<sub>t</sub> / max(V<sub>0</sub>&hellip;V<sub>t</sub>) &minus; 1</code><p>Starting capital counts as the first peak, so an immediate loss registers.</p></div>
+            <div><h4>Scenarios</h4><code>5,000 paths &times; 1,260 sessions</code><p>Blocks of 20 completed net returns, the same block draws for every portfolio; costs are embedded in the history sampled.</p></div>
+          </div>
+          <p style="margin-top:16px">The data mart holds <code>securities</code>, <code>security_daily_analytics</code>, <code>portfolio_positions</code>, <code>portfolio_daily_summary</code> and <code>pipeline_runs</code>. The analysis queries use CTEs, <code>ROW_NUMBER</code> for month-end NAV, <code>LAG</code> for compounded returns and <code>DENSE_RANK</code> for volatility ranking.</p>
+        </div>
+      </details>
+    </section>
 
+    <section id="production" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">07</div>
+        <div>
+          <p class="eyebrow">Research to production</p>
+          <h2>A contract between a researcher's rule and running software</h2>
+          <p class="lede">Each construction method is a function from a context to a weight vector, registered with metadata. The API advertises the registry, the interface builds its menu from it, and the walk-forward loop calls the same contract, so a new method inherits every mandate limit and check without knowing they exist.</p>
+        </div>
+      </div>
+      <div class="evidence" style="margin-top:32px">
+        <div class="ecard"><p class="eyebrow">Conformance gate</p><h3>Fifteen checks on every method</h3><p>Valid weights, respected constraints, repeatable results, asset-order invariance, degenerate inputs and a solve-time budget. It runs in CI and fails the build; tests feed it deliberately broken methods to prove it rejects them.</p><span class="stat">12 of 12 registered methods pass</span></div>
+        <div class="ecard"><p class="eyebrow">What the gate caught</p><h3>Defects with investment consequences</h3><p>A maximum-Sharpe solver that blew its 750 ms budget with redundant restarts, mandate parameters leaking between objectives, and a ratio transform whose answer changed with the units of the returns.</p><span class="stat">Each now covered by a regression test</span></div>
+        <div class="ecard"><p class="eyebrow">Provenance</p><h3>Every result has a run record</h3><p>An identifier built from the request, the price data and the source code, with library versions. Two results are the same only if their records match, not because their links do.</p><span class="stat">Checksummed inputs &middot; <a href="/investment-analytics/output/run_manifest.json">run manifest</a></span></div>
+        <div class="ecard"><p class="eyebrow">Operations</p><h3>Honest failure modes</h3><p>Runs report progress, reuse cached results that match exactly, and surface data-source failures rather than silently substituting frozen prices. Solver status and constraint duals are reported, so infeasible is never shown as optimal.</p><span class="stat">Deployed on Render &middot; offline single-file demo</span></div>
+      </div>
+    </section>
 
-def test_shared_scenarios_preserve_identical_returns_and_initial_loss():
-    dates = pd.bdate_range(&#x27;2020-01-01&#x27;, periods=31)
-    daily = pd.concat([pd.DataFrame({&#x27;date&#x27;: dates, &#x27;portfolio_id&#x27;: name,
-        &#x27;nav&#x27;: capital * .99 ** np.arange(31), &#x27;net_return&#x27;: [0.] + [-.01] * 30})
-        for name, capital in [(&#x27;Balanced&#x27;, 100), (&#x27;Benchmark&#x27;, 200)]])
-    config = dict(seed=4, initial_capital=100000, simulation_years=1, simulation_paths=100, bootstrap_block_days=5, trading_days=10)
-    bands, summary = forward_scenarios(daily, config)
-    a = bands[bands.portfolio_id == &#x27;Balanced&#x27;][&#x27;median&#x27;].to_numpy()
-    b = bands[bands.portfolio_id == &#x27;Benchmark&#x27;][&#x27;median&#x27;].to_numpy()
-    np.testing.assert_allclose(b, a)
-    assert (summary.start_value == 100000).all()
-    np.testing.assert_allclose(summary.median_max_drawdown, .99 ** 10 - 1)
-    assert (summary.probability_terminal_loss == 1).all()
+    <section id="trust" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">08</div>
+        <div>
+          <p class="eyebrow">Validation</p>
+          <h2>Tests aimed at the errors that would change the conclusion</h2>
+        </div>
+      </div>
+      <ul class="controls" style="margin-top:28px">
+        <li>Each day's return is earned by the weights held at the previous close</li>
+        <li>Low-volatility weights come from the first 252 sessions only; rewriting later prices leaves them unchanged</li>
+        <li>Rewriting the final month of prices leaves every earlier optimized weight unchanged</li>
+        <li>Scenarios start after the last completed backtest date and sample only completed returns</li>
+        <li>Positions reconcile to NAV before the data mart is published</li>
+        <li>Paired scenario differences are tested against subtracting separate percentiles</li>
+        <li>Three independent implementations of two optimizers agree, including a MATLAB cross-check under Octave</li>
+        <li>A 10% loss then a 10% gain compounds to a 1% loss; costs reduce final value</li>
+      </ul>
+      <div class="readout"><b>What the tests cannot remove.</b> The eight stocks and the four policies were chosen with hindsight, so results carry selection and survivorship bias even with correctly timed weights. Adjusted prices are today's snapshot, not a point-in-time archive, and the constant risk-free rate and flat costs are simplifications. 178 automated tests across the research pipeline and the application run in GitHub Actions with the conformance gate, the MATLAB cross-check, a synthetic pipeline run and the demo build.</div>
+    </section>
 
+    <section id="next" style="padding:80px 0 0">
+      <div class="sechead">
+        <div class="secnum">09</div>
+        <div>
+          <p class="eyebrow">Next research iteration</p>
+          <h2>Test the downside harder before trusting the upside</h2>
+          <p class="lede">Rerun the scenarios under explicit adverse regimes and other historical windows, add a trading calendar and coverage audit, scale the market-impact model by average daily volume, replace the cardinality heuristic with a mixed-integer program, and use point-in-time universes once membership and delisting data are available. If an allocation only looks attractive under one set of assumptions, that dependence belongs in the decision.</p>
+          <p class="links"><a href="/investment-analytics/output/report.html">Interactive report</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/notebook.html">Executed notebook</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/portfolio_summary.csv">Performance CSV</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/construction-comparison.csv">Construction CSV</a> &nbsp;&middot;&nbsp; <a href="/investment-analytics/output/scenario_downside.csv">Scenario downside CSV</a> &nbsp;&middot;&nbsp; <a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl/blob/main/docs/OPTIMIZATION.md" target="_blank" rel="noreferrer">Optimization methods</a></p>
+        </div>
+      </div>
+    </section>
 
-def test_paired_tail_is_not_difference_of_marginal_tails():
-    left = np.array([0., 10., 20., 100.])
-    right = left[::-1]
-    result = paired_outcomes(left, right)
-    assert result[&#x27;probability_underperformance&#x27;] == .5
-    assert result[&#x27;difference_p05&#x27;] == pytest.approx(-86.5)
-    assert np.quantile(left, .05) - np.quantile(right, .05) == 0
+    <section style="padding:80px 0 0">
+      <div class="skills">
+        <div class="skill"><h3>Portfolio construction</h3><p>Fixed-target and inverse-volatility policies, walk-forward convex optimization with mandates, shrinkage and factor risk models, cost-aware rebalancing.</p><div class="chips"><span>cvxpy</span><span>Ledoit-Wolf</span><span>Risk parity</span></div></div>
+        <div class="skill"><h3>Risk &amp; simulation</h3><p>Drawdown analysis, block-bootstrap scenarios shared across portfolios, paired comparisons, sampling sensitivity and percentile intervals.</p><div class="chips"><span>NumPy</span><span>Bootstrap</span><span>Drawdowns</span></div></div>
+        <div class="skill"><h3>Data engineering</h3><p>Validated ETL with checksums, an atomically published SQLite mart, reconciliation, run provenance, a strategy contract with a CI conformance gate.</p><div class="chips"><span>SQL</span><span>pytest</span><span>GitHub Actions</span></div></div>
+      </div>
+    </section>
 
-
-def test_risk_review_reconciles_tail_losses_to_constant_loss_paths():
-    dates = pd.bdate_range(&#x27;2020-01-01&#x27;, periods=31)
-    daily = pd.concat([pd.DataFrame({&#x27;date&#x27;: dates, &#x27;portfolio_id&#x27;: name,
-        &#x27;nav&#x27;: 100000 * .99 ** np.arange(31), &#x27;net_return&#x27;: [0.] + [-.01] * 30})
-        for name in [&#x27;Growth&#x27;, &#x27;Balanced&#x27;]])
-    config = dict(seed=42, initial_capital=100000, simulation_years=1,
-                  simulation_paths=100, bootstrap_block_days=5, trading_days=10)
-    downside, sensitivity, paired = risk_review(daily, config)
-    np.testing.assert_allclose(downside.worst5_mean, 100000 * .99 ** 10)
-    assert (downside.terminal_loss_count == 100).all()
-    assert (downside.probability_terminal_loss == 1).all()
-    assert (downside.probability_ever_below_80pct == 0).all()
-    assert (paired.difference_p05 == 0).all()
-    assert (paired.probability_underperformance == 0).all()
-
-
-def test_forecast_label_and_features_use_correct_dates():
-    dates = pd.bdate_range(&quot;2020-01-01&quot;, periods=120)
-    r = pd.Series(np.sin(np.arange(120)) * 0.01, index=dates)
-    group = pd.DataFrame({&quot;date&quot;: dates, &quot;net_return&quot;: r.values})
-    frame = feature_frame(group, r, pd.Series(1000, index=dates), 20)
-    t = frame.index[10]
-    i = dates.get_loc(t)
-    assert frame.loc[t, &quot;target&quot;] == pytest.approx(r.iloc[i + 1:i + 21].std() * np.sqrt(252))
-    altered = group.copy()
-    altered.loc[altered.date &gt; t, &quot;net_return&quot;] = 0.2
-    after = feature_frame(altered, r, pd.Series(1000, index=dates), 20)
-    np.testing.assert_allclose(frame.loc[t, FEATURES].astype(float), after.loc[t, FEATURES].astype(float))
-
-
-def test_atomic_load_preserves_previous_database(tmp_path):
-    with sqlite3.connect(tmp_path / &quot;investment_analytics.db&quot;) as conn:
-        conn.execute(&quot;CREATE TABLE original (value INTEGER)&quot;)
-        conn.execute(&quot;INSERT INTO original VALUES (7)&quot;)
-    with pytest.raises(sqlite3.Error):
-        load_mart(tmp_path, {&quot;new_table&quot;: pd.DataFrame({&quot;x&quot;: [1]})}, &quot;INVALID SQL;&quot;)
-    with sqlite3.connect(tmp_path / &quot;investment_analytics.db&quot;) as conn:
-        assert conn.execute(&quot;SELECT value FROM original&quot;).fetchone()[0] == 7
-</code></pre></details><details><summary>Research configuration</summary><pre><code>{
-  &quot;start&quot;: &quot;2018-01-01&quot;,
-  &quot;end&quot;: &quot;2026-09-01&quot;,
-  &quot;benchmark&quot;: &quot;XIC.TO&quot;,
-  &quot;initial_capital&quot;: 100000,
-  &quot;risk_free_rate&quot;: 0.03,
-  &quot;transaction_cost_bps&quot;: 10,
-  &quot;warmup_days&quot;: 252,
-  &quot;forecast_days&quot;: 20,
-  &quot;test_fraction&quot;: 0.2,
-  &quot;simulation_years&quot;: 5,
-  &quot;simulation_paths&quot;: 5000,
-  &quot;bootstrap_block_days&quot;: 20,
-  &quot;trading_days&quot;: 252,
-  &quot;seed&quot;: 42
-}</code></pre></details><p><a href="/investment-analytics/output/run_manifest.json">Inspect run provenance and checksums</a></p></section>
-<section class="section" id="findings"><p class="eyebrow">06 / Historical results</p><h2>Return and risk moved together, but not proportionally.</h2><p>The historical comparison measures how allocation rules changed returns, volatility and drawdowns after modeled trading costs. Every strategy begins with the same capital and is evaluated over the same dates.</p>
-<div class="columns"><ul class="findings"><li><strong>Growth: 27.80% annualized return, 48.72% maximum drawdown.</strong><p>A 65% technology target produced the highest historical return and volatility. The large peak-to-trough loss matters as much as the ending value.</p></li><li><strong>Balanced: the highest Sharpe of the original four, 0.97.</strong><p>Its 19.12% annualized return exceeded XIC's 16.22%, with similar volatility and a smaller maximum drawdown. This is an observed comparison, not evidence of persistent alpha.</p></li></ul><ul class="findings"><li><strong>Low volatility: 15.29% realized annualized volatility.</strong><p>The lowest among the four constructed portfolios, compared with 16.37% for XIC. Inverse-volatility weighting is a heuristic; it does not solve for minimum portfolio variance.</p></li><li><strong>One comparison, several objectives.</strong><p>Growth leads on historical return; Balanced leads on sample Sharpe; Low Volatility has the smallest realized volatility among the constructed portfolios. Each measure answers a different investment question.</p></li></ul></div>
-<div class="table-wrap" tabindex="0" role="region" aria-label="Portfolio performance comparison"><table><thead><tr><th scope="col">Portfolio</th><th scope="col">Cumulative return</th><th scope="col">Annualized return</th><th scope="col">Volatility</th><th scope="col">Sharpe</th><th scope="col">Max drawdown</th><th scope="col">Trading costs</th></tr></thead><tbody><tr><td>Balanced</td><td>279.82%</td><td>19.12%</td><td>16.29%</td><td>0.97</td><td>-28.73%</td><td>$776.61</td></tr><tr><td>XIC benchmark</td><td>214.75%</td><td>16.22%</td><td>16.37%</td><td>0.82</td><td>-37.21%</td><td>$0.00</td></tr><tr><td>Growth</td><td>549.20%</td><td>27.80%</td><td>28.60%</td><td>0.90</td><td>-48.72%</td><td>$1,856.88</td></tr><tr><td>Income</td><td>212.94%</td><td>16.13%</td><td>16.06%</td><td>0.83</td><td>-33.06%</td><td>$395.51</td></tr><tr><td>Low volatility</td><td>243.59%</td><td>17.57%</td><td>15.29%</td><td>0.94</td><td>-29.71%</td><td>$573.68</td></tr></tbody></table></div>
-<figure><img src="/investment-analytics/performance.png" alt="Portfolio value and drawdown histories for four Canadian equity portfolios and XIC"><figcaption>Actual saved research output. Cumulative performance includes modeled rebalancing costs. Drawdown measures loss from the previous portfolio peak.</figcaption></figure>
-<p><a href="/investment-analytics/output/portfolio_summary.csv">Download the complete performance metrics</a></p></section>
-<section class="section" id="optimization"><p class="eyebrow">07 / Portfolio construction</p>
-<h2>Optimized weights, judged out of sample.</h2>
-<p>Beyond fixed allocations, Strata solves for weights at each rebalance using a trailing return window. The resulting weights earn only subsequent returns. Twelve registered methodologies include minimum variance, risk parity, maximum diversification and maximum Sharpe, with both the original implementations and newer convex formulations available for comparison.</p>
-<p>The convex layer uses cvxpy to solve supported objectives and mandates, reporting solver status and constraint dual values. A valid convex formulation can establish a global solution within numerical tolerances; that is not a guarantee of future investment performance. Unsupported combinations, numerical failures and infeasible mandates must be distinguished from successful solutions.</p>
-<p>Risk estimates can use sample covariance, Ledoit-Wolf shrinkage or a statistical factor model. The factor count follows the Marchenko-Pastur noise edge rather than a manually tuned count. Its factor representation reduces the size of the risk calculation for larger universes.</p>
-<p>Supported mandates include position caps, sector and country limits, turnover budgets and tracking-error ceilings. Cost-aware methods can include spread and convex market-impact terms. Which constraints a method supports is part of its contract, not a promise that every combination works with every objective.</p>
-<p class="meta">Same eight securities; 3 January 2019 to 31 August 2026. CAD 100,000 each, monthly rebalancing, 10 bps on traded notional and a 35% optimizer cap. Optimizers use 252 trailing sessions and Ledoit-Wolf covariance. Turnover counts purchases and sales, divided by elapsed trading years.</p>
-<div class="table-wrap" tabindex="0" role="region" aria-label="Walk-forward construction comparison"><table>
-<caption>Walk-forward construction comparison</caption>
-<thead><tr><th scope="col">Construction rule</th><th scope="col">Annualized return</th><th scope="col">Volatility</th><th scope="col">Sharpe</th><th scope="col">Turnover a year</th><th scope="col">Costs paid</th></tr></thead>
-<tbody><tr><td>Minimum variance</td><td>14.89%</td><td>15.23%</td><td>0.79</td><td>1.40</td><td>$1,698</td></tr><tr><td>Risk parity</td><td>18.14%</td><td>15.21%</td><td>0.98</td><td>0.55</td><td>$826</td></tr><tr><td>Equal weight</td><td>20.21%</td><td>16.93%</td><td>1.00</td><td>0.51</td><td>$886</td></tr><tr><td>XIC benchmark</td><td>16.22%</td><td>16.37%</td><td>0.82</td><td>0.00</td><td>$0</td></tr></tbody></table></div>
-<p class="meta">This reproducible comparison uses the original registered <code>minimum_variance</code> and <code>risk_parity</code> methods, not their separately registered convex variants. Equal weight resets to 12.5% per security; XIC is held without rebalancing. The initial calibration period is excluded for every rule.</p>
-<div class="note"><p><strong>Minimum variance lost to equal weighting on Sharpe.</strong> In this selected sample, minimum variance earned a 0.79 Sharpe ratio versus 1.00 for equal weighting, with about 2.7 times its turnover. It did achieve lower realized volatility, consistent with its objective. A mathematically optimal allocation under estimated inputs is not necessarily the best realized investment.</p><p>This is consistent with the estimation-error concern studied by <a href="https://doi.org/10.1093/rfs/hhm075">DeMiguel, Garlappi and Uppal (2009)</a>, not a replication of their study or proof that estimation error alone caused this result. Objectives, constraints, costs and the selected sample also matter. The system surfaces the comparison rather than assuming a more sophisticated method must win.</p></div>
-<figure><img src="/investment-analytics/efficient-frontier.png" alt="Strata frontier diagnostic with a dashed in-sample curve and realized portfolio results"><figcaption>The app's frontier diagnostic: the dashed curve is fitted to the full window and was not available to earlier decisions. Portfolio dots show realized results. The curve uses arithmetic mean returns and estimated covariance; the portfolio dots use compound returns and realized volatility after costs. Their visual gap is illustrative, not a measured cost of estimation error or a like-for-like performance advantage.</figcaption></figure>
-<p><a href="/investment-analytics/output/construction-comparison.csv">Download construction metrics</a> · <a href="/investment-analytics/output/construction-run.json">Inspect the request and run record</a> · <a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl/blob/main/docs/OPTIMIZATION.md">Read the optimization methods</a></p>
-</section>
-<section class="section" id="production"><p class="eyebrow">08 / Research to production</p>
-<h2>A contract between a researcher's rule and running software.</h2>
-<p>A construction rule starts as a description of what to solve. Turning it into dependable software means defining the inputs it may see, the weights it must return and the checks that detect a broken change.</p>
-<p>Each methodology is a function from a context to a weight vector, registered with metadata. The API advertises that registry, the interface builds its menu from it and the walk-forward loop uses the same contract. New methods therefore reuse the existing execution and validation workflow.</p>
-<p>The conformance gate applies fifteen checks to every registered method: valid weights, respected constraints, repeatable results, asset-order invariance, degenerate inputs and a solve-time budget. It runs in GitHub Actions and fails the build when a required check fails. Tests deliberately supply broken methodologies to verify that the gate rejects them. All twelve registered methods currently pass.</p>
-<div class="note"><p><strong>What the gate caught:</strong> the documented initial maximum-Sharpe implementation exceeded its 750 ms solve-time budget by using redundant restarts on convex subproblems. Later checks caught mandate parameters leaking between objectives and a ratio transform whose answer changed when returns were expressed in different units. These are software defects with investment consequences, not just presentation issues.</p></div>
-<p>Every result carries a run identifier based on the request, price data and source code, with library versions recorded alongside it. These records help reviewers establish whether they used the same inputs and implementation. Saved study links are convenient starting points; the run record is the evidence to compare before treating two results as identical.</p>
-<p>The deployed application reports progress, caches matching results and reports data-source failures without silently substituting frozen prices. Yahoo throttling, cold starts and the unauthenticated public endpoint remain operational limitations.</p>
-<p>The construction layer is the clearest example of this contract. A researcher supplies an objective; the desk owns the mandate; the risk model is a choice both depend on. Keeping those three separable is what lets a new methodology inherit every limit the book already runs under without knowing they exist, and what lets the same gate apply to work nobody has seen yet.</p>
-<p><a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl/blob/main/docs/ADDING_A_METHODOLOGY.md">Read the strategy contract and conformance checks</a> · <a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl/actions">Inspect GitHub Actions</a></p>
-</section>
-
-<section class="section" id="scenarios"><p class="eyebrow">09 / Five-year scenarios</p><h2>How do the strategies compare with $100,000 each?</h2><p>Invest the same CAD 100,000 in each portfolio and XIC on 31 August 2026, then compare five modeled years through 31 August 2031. Each strategy receives the same starting capital, horizon and sampled market periods. The historical backtest also began with equal capital in 2019; this forward comparison starts a fresh, equal investment.</p>
-<figure><a href="/investment-analytics/output/forward_indexed.png" title="Open full-size strategy comparison"><img src="/investment-analytics/output/forward_indexed.png" alt="Five portfolio scenario medians all starting at CAD 100,000 in August 2026"></a><figcaption>Every line starts at $100,000. Dashed lines show conditional scenario medians. A value of $200,000 means a 100% cumulative gain. Colors match the historical chart.</figcaption></figure>
-<div class="table-wrap" tabindex="0" role="region" aria-label="Equal-capital five-year scenario summary"><table><caption>Equal CAD 100,000 investments. Loss means finishing below $100,000; maximum drawdown measures the largest percentage fall from a prior peak along each path, including the initial investment.</caption><thead><tr><th>Portfolio</th><th>Starting CAD</th><th>5th percentile</th><th>Median CAD</th><th>95th percentile</th><th>Median growth</th><th>Loss frequency</th><th>Median max drawdown</th></tr></thead><tbody><tr><td>Balanced</td><td>$100,000</td><td>$131,665</td><td>$235,938</td><td>$394,953</td><td>135.9%</td><td>0.7%</td><td>-20.3%</td></tr><tr><td>Benchmark</td><td>$100,000</td><td>$106,182</td><td>$213,678</td><td>$360,350</td><td>113.7%</td><td>3.9%</td><td>-24.2%</td></tr><tr><td>Growth</td><td>$100,000</td><td>$114,708</td><td>$329,002</td><td>$872,362</td><td>229.0%</td><td>3.1%</td><td>-33.5%</td></tr><tr><td>Income</td><td>$100,000</td><td>$119,698</td><td>$211,349</td><td>$341,758</td><td>111.3%</td><td>1.6%</td><td>-22.1%</td></tr><tr><td>Low volatility</td><td>$100,000</td><td>$129,046</td><td>$222,660</td><td>$355,250</td><td>122.7%</td><td>0.8%</td><td>-19.4%</td></tr></tbody></table></div>
-<p>Assess each allocation using both growth and downside. A higher median identifies stronger growth under these sampling assumptions; the lower percentile, loss frequency and drawdown describe the accompanying risk. Equal capital makes the comparison fair, but does not establish a universally best strategy or validate future returns.</p>
-<p>The live Python application also reports 95% sampling intervals for estimated percentiles using binomial order statistics. These measure finite-simulation error, not uncertainty about future markets or model accuracy. More paths generally improve precision, but no universal ±1% error applies. The frozen research charts below predate these additional intervals; their shaded ranges describe simulated outcomes instead.</p>
-<section id="scenario-risk">
-<h3>How much could the investment lose?</h3>
-<p>The 5th percentile is a cutoff: 5% of simulated ending balances fall below it. The chart also shows the 1st percentile and the average of the worst 5% of outcomes. Values left of the CAD 100,000 line represent losses of principal.</p>
-<figure><a href="/investment-analytics/output/scenario_downside.png" title="Open full-size downside chart"><img src="/investment-analytics/output/scenario_downside.png" alt="Adverse five-year ending balances compared with the initial CAD 100,000 investment"></a><figcaption>All portfolios share the same dollar scale so their adverse outcomes can be compared directly.</figcaption></figure>
-<h3>Growth versus Balanced in the same market scenarios</h3>
-<p>Growth finishes behind Balanced in 19.3% of shared simulated market paths. At the 5th percentile of the Growth-minus-Balanced difference, Growth finishes $50,893 behind; 5% of differences are worse. This compares both strategies under the same market sequence. Subtracting their separate 5th percentiles would not give this result.</p>
-<h3>What can happen before year five?</h3>
-<figure><a href="/investment-analytics/output/scenario_drawdowns.png" title="Open full-size drawdown chart"><img src="/investment-analytics/output/scenario_drawdowns.png" alt="Median and severe simulated maximum drawdown for each portfolio"></a><figcaption>Each path's largest fall from a prior peak, including the initial balance. A peak can be above starting capital. Larger bars mean deeper losses.</figcaption></figure>
-<div class="note"><p><strong>How sensitive are the results?</strong> Across the tested sampling methods, Growth retains a higher median ending value than Balanced. However, using longer consecutive blocks of historical returns pushes Growth's 5th-percentile ending value below the initial $100,000 and roughly doubles its simulated frequency of finishing at a loss. The size of the downside depends on how history is sampled; these scenarios have not been validated as future probabilities.</p></div>
-<p><a href="/investment-analytics/output/scenario_downside.csv">Download detailed downside metrics</a> · <a href="/investment-analytics/output/scenario_paired.csv">Download paired comparisons</a> · <a href="/investment-analytics/output/scenario_sensitivity.csv">Download sampling sensitivity</a></p>
-</section>
-
-<details><summary>Full percentile ranges around the medians</summary>
-<figure><a href="/investment-analytics/output/forward_ranges.png" title="Open full-size uncertainty charts"><img src="/investment-analytics/output/forward_ranges.png" alt="Portfolio uncertainty on identical CAD scales, each beginning at 100,000 dollars"></a><figcaption>Dark shading: 25th-75th percentiles. Light shading: 5th-95th percentiles at each date. All panels start at $100,000 and share the same dollar scale. These are conditional simulated ranges, not guaranteed bounds or validated confidence intervals.</figcaption></figure></details>
-<details><summary>Historical wealth continuation: 2019-2031</summary><p>This secondary view continues each portfolio's accumulated historical balance into the same scenarios. Balances differ at August 2026 because past performance differed. Use the equal-$100,000 comparison above to assess a fresh investment.</p><figure><a href="/investment-analytics/output/forward_scenarios.png" title="Open full-size historical continuation"><img src="/investment-analytics/output/forward_scenarios.png" alt="Historical portfolio wealth joined to five-year scenarios, with unequal balances at August 2026"></a><figcaption>Solid lines: historical backtest. Dashed lines: scenario medians rescaled to each final historical balance. Pointwise medians summarize many paths and are not individual investable paths.</figcaption></figure></details>
-<h3>How the scenarios are calculated</h3><p>Python and NumPy resample complete 20-session blocks from aligned historical net portfolio returns, using the same block selections for all four portfolios and XIC. Each of 5,000 paths compounds 1,260 modeled returns from CAD 100,000. The table, downloadable CSVs and SQL mart share this equal-capital basis. The secondary continuation multiplies each path by its final historical NAV divided by $100,000. Time coordinates span exactly five calendar years; they are not an exchange trading calendar. Historical rebalancing costs are embedded in the sampled returns, rather than recalculated as future trades.</p>
-<div class="note"><p><strong>What this result supports:</strong> a comparison under a historical-repeat assumption. The sample contains unusually strong equity growth, so large median values and low loss frequencies must not be treated as reliable forecasts. Resampling changes the sequence; it does not independently estimate future expected returns. Unseen crises, changing valuations, parameter uncertainty, inflation and taxes are not modeled. There is no claim that these five-year ranges have been validated out of sample.</p></div>
-<p><a href="/investment-analytics/output/report.html#forward_scenarios">Explore interactive comparisons</a> · <a href="/investment-analytics/output/forward_projection_summary.csv">Download scenario metrics</a> · <a href="/investment-analytics/output/forward_projection_bands.csv">Download percentile bands</a></p></section>
-<section class="section" id="limitations"><p class="eyebrow">10 / Limitations</p><h2>What the evidence establishes, and what remains open.</h2><p>The system demonstrates portfolio accounting, reproducible ETL, relational reporting, walk-forward construction and scenario analysis. The reported return and risk differences apply to this selected historical sample.</p><div class="columns"><div><h3>Current limitations</h3><ul><li>Today's selected stock universe introduces survivorship and selection bias.</li><li>Adjusted history can be revised; it is not institutional point-in-time data.</li><li>Sector exposures differ materially from the benchmark.</li><li>No FX, taxes, delisted securities or explicit dividend cash ledger.</li><li>The published study uses a constant risk-free rate and flat transaction costs.</li><li>The statistical factors are principal components, not named fundamental value or momentum exposures.</li><li>Cardinality uses a documented two-pass heuristic, not a mixed-integer program.</li><li>Portfolios are long-only and fully invested, without leverage or shorting.</li><li>The optional market-impact model has no average-daily-volume input to calibrate its scale.</li><li>Shared missing dates need an exchange calendar to detect.</li><li>Database publication is atomic; CSV and HTML exports are not a single transaction.</li></ul></div><div><h3>Priorities for the next research iteration</h3><ol><li>Add a trading calendar and stronger data-coverage auditing.</li><li>Extend the mandate with mixed-integer cardinality and an average-daily-volume-scaled impact model.</li><li>Test scenarios under explicit adverse regimes and alternative historical sampling windows.</li><li>Assess five-year scenario calibration as independent outcome data becomes available.</li><li>Introduce point-in-time universes with suitable historical membership and delisting data; these are not available in the current inputs.</li></ol></div></div>
-<p>Python, pandas, NumPy, SQLite, Plotly, matplotlib and Jupyter support the portfolio analysis presented here. Portfolio optimization is implemented here: convex programs solved with cvxpy, statistical factor risk models, and an independent MATLAB cross-check of the two optimizers that translate exactly. My <a href="/Project-Quant-Portfolio.dc.html">ETF portfolio research project</a> runs the same class of optimizer on a different, less correlated universe and reaches the opposite conclusion about whether optimizing helps.</p></section>
-<section class="section" id="takeaways"><p class="eyebrow">11 / Lessons &amp; quant role</p><h2>What did we solve, and how can the results inform portfolio choices?</h2>
-<p>We turned a broad investment question into a repeatable comparison: given the same starting capital, how do different allocation rules change growth, volatility and losses? The pipeline produces evidence that an investment team can inspect before choosing an allocation or changing its risk limits.</p>
-<h3>Decision support and trust</h3>
-<p>Clients and stakeholders entrust investment teams with substantial capital. Whether performance is positive or negative, they need to understand what changed, where the gains or losses occurred, and the evidence behind the team's explanation. Unexplained results can weaken confidence even when returns are strong.</p>
-<p>This project supports that accountability through validated inputs, explicit allocation rules, transaction-cost accounting, historical drawdowns, and reproducible scenario analysis. These records let a reviewer trace reported results back to the data, assumptions, and calculations, inspect portfolio exposures, and investigate unexpected outcomes.</p>
-<p>For investment teams responsible for millions or billions, that transparency helps clients and stakeholders challenge assumptions and understand the risks being taken. A quantitative developer contributes to this trust by building calculations that can be checked, preserving the evidence behind results, and communicating model limitations clearly. The pipeline provides a foundation for that investigation; explaining precisely how much each holding or sector contributed would require a dedicated performance-attribution analysis.</p>
-<div class="columns"><div><h3>1. What the portfolio comparison taught us</h3><p>Growth delivered the highest historical return and the highest median outcome under the current scenario assumptions. Its technology concentration also exposed it to much deeper losses. Among the original four policies, Balanced had the highest historical Sharpe ratio, meaning it earned the most excess return per unit of volatility in this sample. Low Volatility achieved the lowest historical volatility among the four portfolios, although it still holds equities and can lose capital.</p><p>Income shows why portfolio names need to be tested against actual holdings and results: emphasizing banks, utilities and energy does not guarantee lower risk or a better total return. This study uses adjusted prices to approximate reinvested dividends; a separate cash-distribution analysis would be needed to judge whether it meets a spending-income objective.</p></div>
-<div><h3>2. How the future scenarios help a decision</h3><p>The five-year model asks what could happen if blocks of past returns occurred again in different sequences. With equal investments and shared sampled market periods, we can compare ending wealth, losses of principal and the largest falls along each path.</p><p>Growth's median maximum drawdown is 33.5%, versus 20.3% for Balanced. Growth falls more than 20% below the initial investment in 24.2% of paths, versus 8.8% for Balanced. Growth also finishes behind Balanced in 19.3% of matched paths. At the 5th percentile of the Growth-minus-Balanced difference, Growth finishes $50,893 behind; 5% of differences are worse. These are frequencies within the simulation, conditional on its assumptions.</p></div>
-<div><h3>3. How an investment team could use the evidence</h3><p>First define the objective: long-term growth, steadier performance, cash income or performance relative to XIC. Then specify the investment horizon, withdrawal needs, acceptable losses and sector limits. Compare the portfolios against those requirements using both historical results and simulated downside.</p><p>For example, if technology concentration or the potential interim losses are unacceptable, the team could test a lower technology weight and rerun the analysis to measure the change in return and risk. The revised allocation would need its own validation. A high historical return alone does not establish that a portfolio meets the objective.</p></div>
-<div><h3>4. What we learned about the model itself</h3><p>The historical sample strongly influences the projected outcomes. Repeating a period of unusually strong equity growth can produce optimistic five-year medians. The model helps identify tradeoffs and assumptions to challenge; it does not establish which portfolio will win over the next five years.</p><p>A useful next step is to rerun the scenarios with different historical windows and explicit adverse assumptions. If an allocation looks attractive only under one set of assumptions, that dependence should inform the investment decision.</p></div></div>
-<h3>How this connects to a quantitative developer role</h3><p>The construction layer separates the researcher's objective, the desk's mandate and the risk model. That separation lets supported methods reuse constraints and face the same conformance gate. A new idea must satisfy the software contract before its investment results are interpreted.</p><p>The quantitative developer's contribution is to make an investment idea measurable and repeatable. Here, that means using Python and pandas to validate financial data, implementing return, cost and risk calculations, using SQL to organize and reconcile results, and applying statistical methods to scenario distributions and downside comparisons.</p><p>The engineering controls matter to the investment conclusion: previous-close weights prevent today's return from influencing the allocation that earns it; initial-window calibration prevents future prices from changing the starting Low Volatility weights; reconciliation and automated tests catch accounting errors. Documenting the remaining selection bias and scenario assumptions makes the limits of the evidence visible.</p><p>This gives researchers and portfolio managers a practical workflow: propose an allocation, run a consistent comparison, inspect the risk and assumptions, and validate changes before relying on them. The project demonstrates how financial mathematics, statistical judgment and software engineering work together to support portfolio decisions.</p></section>
-<section class="section" id="evidence"><p class="eyebrow">12 / Explore the evidence</p><h2>Read the results alongside the implementation.</h2><div class="actions"><a class="primary" href="/investment-analytics/output/report.html">Interactive report</a><a href="/investment-analytics/output/notebook.html">Executed notebook</a><a href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">View source on GitHub</a><a href="/investment-analytics/notebooks/portfolio_exploration.ipynb" download>Download notebook</a></div><p>The repository contains the frozen inputs, pipeline modules, SQL views, tests, configuration, workflow, notebook, and generated report. CSVs expose the underlying portfolio metrics, target weights, scenario percentiles and downside comparisons for independent review.</p></section>
-</main><footer><a href="/#projects">Back to all projects</a><span>Nathan Gomes · Investment research &amp; data engineering</span></footer></div></body></html>
+    <section style="padding:88px 0 96px;margin-top:80px;border-top:1px solid #e6e2db;text-align:center">
+      <p class="eyebrow">Try it</p>
+      <h2 style="margin:16px auto 16px;max-width:22ch;font-size:clamp(28px,3.6vw,40px);line-height:1.1;letter-spacing:-0.02em">Build a portfolio and see where five years could land</h2>
+      <p style="max-width:56ch;margin:0 auto;color:var(--body);font-size:17px;line-height:1.6">The free instance may take a minute to wake up; the browser demo runs instantly on nine frozen securities. Scenarios are simulations, not predictions, and nothing here is investment advice.</p>
+      <div class="btnrow" style="justify-content:center">
+        <a class="btn btn-primary" href="https://nathan-portfolio-lab.onrender.com/" target="_blank" rel="noreferrer">Launch Strata</a>
+        <a class="btn btn-ghost" href="/strata-demo.html">Browser demo</a>
+        <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/quant-investment-analytics-etl" target="_blank" rel="noreferrer">Source on GitHub</a>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="wrap">
+  <footer style="display:flex;justify-content:space-between;gap:24px;padding:26px 0;border-top:1px solid #e6e2db;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#686c71">
+    <span>Strata &middot; Nathan Gomes</span><a href="/#projects" style="color:#686c71;text-decoration:none">All projects</a>
+  </footer>
+</div>
+</body>
+</html>
