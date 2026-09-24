@@ -662,23 +662,157 @@ table.data .scroll { overflow-x: auto; }
   .assumptions { columns: 1; }
 }
 
+/* ======================================================================
+   Workstation layer. The rail is the app's sidebar: brand, setup, and a
+   pinned Run action. Results live in tabbed views under a compact top bar.
+   Surfaces and type follow the calmer AlphaCast system; Strata keeps its
+   cyan-violet identity on the wordmark and primary accents.
+   ====================================================================== */
+:root {
+  --page: #0b0f14;
+  --panel: #11171e;
+  --panel-sunken: #161e27;
+  --ink: #e8eef3;
+  --ink-muted: #aab6c1;
+  --ink-faint: #7a8793;
+  --rule: #222d39;
+  --rule-strong: #2f3c4a;
+  --accent-soft: rgba(53, 182, 245, 0.12);
+  --display: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --condensed: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --radius: 8px;
+  --rail: 340px;
+  --gap: 16px;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --page: #f5f6f4; --panel: #ffffff; --panel-sunken: #f8f9f7;
+    --ink: #111820; --ink-muted: #47525c; --ink-faint: #6c7680;
+    --rule: #e2e5e1; --rule-strong: #cfd4ce; --accent-soft: rgba(17, 112, 184, 0.09);
+  }
+}
+:root[data-theme="light"] {
+  --page: #f5f6f4; --panel: #ffffff; --panel-sunken: #f8f9f7;
+  --ink: #111820; --ink-muted: #47525c; --ink-faint: #6c7680;
+  --rule: #e2e5e1; --rule-strong: #cfd4ce; --accent-soft: rgba(17, 112, 184, 0.09);
+}
+
+html, body { font-size: 14px; }
+h1, h2, h3, h4 { letter-spacing: 0; }
+.skip-link { position: absolute; left: -999px; top: 8px; z-index: 60; background: var(--panel); padding: 8px 12px; border-radius: 6px; }
+.skip-link:focus { left: 8px; }
+
+.shell { grid-template-columns: var(--rail) minmax(0, 1fr); min-height: 100vh; align-items: stretch; }
+.rail {
+  top: 0; height: 100vh; max-height: 100vh; padding: 0;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.brand { display: flex; align-items: center; gap: 10px; padding: 16px 16px 14px; border-bottom: 1px solid var(--rule); }
+.brand svg { width: 30px; height: 30px; flex: none; }
+.brand svg rect { fill: var(--panel-sunken); stroke: var(--rule-strong); }
+.brand svg path { stroke-linejoin: round; }
+.brand svg path { stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; fill: none; }
+.brand .wordmark { font-size: 16px; letter-spacing: 0.3em; font-weight: 400; }
+.brand .wordmark-sub { display: block; margin: 1px 0 0; font-family: var(--sans); font-size: 11.5px; letter-spacing: 0; text-transform: none; color: var(--ink-faint); }
+.rail-scroll { flex: 1; overflow-y: auto; padding: 12px 12px 16px; scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }
+.rail-foot { padding: 12px; border-top: 1px solid var(--rule); background: var(--panel); }
+.rail-foot .run-row { grid-template-columns: 1fr; }
+.rail-foot #run-status:empty { display: none; }
+.rail-foot #run-status { margin-top: 8px; }
+.card { border-radius: var(--radius); background: var(--panel-sunken); }
+.button, .chip, .tab, .step, .field-grid input, .field-grid select, .holding input { border-radius: 6px; }
+.field-grid input, .field-grid select, .holding input { min-height: 32px; }
+.button.primary { border-radius: 6px; min-height: 40px; }
+
+.workspace { min-width: 0; display: flex; flex-direction: column; }
+.topbar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 10px 24px; min-height: 58px;
+  background: color-mix(in srgb, var(--page) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+.views { display: inline-flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--panel-sunken); border: 1px solid var(--rule); overflow-x: auto; }
+.views button { border: 0; background: none; padding: 6px 13px; border-radius: 6px; color: var(--ink-muted); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.views button:hover { color: var(--ink); }
+.views button[aria-pressed="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 0 0 1px var(--rule-strong); }
+.topbar .tools { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.icon-button { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--rule); background: var(--panel-sunken); color: var(--ink-muted); cursor: pointer; }
+.icon-button:hover { color: var(--ink); border-color: var(--rule-strong); }
+.icon-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.topbar .chip { padding: 6px 11px; }
+.mode { border-radius: 999px; font-family: var(--sans); font-size: 12px; padding: 4px 10px; }
+.context-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding: 9px 24px; border-bottom: 1px solid var(--rule); background: var(--panel); color: var(--ink-muted); font-size: 12.5px; }
+.context-bar:empty { display: none; }
+.context-bar b { color: var(--ink); font-weight: 500; }
+.context-bar .sep { width: 1px; height: 14px; background: var(--rule-strong); }
+.results { padding: 20px 24px 64px; outline: none; }
+
+/* Plates become panels: one surface, one header style, one spacing scale. */
+.plate { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); padding: 16px; margin-bottom: var(--gap); }
+.plate:first-of-type { border-top: 1px solid var(--rule); padding-top: 16px; }
+.plate > header { margin-bottom: 12px; gap: 6px 16px; }
+.plate > header h2 { font-size: 14px; font-weight: 600; }
+.plate > header .method { font-size: 12.5px; line-height: 1.5; }
+.hero { border-radius: 6px; background: var(--panel-sunken); }
+.chart { border-radius: 6px; }
+table.data th { font-family: var(--sans); font-size: 11.5px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink-faint); }
+table.data td { font-size: 13px; }
+
+.kpis {
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: var(--radius);
+  overflow: hidden; margin-bottom: var(--gap);
+}
+.kpi-head { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--panel); font-weight: 600; font-size: 13px; }
+.kpi-head .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.kpi-head .faint { margin-left: auto; font-weight: 400; font-size: 12px; }
+.kpi { background: var(--panel); padding: 12px 16px 14px; min-width: 0; }
+.kpi-label { color: var(--ink-faint); font-size: 12px; }
+.kpi-value { margin-top: 4px; font-size: 21px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kpi-sub { margin-top: 2px; color: var(--ink-muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.empty { display: grid; justify-items: center; text-align: center; gap: 8px; max-width: 520px; margin: 12vh auto 0; padding: 0; }
+.empty .spinner { margin-bottom: 6px; }
+.flag { border-radius: 6px; }
+
+@media (max-width: 1280px) { .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; height: auto; max-height: none; border-right: 0; border-bottom: 1px solid var(--rule); }
+  .rail-scroll { overflow: visible; }
+  .rail-foot { position: sticky; bottom: 0; z-index: 20; box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.25); }
+  .topbar { padding: 10px 16px; }
+  .topbar .tools { margin-left: 0; }
+  .context-bar { padding: 8px 16px; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+  .results { padding: 16px 16px 48px; }
+}
+@media (max-width: 560px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpi-head .faint { display: none; }
+  .kpi-value { font-size: 18px; }
+  .views { width: 100%; }
+}
+/* Scenario call-outs share the KPI tile language. */
+.callouts { border-radius: var(--radius); overflow: hidden; }
+.callout .k { font-family: var(--sans); font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--ink-faint); }
+.callout .v { font-family: var(--sans); font-size: 21px; font-weight: 600; }
+.callout .sub { font-size: 12px; line-height: 1.45; }
+.topbar .chip { white-space: nowrap; }
+@media (max-width: 560px) { .topbar .tools { width: 100%; } .topbar .tools .mode { flex: 1; overflow: hidden; text-overflow: ellipsis; } }
+
 </style>
 </head>
 <body>
-<header class="masthead">
-  <h1 class="wordmark">Strata</h1>
-  <span class="wordmark-sub">Quantitative Investment Analytics</span>
-  <span class="lede">This demo runs entirely in your browser on the frozen 2018–2026 research dataset. The full app fetches any ticker through Yahoo Finance and runs the Python solvers.</span>
-  <div class="tools">
-    <span class="mode" id="mode" title="Where prices come from"></span>
-    <button class="chip" id="theme-toggle" type="button" title="Switch between light and dark">Dark</button>
-    <button class="chip" id="share-setup" type="button" title="Copy a link that reproduces this exact setup">Copy link</button>
-    <button class="chip" id="export-json" type="button" title="Download every number behind this page, with its provenance">Export results</button>
-  </div>
-</header>
-
+<a class="skip-link" href="#results">Skip to results</a>
 <div class="shell">
-  <form class="rail" id="rail" autocomplete="off">
+  <form class="rail" id="rail" autocomplete="off" aria-label="Portfolio setup">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="0.5" y="0.5" width="31" height="31" rx="7"/><path d="M8 20.5l8 4 8-4M8 16l8 4 8-4M8 11.5l8-4 8 4-8 4z"/></svg>
+      <div><h1 class="wordmark">Strata</h1><span class="wordmark-sub" title="The full app fetches any ticker through Yahoo Finance and runs the Python solvers.">Offline demo · frozen 2018–2026 data</span></div>
+    </div>
+    <div class="rail-scroll">
     <section class="card" data-open="true" id="card-portfolios">
       <header><svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="13" y="7" width="3" height="10"/></svg><h3>Portfolios</h3><span class="aside" id="portfolio-count"></span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></header>
       <div class="card-body">
@@ -812,23 +946,43 @@ table.data .scroll { overflow-x: auto; }
       </div>
     </section>
 
-    <button class="button primary" type="submit" id="run"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>Run analysis</button>
-    <div class="run-row">
-      <button class="button" type="button" id="share-setup"><svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>Save preset</button>
-      <button class="button" type="button" id="reset-setup"><svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Reset</button>
-    </div>
-    <div class="note" id="run-status" style="margin-top:10px"></div>
     <span class="presets-label">Load a preset</span>
     <div class="chips" id="presets"></div>
+    </div>
+    <div class="rail-foot">
+    <button class="button primary" type="submit" id="run"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>Run analysis</button>
+    <div class="run-row">
+      <button class="button" type="button" id="reset-setup"><svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Reset</button>
+    </div>
+    <div class="note" id="run-status" role="status" aria-live="polite"></div>
+    </div>
   </form>
 
-  <main class="results" id="results">
-    <div class="empty">
-      <h2>Start with a few tickers</h2>
-      <p class="note">Enter the holdings and weights on the left, pick a window, and run it. You get the realized path over that window and a fan of scenarios built by resampling the portfolio's own completed returns — the same method the research pipeline uses, applied to your universe.</p>
-      <p class="note">Add a second portfolio to compare two allocations in the same simulated markets, so the difference between them comes from construction rather than a luckier draw.</p>
-    </div>
-  </main>
+  <div class="workspace">
+    <header class="topbar">
+      <nav class="views" id="views" aria-label="Result views">
+        <button type="button" data-view="overview" aria-pressed="true">Overview</button>
+        <button type="button" data-view="risk" aria-pressed="false">Risk</button>
+        <button type="button" data-view="scenarios" aria-pressed="false">Scenarios</button>
+        <button type="button" data-view="construction" aria-pressed="false">Construction</button>
+        <button type="button" data-view="assumptions" aria-pressed="false">Assumptions</button>
+      </nav>
+      <div class="tools">
+        <span class="mode" id="mode" title="Where prices come from"></span>
+        <button class="icon-button" id="theme-toggle" type="button" title="Switch theme" aria-label="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg></button>
+        <button class="chip" id="copy-link" type="button" title="Copy a link that reproduces this exact setup">Copy link</button>
+        <button class="chip" id="export-json" type="button" title="Download every number behind this page, with its provenance">Export</button>
+      </div>
+    </header>
+    <div class="context-bar" id="context-bar" aria-live="polite"></div>
+    <main class="results" id="results" tabindex="-1">
+      <div class="empty">
+        <div class="spinner" aria-hidden="true"></div>
+        <h2>Preparing the example study</h2>
+        <p class="note">Build portfolios on the left and press <b>Run analysis</b>. Results appear here as Overview, Risk, Scenarios, Construction and Assumptions.</p>
+      </div>
+    </main>
+  </div>
 </div>
 
 <script>
@@ -2648,6 +2802,7 @@ const state = {
   selected: null,
   log: false,
   renderers: [],
+  view: "overview",
 };
 
 const $ = (id) => document.getElementById(id);
@@ -2969,7 +3124,13 @@ function bindRail() {
   // it carries the keyboard affordances a button would.
   document.querySelectorAll(".card > header").forEach((header) => {
     const card = header.parentElement;
-    const toggle = () => card.setAttribute("data-open", card.getAttribute("data-open") === "false" ? "true" : "false");
+    const sync = () => header.setAttribute("aria-expanded", String(card.getAttribute("data-open") !== "false"));
+    const toggle = () => {
+      card.setAttribute("data-open", card.getAttribute("data-open") === "false" ? "true" : "false");
+      sync();
+    };
+    header.setAttribute("role", "button");
+    sync();
     header.tabIndex = 0;
     header.setAttribute("role", "button");
     header.onclick = toggle;
@@ -2988,11 +3149,16 @@ function bindRail() {
       && window.matchMedia("(prefers-color-scheme: dark)").matches;
     const dark = document.documentElement.getAttribute("data-theme") === "dark"
       || (!document.documentElement.getAttribute("data-theme") && prefersDark);
-    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
-    $("theme-toggle").textContent = dark ? "Dark" : "Light";
+    const next = dark ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("strata.theme", next); } catch (error) { /* private mode */ }
+    $("theme-toggle").setAttribute("aria-label", `Switch to ${dark ? "dark" : "light"} theme`);
     rerender();
   };
-  $("share-setup").onclick = shareSetup;
+  $("copy-link").onclick = shareSetup;
+  document.querySelectorAll("#views button").forEach((button) => {
+    button.onclick = () => showView(button.dataset.view);
+  });
   $("export-json").onclick = () => {
     if (!state.result) return;
     const blob = new Blob([JSON.stringify(state.result, null, 2)], { type: "application/json" });
@@ -3215,11 +3381,73 @@ function revealResults() {
   results.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" });
 }
 
+/* Results are grouped by the question they answer, one view at a time, so the
+   page reads like an application rather than a report to scroll. */
+const VIEWS = {
+  overview: (result) => [kpiStrip(result), heroPlate(result), metricsPlate(result)],
+  risk: (result) => [drawdownPlate(result)],
+  scenarios: (result) => [scenarioPlate(result)],
+  construction: (result) => [optimizationPlate(result), compositionPlate(result)],
+  assumptions: (result) => [assumptionsPlate(result)],
+};
+
+function showView(view) {
+  if (!VIEWS[view]) return;
+  state.view = view;
+  try { sessionStorage.setItem("strata.view", view); } catch (error) { /* private mode */ }
+  document.querySelectorAll("#views button").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.view === view));
+  });
+  if (state.result) {
+    renderResults();
+    $("results").scrollTop = 0;
+    window.scrollTo({ top: 0 });
+  }
+}
+
+function renderContext(result) {
+  const meta = result.meta;
+  const settings = meta.settings || {};
+  const parts = [
+    `<span><b>${escapeHtml(meta.window_start)}</b> to <b>${escapeHtml(meta.window_end)}</b> · ${escapeHtml(meta.years)} years</span>`,
+    `<span><b>${Number(meta.trading_days).toLocaleString()}</b> shared sessions</span>`,
+    `<span>${escapeHtml(result.portfolios.filter((p) => !p.is_benchmark).length)} portfolios vs <b>${escapeHtml(result.portfolios.find((p) => p.is_benchmark)?.name || "no benchmark")}</b></span>`,
+    `<span>${escapeHtml(settings.transaction_cost_bps)} bps costs</span>`,
+    `<span>${Number(settings.paths).toLocaleString()} scenarios over ${escapeHtml(settings.horizon_years)} years</span>`,
+  ];
+  $("context-bar").innerHTML = parts.join('<span class="sep"></span>');
+}
+
+function kpiStrip(result) {
+  const selected = result.portfolios.find((p) => p.name === state.selected) || result.portfolios[0];
+  const bench = result.portfolios.find((p) => p.is_benchmark && p !== selected);
+  const s = selected.summary;
+  const b = bench?.summary;
+  const tone = (value) => (value > 0 ? "gain" : value < 0 ? "loss" : "");
+  const versus = (label, value) => (b ? `${label} ${value}` : "");
+  const tiles = [
+    ["Final value", charts.money(s.final_value), versus(bench?.name || "", charts.money(b?.final_value)), ""],
+    ["Annualized return", charts.percent(s.annualized_return), versus("Benchmark", charts.percent(b?.annualized_return)),
+      b ? tone(s.annualized_return - b.annualized_return) : ""],
+    ["Volatility", charts.percent(s.volatility), versus("Benchmark", charts.percent(b?.volatility)), ""],
+    ["Sharpe", charts.ratio(s.sharpe), versus("Benchmark", charts.ratio(b?.sharpe)), b ? tone(s.sharpe - b.sharpe) : ""],
+    ["Worst drawdown", charts.percent(s.max_drawdown), versus("Benchmark", charts.percent(b?.max_drawdown)), "loss"],
+    ["Costs paid", charts.money(s.total_cost), `${escapeHtml(result.meta.settings.transaction_cost_bps)} bps per trade`, ""],
+  ];
+  const node = document.createElement("section");
+  node.className = "kpis";
+  node.setAttribute("aria-label", `Summary for ${selected.name}`);
+  node.innerHTML = `<div class="kpi-head"><span class="swatch" style="background:${seriesColor(selected)}"></span>${escapeHtml(selected.name)}<span class="faint">select another portfolio in the chart legend or table</span></div>`
+    + tiles.map(([label, value, sub, cls]) => `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-value ${cls}">${value}</div><div class="kpi-sub">${escapeHtml(sub)}</div></div>`).join("");
+  return node;
+}
+
 function renderResults() {
   const result = state.result;
   const host = $("results");
   host.innerHTML = "";
   state.renderers = [];
+  renderContext(result);
 
   if (result.warnings?.length) {
     const flags = document.createElement("div");
@@ -3233,14 +3461,7 @@ function renderResults() {
     host.appendChild(flags);
   }
 
-  host.appendChild(heroPlate(result));
-  host.appendChild(metricsPlate(result));
-  host.appendChild(drawdownPlate(result));
-  host.appendChild(scenarioPlate(result));
-  const optimization = optimizationPlate(result);
-  if (optimization) host.appendChild(optimization);
-  host.appendChild(compositionPlate(result));
-  host.appendChild(assumptionsPlate(result));
+  VIEWS[state.view || "overview"](result).filter(Boolean).forEach((node) => host.appendChild(node));
 
   const observer = charts.observeResize(state.renderers);
   observer.observe(host);
@@ -3810,6 +4031,10 @@ function assumptionsPlate(result) {
 /* ----------------------------- boot ----------------------------- */
 
 async function boot() {
+  try {
+    const theme = localStorage.getItem("strata.theme");
+    if (theme) document.documentElement.setAttribute("data-theme", theme);
+  } catch (error) { /* storage unavailable: follow the system theme */ }
   await backend.ready();
   state.settings.source = backend.defaultSource;
   if (backend.bundledUniverse && backend.defaultSource === "bundled") {
@@ -3831,10 +4056,26 @@ async function boot() {
       console.warn("Ignoring an unreadable setup link:", error.message);
     }
   }
-  if (!restored) loadPreset(preset);
+  if (!restored) {
+    loadPreset(preset);
+    // The automatic first run should be instant: use the frozen dataset when it holds
+    // every symbol. The rail shows the source, and the visitor can switch to Yahoo.
+    const symbols = preset.portfolios.flatMap((p) => p.holdings.map(([ticker]) => ticker)).concat(preset.benchmark || []);
+    if (backend.autorun && backend.bundledUniverse && backend.sources.includes("bundled")
+      && symbols.every((ticker) => backend.bundledUniverse.includes(ticker))) {
+      state.settings.source = "bundled";
+      backend.universe = backend.bundledUniverse;
+    }
+  }
+  // On a phone the setup would push the results a screen away, so the detailed cards
+  // start folded; each still opens with one tap.
+  if (typeof window.matchMedia === "function" && window.matchMedia("(max-width: 960px)").matches) {
+    ["card-strategy", "card-window", "card-settings"].forEach((id) => $(id)?.setAttribute("data-open", "false"));
+  }
   bindRail();
   writeRail();
   showMode();
+  try { showView(sessionStorage.getItem("strata.view") || "overview"); } catch (error) { /* private mode */ }
   if (backend.autorun || restored) run();
 }
 
