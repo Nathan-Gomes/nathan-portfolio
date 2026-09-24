@@ -29,6 +29,9 @@
 .modern-portfolio .project-tile > span { display:none; }
 .modern-portfolio .project-tile > div > p:first-child { min-height:34px; line-height:1.45!important; }
 .modern-portfolio .project-tile h3 { font-size:21px!important; }
+.modern-portfolio .project-tile .tile-metrics { display:flex; flex-direction:column; gap:8px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); font:12px 'IBM Plex Mono',monospace!important; color:var(--muted)!important; }
+.modern-portfolio .project-tile .tile-metrics b { color:#107a53; font-size:13.5px; font-weight:600; }
+.modern-portfolio .project-tile .tile-metrics i { font-style:normal; color:#96a09a; }
 .modern-portfolio .project-tile > div:last-child span { border:0!important; padding:0!important; background:none!important; color:#1a6f57!important; font-size:12px!important; }
 .modern-portfolio .experience-disclosure summary { padding:20px 0; }
 .modern-portfolio .experience-disclosure:first-child { border-top:0; }

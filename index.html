@@ -90,7 +90,8 @@
       <div>
         <p style="font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a7e83;margin-bottom:14px">Quantitative finance · Featured</p>
         <h3 style="font-size:clamp(28px,3.4vw,40px);line-height:1.08;letter-spacing:-0.02em;font-weight:600;max-width:24ch">Quantitative Portfolio Research Pipeline</h3>
-        <p style="margin-top:16px;max-width:62ch;font-size:17px;line-height:1.6;color:#3d4145">A reproducible portfolio research system that moves ETF market data from SQL into pandas analysis, portfolio optimization, MATLAB cross-checks, and tested walk-forward reporting.</p>
+        <p style="margin-top:16px;max-width:62ch;font-size:17px;line-height:1.6;color:#3d4145">A reproducible research system that turns ETF market data into quarterly portfolio weights, then tests those weights on five years of returns it never saw. SQL to pandas to a constrained optimizer, cross-checked in MATLAB and covered by tests.</p>
+        <p class="tile-metrics"><span>Sharpe <b>0.79</b> <i>vs 0.69 SPY</i></span><span>Worst drawdown <b>&minus;18.4%</b> <i>vs &minus;24.5%</i></span><span>Beat all four naive allocation rules</span></p>
         <sc-if value="{{ showStack }}" hint-placeholder-val="{{ true }}">
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;font-family:'IBM Plex Mono', monospace;font-size:11px;color:#3d4145">
             <span style="padding:5px 10px;border:1px solid #e0dcd4;background:#fff">Python</span>

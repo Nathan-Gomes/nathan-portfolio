@@ -91,7 +91,7 @@ function enhance(root: HTMLElement) {
   grid.className = 'project-gallery';
   grid.id = 'project-gallery';
   const captions = [
-    'ETF optimization, MATLAB cross-checks, and walk-forward testing.',
+    'A six-ETF portfolio re-optimized every quarter, tested on five years of returns it never saw.',
     'Four Canadian equity portfolios, historical risk analysis, and five-year scenarios.',
     'Walk-forward systematic equity research with embargoed ranking tests and explicit synthetic-data limits.',
     'Property stress tests, debt analysis, and capital allocation scenarios.',
