@@ -512,7 +512,7 @@
 </svg>
         <div class="legend"><span><span class="swatch" style="background:#c98500"></span>Random Forest</span><span><span class="swatch" style="background:#4a3aa7"></span>Ensemble</span><span><span class="swatch" style="background:#2a78d6"></span>Momentum 12-1</span></div>
       </div>
-      <div class="readout"><b>The signal is slower than the horizon it was trained for.</b> Scored against longer windows, Random Forest's IC does not fade: 0.038 at 10 sessions and 0.038 at 60, against 0.024 at 20. A slower rebalance could keep most of the ranking skill with less turnover, a test for the next iteration rather than a conclusion, since longer windows overlap more and carry fewer independent observations.</div>
+      <div class="readout"><b>The signal is slower than the horizon it was trained for.</b> Scored against longer windows, Random Forest's IC does not fade: 0.038 at 10 sessions and 0.038 at 60, against 0.024 at 20. So I tested trading the book quarterly instead: average monthly turnover fell from 41% to 18%, but net Sharpe dropped from 1.24 to <b>1.13</b>. The ranking stays informative for longer, yet holdings chosen three months ago cost more than the trading they save.</div>
     </section>
 
     <section id="costs" style="padding:80px 0 0">
@@ -590,7 +590,7 @@
       </div>
       <div class="evidence" style="margin-top:32px">
         <div class="ecard"><p class="eyebrow">Leakage controls</p><h3>Every label starts after its decision</h3><p>Features use data through the decision close; the 20-session target starts the next session; training ends 20 sessions before each test date so labels never overlap. Stale quarterly fits can only be older, never newer.</p><span class="stat">Tested: embargo, month-end folds, sampler equivalence, and a shuffled-data placebo that must show no skill</span></div>
-        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">27 pytest cases &middot; ruff &middot; CI on every push</span></div>
+        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">29 pytest cases &middot; ruff &middot; CI on every push</span></div>
         <div class="ecard"><p class="eyebrow">Deliberately not claimed</p><h3>What this cannot show</h3><p>The universe is today's large caps, so results carry survivorship bias. There are no point-in-time fundamentals, delisting returns, borrow costs, taxes or market-impact model, and no portfolio optimizer.</p><span class="stat">Stated in the app, the README and here</span></div>
         <div class="ecard"><p class="eyebrow">Explainability</p><h3>Attribution for every ranked stock</h3><p>Each score is decomposed by setting one feature at a time to the day's median. The decomposition is exact for the linear models and a local approximation for trees; reliance is compared across models on one scale.</p><span class="stat">Occlusion attribution &middot; reliance drift</span></div>
       </div>
@@ -602,7 +602,7 @@
         <div>
           <p class="eyebrow">Next research iteration</p>
           <h2>Strengthen the data before expanding the claim</h2>
-          <p class="lede">Point-in-time constituents to remove survivorship bias, point-in-time fundamentals, a slower rebalance where the decay analysis suggests the signal lasts, and a spread and impact cost model. Each goes through the same chronological validation before it can support a stronger conclusion.</p>
+          <p class="lede">Point-in-time constituents to remove survivorship bias, point-in-time fundamentals, turnover-aware rebalancing that trades only when ranks move enough, and a spread and impact cost model. Each goes through the same chronological validation before it can support a stronger conclusion.</p>
         </div>
       </div>
     </section>
