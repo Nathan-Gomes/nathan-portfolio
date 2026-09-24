@@ -336,7 +336,7 @@
         <div class="takeaway">
           <span class="takeaway-n">1</span>
           <h3>The signal is small, and only suggestive</h3>
-          <p>Random Forest ranked stocks with a mean Rank IC of <b>0.024</b>, positive in <b>59%</b> of 114 months, the only t-statistic above 2 (p = 0.018). Adjusted for testing six models, p rises to <b>0.11</b>. That is typical of real equity signals: useful as a tilt, nowhere near a forecast.</p>
+          <p>Random Forest ranked stocks with a mean Rank IC of <b>0.024</b>, positive in <b>59%</b> of 114 months, the only t-statistic above 2 (p = 0.018; bootstrap 95% interval 0.005 to 0.045). Adjusted for testing six models, p rises to <b>0.11</b>. That is typical of real equity signals: useful as a tilt, nowhere near a forecast.</p>
         </div>
         <div class="takeaway">
           <span class="takeaway-n">2</span>
@@ -560,6 +560,7 @@
         <div class="legend"><span><span class="swatch" style="background:#c98500"></span>Random Forest, net Sharpe</span><span><span class="swatch" style="background:#2a78d6"></span>Momentum 12-1, net Sharpe</span><span><span class="swatch" style="background:repeating-linear-gradient(90deg,#7d858c 0 5px,transparent 5px 9px)"></span>Universe Sharpe</span></div>
       </div>
       <div class="readout"><b>The risk-adjusted edge is thin.</b> Random Forest's net Sharpe falls to the universe's at about <b>78 bps</b> one way; momentum, which trades less, holds on to about <b>91 bps</b>. Below roughly <b>43 bps</b> Random Forest has the better net Sharpe; above it, the simpler baseline wins. Large-cap trading costs are usually well below either, but the margin is not wide. A holding buffer, which keeps a stock until it drops out of the top 23 rather than the top 15, cut turnover from 41% to <b>28%</b> a month at a similar net Sharpe (1.28); the saving in trading is real, the change in Sharpe is within noise.</div>
+      <div class="readout"><b>It does not hinge on holding exactly 15 names.</b> Rebuilding the same scores as books of 5 to 30 names keeps Random Forest's net Sharpe between 1.15 and 1.28. Its active return rises from 3.6% a year at 30 names to <b>21.5%</b> at 5: the higher a stock ranks, the more it tends to beat its sector, which is what an informative ranking should do.</div>
       <div class="chart-card">
         <div class="tablewrap" style="margin-top:0">
           <table class="results">
@@ -597,7 +598,7 @@
       </div>
       <div class="evidence" style="margin-top:32px">
         <div class="ecard"><p class="eyebrow">Leakage controls</p><h3>Every label starts after its decision</h3><p>Features use data through the decision close; the 20-session target starts the next session; training ends 20 sessions before each test date so labels never overlap. Stale quarterly fits can only be older, never newer.</p><span class="stat">Tested: embargo, month-end folds, sampler equivalence, and a shuffled-data placebo that must show no skill</span></div>
-        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">45 pytest cases &middot; interface tests &middot; axe accessibility audit &middot; CI on every push</span></div>
+        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">46 pytest cases &middot; interface tests &middot; axe accessibility audit &middot; CI on every push</span></div>
         <div class="ecard"><p class="eyebrow">Deliberately not claimed</p><h3>What this cannot show</h3><p>The universe is today's large caps, so results carry survivorship bias. There are no point-in-time fundamentals, delisting returns, borrow costs, taxes or market-impact model, and no portfolio optimizer.</p><span class="stat">Stated in the app, the README and here</span></div>
         <div class="ecard"><p class="eyebrow">Explainability</p><h3>Attribution for every ranked stock</h3><p>Each score is decomposed by setting one feature at a time to the day's median. The decomposition is exact for the linear models and a local approximation for trees; reliance is compared across models on one scale.</p><span class="stat">Occlusion attribution &middot; reliance drift</span></div>
       </div>
