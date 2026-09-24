@@ -93,12 +93,12 @@ function enhance(root: HTMLElement) {
   const captions = [
     'ETF optimization, MATLAB cross-checks, and walk-forward testing.',
     'Four Canadian equity portfolios, historical risk analysis, and five-year scenarios.',
+    'Walk-forward systematic equity research with embargoed ranking tests and explicit synthetic-data limits.',
     'Property stress tests, debt analysis, and capital allocation scenarios.',
     'Cloud spending, resource utilization, and a prioritized savings queue.',
     'A study of AI operating costs, human labour, and break-even scenarios.',
     'Structured portfolio access for Claude with deterministic calculations.',
     'Invoice review, expense trends, and explainable anomaly detection.',
-    'A local desktop assistant for repeatable form filling.',
     'Mobile Python lessons, practice, and progress tracking.',
   ];
   items.forEach((item, i) => {
