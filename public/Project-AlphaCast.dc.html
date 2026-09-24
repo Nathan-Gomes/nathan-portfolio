@@ -284,7 +284,7 @@
           <p class="eyebrow"><span class="live-badge">Current focus &nbsp;/&nbsp; Machine-learning equity research</span></p>
           <h1>AlphaCast</h1>
           <p class="deck">A research workstation that ranks 98 US large caps by their expected return against their own sector over the next 20 trading sessions, tests six models (five plus an ensemble) on the same walk-forward folds, and turns the ranking into a portfolio it keeps monitoring.</p>
-          <div class="verdict"><strong>The verdict:</strong> Random Forest found the strongest ranking signal (Rank IC 0.024, t = 2.4, p = 0.018) and it survived costs, but once six models are compared the evidence is suggestive rather than conclusive (Holm-adjusted p = 0.11). The edge is concentrated in volatile markets, most models did not beat plain momentum, and every model has weakened over the last six months.</div>
+          <div class="verdict"><strong>The verdict:</strong> Random Forest found the strongest ranking signal (Rank IC 0.024, t = 2.4, p = 0.018) and it survived costs, but much of its excess return is market exposure (beta 1.30), and once six models are compared the evidence is suggestive rather than conclusive (Holm-adjusted p = 0.11). The edge is concentrated in volatile markets, most models did not beat plain momentum, and every model has weakened over the last six months.</div>
           <div class="btnrow">
             <a class="btn btn-primary" href="https://alphacast.onrender.com" target="_blank" rel="noreferrer">Launch the app</a>
             <a class="btn btn-ghost" href="https://github.com/Nathan-Gomes/alphacast/blob/main/docs/METHODOLOGY.md" target="_blank" rel="noreferrer">Read the methodology</a>
@@ -341,7 +341,7 @@
         <div class="takeaway">
           <span class="takeaway-n">2</span>
           <h3>Most machine learning did not beat momentum</h3>
-          <p>Ridge, Elastic Net and gradient boosting all reached about <b>0.010</b> IC, above momentum's <b>0.006</b> but within noise, and after turnover their Sharpe ratios fell <b>below</b> momentum's 1.22. Model complexity was not what made the difference.</p>
+          <p>Ridge, Elastic Net and gradient boosting all reached about <b>0.010</b> IC, above momentum's <b>0.006</b> but within noise, and after turnover their Sharpe ratios fell <b>below</b> momentum's 1.22. The machine-learning sleeves also carry more market risk (beta 1.2 to 1.4), which flatters them in a rising decade. Model complexity was not what made the difference.</p>
         </div>
         <div class="takeaway">
           <span class="takeaway-n">3</span>
@@ -408,7 +408,7 @@
 </svg>
         <div class="legend"><span><span class="swatch" style="background:#c98500"></span>Random Forest, net</span><span><span class="swatch" style="background:#2a78d6"></span>Momentum 12-1, net</span><span><span class="swatch" style="background:repeating-linear-gradient(90deg,#7d858c 0 5px,transparent 5px 9px)"></span>Equal-weight universe</span></div>
       </div>
-      <div class="readout"><b>How to read it:</b> the universe itself compounded strongly (a 1.09 Sharpe for an equal-weight basket of today's large caps, flattered by survivorship). Random Forest's edge over it works out to an information ratio of <b>0.98</b>, bought with a deeper worst drawdown (&minus;21.0% against &minus;16.3%) and 0.49% a year in trading costs. The edge is lumpy: the sleeve beat the universe in 5 of 8 full calendar years, and most of the gain came from 2020, 2021 and 2025.</div>
+      <div class="readout"><b>How to read it:</b> the universe itself compounded strongly (a 1.09 Sharpe for an equal-weight basket of today's large caps, flattered by survivorship). Random Forest's edge over it works out to an information ratio of <b>0.98</b>, bought with a deeper worst drawdown (&minus;21.0% against &minus;16.3%) and 0.49% a year in trading costs. The edge is lumpy: the sleeve beat the universe in 5 of 8 full calendar years, and most of the gain came from 2020, 2021 and 2025. Much of it is also market exposure: the sleeve's beta to the universe is <b>1.30</b>, and the alpha left after removing it is 6.0% a year (t = 1.7), no larger than momentum's 7.0% (t = 1.7, beta 0.97).</div>
     </section>
 
     <section id="models" style="padding:80px 0 0">
@@ -594,7 +594,7 @@
       </div>
       <div class="evidence" style="margin-top:32px">
         <div class="ecard"><p class="eyebrow">Leakage controls</p><h3>Every label starts after its decision</h3><p>Features use data through the decision close; the 20-session target starts the next session; training ends 20 sessions before each test date so labels never overlap. Stale quarterly fits can only be older, never newer.</p><span class="stat">Tested: embargo, month-end folds, sampler equivalence, and a shuffled-data placebo that must show no skill</span></div>
-        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">37 pytest cases &middot; interface tests &middot; axe accessibility audit &middot; CI on every push</span></div>
+        <div class="ecard"><p class="eyebrow">Engineering</p><h3>Bugs found by inspecting the data</h3><p>Building the app surfaced a forward-return shift that crossed ticker boundaries, a Yahoo session published for 28 of 98 stocks, and a truncated final month counted as a fold. Each is fixed and covered by a regression test.</p><span class="stat">38 pytest cases &middot; interface tests &middot; axe accessibility audit &middot; CI on every push</span></div>
         <div class="ecard"><p class="eyebrow">Deliberately not claimed</p><h3>What this cannot show</h3><p>The universe is today's large caps, so results carry survivorship bias. There are no point-in-time fundamentals, delisting returns, borrow costs, taxes or market-impact model, and no portfolio optimizer.</p><span class="stat">Stated in the app, the README and here</span></div>
         <div class="ecard"><p class="eyebrow">Explainability</p><h3>Attribution for every ranked stock</h3><p>Each score is decomposed by setting one feature at a time to the day's median. The decomposition is exact for the linear models and a local approximation for trees; reliance is compared across models on one scale.</p><span class="stat">Occlusion attribution &middot; reliance drift</span></div>
       </div>
