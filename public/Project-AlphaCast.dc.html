@@ -353,19 +353,20 @@
         <div>
           <p class="eyebrow">The application</p>
           <h2>Built as software people use, not a notebook</h2>
-          <p class="lede">The live app opens on the latest signal, precomputed from a frozen Yahoo Finance snapshot so the first screen loads instantly. New studies run in the background with progress reporting, and every table exports to CSV or JSON.</p>
+          <p class="lede">The live app opens on the latest signal, precomputed from a Yahoo Finance snapshot that refreshes weekly, so the first screen loads instantly. New studies run in the background with time estimates, a command palette (⌘K) jumps to any stock or view, and every table exports.</p>
         </div>
       </div>
+      <figure class="shot"><img src="assets/alphacast-overview.png" alt="AlphaCast overview screen: signal date, model health, generated research read-out, current top ranks and a growth chart" loading="lazy"><figcaption><b>Overview.</b> The latest signal, the active model's record and health, and a read-out generated from the results.</figcaption></figure>
       <div class="shots">
-        <figure class="shot"><img src="assets/alphacast-overview.png" alt="AlphaCast overview screen: signal date, model health, generated research read-out, current top ranks and a growth chart" loading="lazy"><figcaption><b>Overview.</b> The latest signal, the active model's record and health, and a read-out generated from the results.</figcaption></figure>
-        <figure class="shot"><img src="assets/alphacast-security.png" alt="AlphaCast security screen for NVDA: rank, price, per-feature attribution and rank under each model" loading="lazy"><figcaption><b>Security.</b> Why a stock ranks where it does, and how its past ranks played out.</figcaption></figure>
+        <figure class="shot"><img src="assets/alphacast-security.png" alt="AlphaCast security screen for NVDA: rank, price, per-feature attribution and rank under each model" loading="lazy"><figcaption><b>Security.</b> Why a stock ranks where it does, how its past ranks played out, and its sector peers.</figcaption></figure>
+        <figure class="shot"><img src="assets/alphacast-backtest.png" alt="AlphaCast backtest screen: KPIs, growth of one dollar net and gross against the universe, drawdown and rolling active return" loading="lazy"><figcaption><b>Backtest.</b> Net and gross growth, drawdowns, and how the edge holds up as trading costs rise.</figcaption></figure>
       </div>
       <div class="views">
-        <div class="step"><span class="step-n">SIGNAL</span><h3>Overview &amp; Screener</h3><p>Today's ranks for the whole universe with factor profiles, rank changes, search, sector and quintile filters.</p></div>
-        <div class="step"><span class="step-n">EXPLAIN</span><h3>Security</h3><p>Per-feature attribution, price path, rank history against realised outcomes, rank under every model.</p></div>
-        <div class="step"><span class="step-n">ACT</span><h3>Portfolio</h3><p>The top-15 book at the latest close: weights, entries and exits, implied turnover and cost, sector tilts.</p></div>
-        <div class="step"><span class="step-n">EVALUATE</span><h3>Backtest &amp; Diagnostics</h3><p>Net and gross growth, drawdowns, rolling active return, monthly IC, quintile spreads, regimes.</p></div>
-        <div class="step"><span class="step-n">COMPARE</span><h3>Models</h3><p>All five models on identical folds: IC, t-stat, Sharpe, turnover, cumulative IC and feature reliance.</p></div>
+        <div class="step"><span class="step-n">SIGNAL</span><h3>Overview &amp; Screener</h3><p>Today's ranks with factor profiles, model consensus, rank changes, filters, a watchlist and CSV export.</p></div>
+        <div class="step"><span class="step-n">EXPLAIN</span><h3>Security</h3><p>Per-feature attribution, rank history against realised outcomes, rank under every model, sector peers.</p></div>
+        <div class="step"><span class="step-n">ACT</span><h3>Portfolio</h3><p>The top-15 book at the latest close: entries and exits, turnover and cost, sector and factor tilts, optional sector cap.</p></div>
+        <div class="step"><span class="step-n">EVALUATE</span><h3>Backtest &amp; Diagnostics</h3><p>Growth, drawdowns, cost break-evens, monthly IC, quintiles, within-sector skill and regimes.</p></div>
+        <div class="step"><span class="step-n">COMPARE</span><h3>Models</h3><p>Five models on identical folds: IC, t-stat, Sharpe, turnover, today's rank agreement and feature reliance.</p></div>
         <div class="step"><span class="step-n">WATCH</span><h3>Monitoring &amp; Runs</h3><p>Health status, rolling IC bands, reliance and feature drift; background runs on live Yahoo data.</p></div>
       </div>
     </section>
