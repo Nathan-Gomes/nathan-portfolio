@@ -31,7 +31,7 @@
 .modern-portfolio .project-tile h3 { font-size:21px!important; }
 .modern-portfolio .project-tile .tile-metrics { display:flex; flex-direction:column; gap:8px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); font:12px 'IBM Plex Mono',monospace!important; color:var(--muted)!important; }
 .modern-portfolio .project-tile .tile-metrics b { color:#107a53; font-size:13.5px; font-weight:600; }
-.modern-portfolio .project-tile .tile-metrics i { font-style:normal; color:#96a09a; }
+.modern-portfolio .project-tile .tile-metrics i { font-style:normal; color:#6b7570; }
 .modern-portfolio .project-tile > div:last-child span { border:0!important; padding:0!important; background:none!important; color:#1a6f57!important; font-size:12px!important; }
 .modern-portfolio .experience-disclosure summary { padding:20px 0; }
 .modern-portfolio .experience-disclosure:first-child { border-top:0; }
@@ -83,7 +83,7 @@
 .focus-stats div { background:#fbfaf8; padding:14px 14px 12px; }
 .focus-stats dt { font:11px 'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.06em; color:#65716b; min-height:30px; line-height:1.35; }
 .focus-stats dd { margin:6px 0 0; font-size:26px; font-weight:600; color:#107a53; font-variant-numeric:tabular-nums; }
-.focus-stats dd span { display:block; margin-top:2px; font:12px 'IBM Plex Mono',monospace; font-weight:400; color:#8a948f; }
+.focus-stats dd span { display:block; margin-top:2px; font:12px 'IBM Plex Mono',monospace; font-weight:400; color:#65716b; }
 .focus-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
 .focus-actions a { display:inline-flex; align-items:center; gap:7px; height:44px; padding:0 15px; white-space:nowrap; border:1px solid #b7c9c1; color:#1a6f57; text-decoration:none; font-size:14px; font-weight:500; background:#fbfaf8; transition:border-color .2s, background .2s; }
 .focus-actions a:hover { border-color:#1a6f57; }
