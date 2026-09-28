@@ -94,6 +94,7 @@ function enhance(root: HTMLElement) {
     'A six-ETF portfolio re-optimized every quarter, tested on five years of returns it never saw.',
     'Four Canadian equity portfolios, historical risk analysis, and five-year scenarios.',
     'Machine-learning stock rankings for 98 US large caps, tested walk-forward and monitored live.',
+    '50,000 service desk tickets, automated quality checks, and the two queues behind 61% of SLA breaches.',
     'Property stress tests, debt analysis, and capital allocation scenarios.',
     'Cloud spending, resource utilization, and a prioritized savings queue.',
     'A study of AI operating costs, human labour, and break-even scenarios.',
