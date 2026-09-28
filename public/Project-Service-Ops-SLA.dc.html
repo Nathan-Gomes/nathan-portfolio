@@ -370,7 +370,7 @@
         <figure class="shot"><img src="assets/serviceops-quality.png" alt="Data quality: gate totals and a table of every check with its dimension, rule, action and row count" loading="lazy"><figcaption><b>Data quality.</b> Every check with its rule, action and examples, plus the quarantine with raw records.</figcaption></figure>
       </div>
       <div class="views">
-        <div class="step"><span class="step-n">MONITOR</span><h3>Overview</h3><p>Tickets, SLA and first-response compliance, median and 90th-percentile resolution, backlog and its age.</p></div>
+        <div class="step"><span class="step-n">MONITOR</span><h3>Overview</h3><p>Compliance against the goal, resolution time, backlog and its age, and a watch list that flags open tickets at 75% of their target.</p></div>
         <div class="step"><span class="step-n">EXPLAIN</span><h3>Breach analysis</h3><p>Share of tickets against share of breaches, a category-by-priority heatmap, Pareto and drivers.</p></div>
         <div class="step"><span class="step-n">ACT</span><h3>Recommendations</h3><p>Three actions generated from measured mechanisms, each with evidence and an owner.</p></div>
         <div class="step"><span class="step-n">MANAGE</span><h3>Queues &amp; agents</h3><p>Workload, hand-offs and compliance by resolver group, and an agent scorecard read within groups.</p></div>
@@ -591,9 +591,9 @@
         </div>
       </div>
       <div class="evidence" style="margin-top:32px">
-        <div class="ecard"><p class="eyebrow">One definition of breached</p><h3>SQL, Python and DAX agree</h3><p>The SLA rules live once, in the <code>vw_ticket_sla</code> view. The dashboard's filtered queries, an independent pandas recalculation and the DAX measures reproduce them, and the tests hold every path to the same count.</p><span class="stat">56 pytest cases &middot; SQLite and MySQL 8 in CI</span></div>
+        <div class="ecard"><p class="eyebrow">One definition of breached</p><h3>SQL, Python and DAX agree</h3><p>The SLA rules live once, in the <code>vw_ticket_sla</code> view. The dashboard's filtered queries, an independent pandas recalculation and the DAX measures reproduce them, and the tests hold every path to the same count.</p><span class="stat">59 pytest cases &middot; SQLite and MySQL 8 in CI</span></div>
         <div class="ecard"><p class="eyebrow">Tested against an answer key</p><h3>Each check finds exactly what was injected</h3><p>Defects are injected into known tickets, one per ticket. The tests assert each of the fifteen checks flags exactly those rows, that repairs restore the original values, and that the gate is idempotent.</p><span class="stat">Row accounting: in = clean + quarantined + removed</span></div>
-        <div class="ecard"><p class="eyebrow">Portable SQL</p><h3>The same views on two engines</h3><p>CI starts a MySQL 8 container, loads the gated tickets and compares every view with SQLite's output, row by row. Filter values are bound parameters and sort columns are whitelisted.</p><span class="stat">GitHub Actions &middot; mysql:8.0 service</span></div>
+        <div class="ecard"><p class="eyebrow">Portable SQL, usable app</p><h3>Two engines, every view audited</h3><p>CI starts a MySQL 8 container and compares every view with SQLite's output, row by row. Filter values are bound parameters and sort columns are whitelisted. Every dashboard view passes an axe accessibility audit in both themes.</p><span class="stat">mysql:8.0 service &middot; axe-core in CI</span></div>
         <div class="ecard"><p class="eyebrow">Deliberately not claimed</p><h3>Simulated, so true by construction</h3><p>The 61% is a property of the generator, not of a real organisation. The value is the pipeline and the method: Pareto, then mechanism, then action. Clocks run in calendar hours, and the compliance gain is an upper bound, not a forecast.</p><span class="stat">Stated in the app, the README and here</span></div>
       </div>
     </section>
