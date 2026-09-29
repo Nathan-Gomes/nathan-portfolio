@@ -4,10 +4,10 @@
 <title>PartnerSignal | Nathan Gomes</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="PartnerSignal: a fictional professional-services partner-operations workspace by Nathan Gomes.">
+<meta name="description" content="PartnerSignal: a partner prospecting, qualification and follow-up workspace for professional-services teams, with Claude-powered call capture and outreach, by Nathan Gomes.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PartnerSignal: transparent partner operations">
-<meta property="og:description" content="A FastAPI and SQLite workspace that turns fictional discovery notes into visible opportunity signals, specialist handoffs, and useful follow-ups.">
+<meta property="og:title" content="PartnerSignal: partner prospecting and qualification workspace">
+<meta property="og:description" content="Finds the reseller partner worth calling, turns call notes into a qualified opportunity with AI, routes it to a specialist, and keeps every follow-up on time.">
 <meta property="og:url" content="https://www.nathan-gomes.com/Project-PartnerSignal.dc.html">
 <link rel="stylesheet" href="./revamp.css">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
@@ -77,6 +77,11 @@
   .footer a { color:var(--muted); text-decoration:none; }
   @media (max-width:900px) { .hero { grid-template-columns:1fr; gap:36px; } .scoreboard,.workflow { grid-template-columns:repeat(2,minmax(0,1fr)); } .grid3 { grid-template-columns:1fr; } }
   @media (max-width:700px) { .wrap { padding:0 20px; } .head { align-items:flex-start; } .head nav { gap:14px; flex-wrap:wrap; justify-content:flex-end; } .hero { padding:48px 0 42px; } .deck { font-size:17.5px; } .section { padding-top:64px; } .section-head { grid-template-columns:1fr; gap:0; } .num { padding-top:0; } .grid2,.scoreboard,.workflow { grid-template-columns:1fr; } .btn { width:100%; } .footer { flex-direction:column; } }
+  .shot { margin: 26px 0 0; border: 1px solid var(--line); background: #fff; }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot figcaption { padding: 12px 14px; background: var(--card); border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; color: var(--body); }
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  @media (max-width: 760px) { .shots { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
@@ -90,73 +95,85 @@
 <main class="wrap">
   <section class="hero">
     <div>
-      <p class="eyebrow">Professional services · Partner operations · FastAPI</p>
+      <p class="eyebrow">Professional services · Partner operations · Applied AI</p>
       <h1>PartnerSignal</h1>
-      <p class="deck">A fictional partner-operations workspace that helps turn discovery conversations into visible follow-up plans, specialist handoffs, and relevant professional-services conversations.</p>
-      <p class="callout"><b>The project question:</b> how can a partner-facing team keep customer context, opportunity fit, and the next helpful action clear without allowing a scoring system to replace human qualification?</p>
+      <p class="deck">A partner prospecting, qualification and follow-up workspace for professional-services teams. It finds the reseller partner worth calling, turns rough call notes into a qualified opportunity with AI, routes the work to the right technical specialist, and keeps every follow-up on time.</p>
+      <p class="callout"><b>The project question:</b> what would a professional-services associate need to start better partner conversations every day, qualify them honestly, and follow through, using AI to do the busywork without handing it the judgement?</p>
       <div class="btnrow"><a class="btn primary" href="https://partner-signal-arm6.onrender.com" target="_blank" rel="noreferrer">Launch PartnerSignal</a><a class="btn ghost" href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">View source on GitHub</a></div>
     </div>
     <dl class="facts">
-      <div><dt>Built for</dt><dd>Professional-services and customer-success workflows</dd></div>
-      <div><dt>Data</dt><dd>Six fictional Canadian reseller partners</dd></div>
-      <div><dt>Decision model</dt><dd>Transparent, reviewable service-fit rules</dd></div>
+      <div><dt>Built for</dt><dd>Professional-services and customer-success associate workflows</dd></div>
+      <div><dt>AI</dt><dd>Claude API with structured outputs, plus a deterministic fallback engine</dd></div>
+      <div><dt>Stack</dt><dd>FastAPI, SQLAlchemy, React, TypeScript</dd></div>
+      <div><dt>Quality</dt><dd>33 automated tests, 92% API coverage, CI on every push</dd></div>
     </dl>
   </section>
 
   <section class="scoreboard" aria-label="Project scope">
-    <div class="score"><p>Partners</p><strong>6</strong><span>fictional partner records</span></div>
-    <div class="score"><p>Service paths</p><strong>5</strong><span>cloud, security, networking, AI, training</span></div>
-    <div class="score"><p>Priority signal</p><strong>72-92</strong><span>visible scoring range in the seeded demo</span></div>
-    <div class="score"><p>Automation</p><strong>5</strong><span>tested application behaviours</span></div>
+    <div class="score"><p>Partners</p><strong>18</strong><span>fictional Canadian resellers, MSPs and integrators</span></div>
+    <div class="score"><p>Prospect signals</p><strong>36</strong><span>renewals, end-of-support dates, orders, marketplace activity</span></div>
+    <div class="score"><p>Service catalog</p><strong>6 &times; 17</strong><span>practices and services, from assessments to training</span></div>
+    <div class="score"><p>Decision rules</p><strong>4</strong><span>explainable score components, each with written reasons</span></div>
   </section>
 
   <section class="section">
-    <div class="section-head"><div class="num">01</div><div><p class="eyebrow">The operating problem</p><h2>Useful outreach starts with context, not a generic lead list.</h2><p class="lede">Partner-facing teams need a concise, reliable view of what was said, which customer need might be real, who should help, and what happens next. When that evidence is scattered across calls, notes, and reminders, opportunities go stale and handoffs lose context.</p></div></div>
-    <div class="grid3">
-      <article class="card"><p class="kicker">Discovery</p><h3>Capture the actual problem</h3><p>Each record preserves the partner, customer challenge, notes, region, current stage, and the date the conversation needs attention again.</p></article>
-      <article class="card"><p class="kicker">Qualification</p><h3>Show why an option fits</h3><p>Service suggestions come with the observable signals that caused them, rather than a black-box label that cannot be challenged.</p></article>
-      <article class="card"><p class="kicker">Follow-through</p><h3>Give the person a next step</h3><p>The detail view prepares a draft outreach message and names the right type of technical specialist, leaving the decision with the user.</p></article>
+    <div class="section-head"><div class="num">01</div><div><p class="eyebrow">The role, translated into software</p><h2>Every screen maps to a part of the job.</h2><p class="lede">I started from the day-to-day responsibilities of an early-career professional-services associate and built one working feature for each, so the project shows how I would actually do the work, not only that I can write code.</p></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Responsibility</th><th>What PartnerSignal does</th></tr></thead><tbody>
+      <tr><td>Reach out to reseller partners</td><td>A signal feed built from renewal calendars, end-of-support dates, purchase patterns and cloud-marketplace activity, plus a whitespace map of where each partner sells product but attaches no services.</td></tr>
+      <tr><td>Uncover and qualify customer needs</td><td><i>Capture a call</i> structures rough notes into challenges, practice fit and BANT qualification, quoting the notes as evidence. Stage gates stop an opportunity advancing without that evidence.</td></tr>
+      <tr><td>Work with sales and technical specialists</td><td>Routing suggests the least-loaded specialist in the practice and generates a handoff brief: context, challenge, proposed scope, open questions and the ask.</td></tr>
+      <tr><td>Use AI and CRM data to personalize outreach</td><td>Drafts for introductions, follow-ups, specialist meetings and re-engagement, each explaining which record every line relies on. A person edits, checks and sends.</td></tr>
+      <tr><td>Follow through and keep an accurate pipeline</td><td>A ranked daily queue, follow-up dates set automatically from each stage's cadence, a drag-and-drop pipeline, win/loss reasons, reports and a CRM-style CSV export.</td></tr>
+      <tr><td>Learn to discuss AI and services with partners</td><td>A playbook per practice: what to listen for, what to ask, what to offer, and AI use cases worth raising.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">02</div><div><p class="eyebrow">The workspace</p><h2>Start the day with a ranked list, not a blank CRM.</h2><p class="lede">The Today view ranks overdue follow-ups, stalled deals, opportunities waiting for a specialist and fresh signals into one queue. Each row lists the reasons it is there, and the week's touch goal sits above it.</p></div></div>
+    <figure class="shot"><img src="assets/partnersignal-today.png" alt="Today view: weekly touch goal, due and overdue counts, and a ranked priority queue where each row lists its reasons" loading="lazy"><figcaption><b>Today.</b> Fourteen ranked conversations, each with its practice, due state, score and the reasons behind its rank.</figcaption></figure>
+    <div class="shots">
+      <figure class="shot"><img src="assets/partnersignal-whitespace.png" alt="Whitespace map: partners by practice, showing attached services and estimated services gaps shaded by size" loading="lazy"><figcaption><b>Whitespace map.</b> Where each partner sells product but has never attached services, sized at a 9% attach benchmark.</figcaption></figure>
+      <figure class="shot"><img src="assets/partnersignal-pipeline.png" alt="Pipeline board with five stage columns and opportunity cards showing value, priority strip and due state" loading="lazy"><figcaption><b>Pipeline.</b> Drag a card to change stage; gates check the qualification evidence first.</figcaption></figure>
     </div>
   </section>
 
   <section class="section">
-    <div class="section-head"><div class="num">02</div><div><p class="eyebrow">Workflow design</p><h2>From a discovery note to a credible handoff.</h2><p class="lede">The application is intentionally compact. Its job is to keep the signal, evidence, and action together so a person can move a conversation forward with a clear reason.</p></div></div>
-    <div class="workflow">
-      <article class="step"><b>01 · CAPTURE</b><h3>Record context</h3><p>Store partner details, the stated customer challenge, discovery notes, current opportunity stage, and a next follow-up date.</p><div class="chips"><span>SQLite</span><span>CRM record</span></div></article>
-      <article class="step"><b>02 · INTERPRET</b><h3>Route the need</h3><p>Rules map evidence such as legacy infrastructure, ransomware concerns, or AI governance needs to an appropriate starting service.</p><div class="chips"><span>Python rules</span><span>Explainable</span></div></article>
-      <article class="step"><b>03 · REVIEW</b><h3>Check the evidence</h3><p>The user sees the fit score, rationale, discovery notes, and specialist recommendation before deciding whether the opportunity is qualified.</p><div class="chips"><span>Human review</span><span>Pipeline</span></div></article>
-      <article class="step"><b>04 · ACT</b><h3>Prepare the follow-up</h3><p>A tailored discovery draft creates a useful starting point. The associate adapts it, confirms the need, and records the outcome.</p><div class="chips"><span>JavaScript</span><span>FastAPI</span></div></article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head"><div class="num">03</div><div><p class="eyebrow">Decision support</p><h2>A score is a way to prioritize attention, not an answer.</h2><p class="lede">PartnerSignal uses a declared service-fit score. It combines the strongest observed service signals with engagement, caps the result below 100, and presents the underlying reasons beside the result. This makes the system inspectable and gives an associate a useful queue without pretending it can determine a customer need on its own.</p></div></div>
+    <div class="section-head"><div class="num">03</div><div><p class="eyebrow">AI with a person in the loop</p><h2>The model does the structuring. The associate makes the call.</h2><p class="lede">Call capture and outreach drafting use the Claude API with structured outputs validated against Pydantic models. Without an API key, or if a call fails or hits the demo limit, the same endpoints answer from a deterministic rules engine that returns the same shape, and the interface says which one ran.</p></div></div>
+    <figure class="shot"><img src="assets/partnersignal-capture.png" alt="Capture a call: call notes with evidence highlighted, and the structured result with service fit, BANT levels with quotes, follow-up questions and risks" loading="lazy"><figcaption><b>Capture a call.</b> Every judgement quotes the notes, highlighted in place. Levels can be changed before anything is saved.</figcaption></figure>
     <div class="grid2">
-      <article class="card"><p class="kicker">What it does</p><h3>Organizes the right questions</h3><p>It raises a cloud migration discovery when a note mentions retiring legacy infrastructure; it surfaces an AI readiness workshop when the concern is AI use cases and sensitive-data governance.</p><ul class="rule-list"><li>Uses only the information stored in the partner record.</li><li>Explains which signals matched the recommended path.</li><li>Shows a specialist handoff that fits the starting conversation.</li></ul></article>
-      <article class="card"><p class="kicker">What it does not do</p><h3>Replace qualification or relationship judgment</h3><p>The score is not a probability of sale, a prediction of revenue, or a statement that a customer will buy. A real professional-services process still requires a conversation, solution design, commercial review, and accurate CRM ownership.</p><ul class="rule-list"><li>Does not send outreach automatically.</li><li>Does not access live partner information.</li><li>Does not claim an integration with a vendor platform or CRM.</li></ul></article>
+      <article class="card"><p class="kicker">Guard rails</p><h3>Evidence, not invention</h3><ul class="rule-list"><li>Quotes must be verbatim; anything not discussed stays unknown and becomes a follow-up question.</li><li>Prompts carry the service catalog and BANT definitions, and forbid invented names, numbers or dates.</li><li>Refusals, truncated responses and API errors fall back to the rules engine instead of failing.</li><li>Per-visitor and daily limits on live model calls.</li></ul></article>
+      <article class="card"><p class="kicker">Outreach</p><h3>Drafts that explain themselves</h3><p>Each draft lists which record every personalized line came from. Approving it requires ticking a review checklist, edits are recorded, and nothing is ever sent by the system: the associate sends it from their own mail client and the touch is logged.</p></article>
     </div>
-    <div class="table-wrap"><table><thead><tr><th>Observed discovery signal</th><th>Suggested starting path</th><th>Specialist handoff</th><th>Why it is helpful</th></tr></thead><tbody><tr><td>Legacy servers and retirement timeline</td><td>Cloud migration discovery</td><td>Cloud &amp; Hybrid IT</td><td>Frames a practical scoping conversation before a proposal.</td></tr><tr><td>Ransomware recovery and renewal risk</td><td>Cybersecurity assessment</td><td>Security Solutions</td><td>Connects the partner to a risk-focused starting point.</td></tr><tr><td>Unreliable warehouse connectivity</td><td>Networking assessment</td><td>Networking Practice</td><td>Keeps the conversation anchored in the operational symptom.</td></tr><tr><td>AI use cases with sensitive-data concern</td><td>AI readiness workshop</td><td>AI Solutions</td><td>Prompts a governance-aware discovery before implementation.</td></tr></tbody></table></div>
-    <p class="note"><b>Why transparency matters:</b> a partner or technical specialist can disagree with a recommendation, see what triggered it, and correct the record. That is more trustworthy than an unexplained score.</p>
+    <figure class="shot"><img src="assets/partnersignal-composer.png" alt="Outreach drawer with purpose, tone and engine options, an editable draft, the reasons behind each line and a review checklist" loading="lazy"><figcaption><b>Outreach drawer.</b> Purpose, tone and engine options, an editable draft, the reasons behind it, and a checklist before it can be logged.</figcaption></figure>
   </section>
 
   <section class="section">
-    <div class="section-head"><div class="num">04</div><div><p class="eyebrow">Engineering</p><h2>A small software system with an explicit operational model.</h2><p class="lede">The front end is a focused workspace, while the API separates the data store, deterministic recommendation logic, and application routes. The test suite protects the basic contract between them.</p></div></div>
+    <div class="section-head"><div class="num">04</div><div><p class="eyebrow">Decision support</p><h2>A priority score anyone can argue with.</h2><p class="lede">Every opportunity carries a 0&ndash;100 priority score made of four capped parts. The breakdown lists the reason for every point, so a manager or specialist can see why something is at the top and correct the record if it is wrong. It ranks attention; it is not a probability of winning, and the interface says so.</p></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Component</th><th>Max</th><th>Driven by</th></tr></thead><tbody>
+      <tr><td>Service fit</td><td>25</td><td>Signal strength, the customer's own words, whether the partner has resold this practice before</td></tr>
+      <tr><td>Qualification</td><td>30</td><td>BANT evidence: budget, authority, need and timeline, 7.5 points each at their strongest level</td></tr>
+      <tr><td>Momentum</td><td>20</td><td>Days since the last touch, minus a penalty for stalling in a stage</td></tr>
+      <tr><td>Urgency</td><td>25</td><td>Overdue or upcoming follow-ups and customer deadlines within 120 days</td></tr>
+    </tbody></table></div>
+    <div class="shots">
+      <figure class="shot"><img src="assets/partnersignal-opportunity.png" alt="Opportunity workspace: priority breakdown with reasons, BANT editor, specialist routing with load and a handoff brief" loading="lazy"><figcaption><b>Opportunity workspace.</b> Score breakdown, BANT editor, specialist routing and the handoff brief.</figcaption></figure>
+      <figure class="shot"><img src="assets/partnersignal-reports.png" alt="Reports: open pipeline, win rate, won value, stalled count, funnel by stage, pipeline by practice and weekly touches" loading="lazy"><figcaption><b>Reports.</b> Pipeline health, win rate and cycle time, and follow-through by week.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">05</div><div><p class="eyebrow">Engineering</p><h2>Built like a small production service.</h2><p class="lede">One catalog module defines the practices, services, stages and playbooks, and the scoring rules, AI prompts and interface all read from it. Business rules live in a service layer with their own tests; the HTTP layer only validates input and maps errors.</p></div></div>
     <div class="grid3">
-      <article class="card"><p class="kicker">Application</p><h3>FastAPI service</h3><p>Serves the dashboard, partner queue, partner detail, generated outreach draft, follow-up completion action, and a health endpoint for deployment.</p><div class="chips"><span>FastAPI</span><span>Python</span><span>Docker</span></div></article>
-      <article class="card"><p class="kicker">Data</p><h3>SQLite partner store</h3><p>A small relational schema seeds repeatable fictional records and keeps the app restartable without an external dependency.</p><div class="chips"><span>SQLite</span><span>Seed data</span><span>JSON signals</span></div></article>
-      <article class="card"><p class="kicker">Quality</p><h3>Automated checks</h3><p>Tests cover health, overview totals, partner recommendations, outreach generation, and the follow-up completion workflow. GitHub Actions runs them on each push.</p><div class="chips"><span>pytest</span><span>Ruff</span><span>CI</span></div></article>
+      <article class="card"><p class="kicker">API</p><h3>FastAPI and SQLAlchemy</h3><p>Typed request models, stage-gate conflicts returned as HTTP 409 with a to-do list, relative-date seeding so the demo always has something due, and security headers.</p><div class="chips"><span>Python 3.12</span><span>Pydantic v2</span><span>SQLAlchemy 2.0</span></div></article>
+      <article class="card"><p class="kicker">Front end</p><h3>React and TypeScript</h3><p>Seven views with TanStack Query caching, drag-and-drop stages, keyboard focus and screen-reader labels, and a validated colour palette that never uses colour alone to carry meaning.</p><div class="chips"><span>React</span><span>TypeScript</span><span>Vite</span></div></article>
+      <article class="card"><p class="kicker">Quality</p><h3>Tested and shipped by CI</h3><p>pytest at 92% coverage and Vitest component tests, with Ruff, mypy and strict TypeScript. GitHub Actions builds the multi-stage Docker image and smoke-tests it before Render serves it.</p><div class="chips"><span>pytest</span><span>Vitest</span><span>Docker</span><span>GitHub Actions</span></div></article>
     </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head"><div class="num">05</div><div><p class="eyebrow">Role connection</p><h2>Technology helps make partner conversations more prepared and more accountable.</h2><p class="lede">For a professional-services associate, the value is not merely a dashboard. It is the ability to understand a partner's stated problem, follow through with appropriate expertise, maintain a dependable opportunity record, and communicate the rationale behind the next move.</p></div></div>
-    <div class="grid2"><article class="card"><p class="kicker">Customer success</p><h3>Build confidence through clarity</h3><p>A stakeholder who is discussing a cybersecurity, cloud, networking, or AI initiative needs to feel that their context was heard. Clear notes, a relevant specialist, and a timely follow-up make that visible.</p></article><article class="card"><p class="kicker">Data and automation</p><h3>Use tools to strengthen, not obscure, judgment</h3><p>A structured workflow can make follow-through more consistent and help teams identify patterns across opportunities. The important constraint is that a person can inspect, question, and improve the recommendation.</p></article></div>
   </section>
 
   <section class="section" style="text-align:center;border-top:1px solid var(--line);margin-top:84px;padding-top:78px">
     <p class="eyebrow">Explore the build</p>
-    <h2 style="margin:16px auto 0;max-width:23ch">Open the workspace and trace a partner conversation end to end.</h2>
-    <p class="lede" style="margin-left:auto;margin-right:auto">The free instance may take a minute to wake up. The application uses fictional data only.</p>
+    <h2 style="margin:16px auto 0;max-width:23ch">Open the workspace and work today's queue.</h2>
+    <p class="lede" style="margin-left:auto;margin-right:auto">Try <i>Capture a call</i> with a sample, drag a card past a stage gate, or draft outreach from a signal. The free instance may take a minute to wake up; all data is fictional.</p>
     <div class="btnrow" style="justify-content:center"><a class="btn primary" href="https://partner-signal-arm6.onrender.com" target="_blank" rel="noreferrer">Launch PartnerSignal</a><a class="btn ghost" href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">Source on GitHub</a></div>
   </section>
 </main>
