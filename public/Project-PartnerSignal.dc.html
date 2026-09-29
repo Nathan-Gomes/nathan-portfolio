@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>PartnerSignal | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="PartnerSignal: a fictional professional-services partner-operations workspace by Nathan Gomes.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PartnerSignal: transparent partner operations">
+<meta property="og:description" content="A FastAPI and SQLite workspace that turns fictional discovery notes into visible opportunity signals, specialist handoffs, and useful follow-ups.">
+<meta property="og:url" content="https://www.nathan-gomes.com/Project-PartnerSignal.dc.html">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#16181a; --paper:#fbfaf8; --card:#fff; --line:#e6e2db; --body:#3d4145; --muted:#686c71; --green:#1a6f57; --tint:#edf3f0; --wash:#f4f2ee; --mono:"IBM Plex Mono",ui-monospace,monospace; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,p,ul,ol,dl,dd,figure { margin:0; text-wrap:pretty; }
+  a { color:var(--ink); }
+  a:hover { color:var(--green); }
+  .wrap { max-width:1160px; margin:0 auto; padding:0 40px; }
+  .eyebrow { font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--green); }
+  .head { display:flex; align-items:baseline; justify-content:space-between; gap:32px; padding:26px 0; border-bottom:1px solid var(--line); }
+  .head a { font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; }
+  .head nav { display:flex; gap:24px; }
+  .head nav a { color:var(--muted); }
+  .hero { display:grid; grid-template-columns:minmax(0,1fr) 250px; gap:64px; align-items:end; padding:76px 0 54px; }
+  .hero h1 { max-width:16ch; margin-top:20px; font-size:clamp(40px,5.2vw,66px); line-height:1.02; letter-spacing:-.02em; }
+  .deck { max-width:61ch; margin-top:24px; font-size:20px; line-height:1.55; color:var(--body); }
+  .callout { max-width:68ch; margin-top:25px; padding:18px 22px; border-left:3px solid var(--green); background:var(--tint); color:#17372c; font-size:17px; line-height:1.55; }
+  .btnrow { display:flex; flex-wrap:wrap; gap:10px; margin-top:28px; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 20px; border:1px solid transparent; font-size:15px; font-weight:500; text-decoration:none; }
+  .primary { background:var(--ink); color:#fff; }
+  .primary:hover { background:var(--green); color:#fff; }
+  .ghost { border-color:#d5d0c7; background:#fff; }
+  .facts { display:grid; gap:18px; font-family:var(--mono); font-size:12px; line-height:1.5; }
+  .facts dt { margin-bottom:5px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; }
+  .facts dd { color:var(--body); }
+  .scoreboard { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; border-top:2px solid var(--ink); background:var(--line); }
+  .score { padding:22px 24px; background:#fff; }
+  .score p { font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); }
+  .score strong { display:block; margin-top:10px; font-size:32px; line-height:1; letter-spacing:-.02em; }
+  .score span { display:block; margin-top:8px; font-size:13px; line-height:1.45; color:var(--body); }
+  main { padding-bottom:94px; }
+  .section { padding-top:84px; }
+  .section-head { display:grid; grid-template-columns:64px minmax(0,1fr); gap:28px; }
+  .num { padding-top:8px; font-family:var(--mono); font-size:12px; letter-spacing:.08em; color:var(--muted); }
+  .section h2 { max-width:26ch; margin-top:12px; font-size:clamp(27px,3vw,35px); line-height:1.15; letter-spacing:-.015em; }
+  .lede { max-width:74ch; margin-top:14px; font-size:17px; line-height:1.62; color:var(--body); }
+  .grid3,.grid2 { display:grid; gap:1px; margin-top:32px; border:1px solid var(--line); background:var(--line); }
+  .grid3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .grid2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .card { padding:28px 26px 30px; background:#fff; }
+  .card .kicker { font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--green); }
+  .card h3 { margin-top:14px; font-size:20px; line-height:1.25; }
+  .card p { margin-top:10px; color:var(--body); font-size:15px; line-height:1.6; }
+  .workflow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; margin-top:32px; border:1px solid var(--line); background:var(--line); }
+  .step { padding:26px 24px 28px; background:#fff; }
+  .step b { color:var(--green); font-family:var(--mono); font-size:11px; letter-spacing:.08em; }
+  .step h3 { margin-top:14px; font-size:18px; line-height:1.25; }
+  .step p { margin-top:9px; color:var(--body); font-size:14.5px; line-height:1.55; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:15px; }
+  .chips span { padding:4px 8px; background:var(--wash); font-family:var(--mono); font-size:10px; color:var(--body); }
+  .rule-list { margin-top:26px; padding:0; list-style:none; border-top:1px solid var(--line); }
+  .rule-list li { display:grid; grid-template-columns:30px minmax(0,1fr); gap:12px; padding:15px 0; border-bottom:1px solid var(--line); font-size:15.5px; line-height:1.56; color:var(--body); }
+  .rule-list li::before { content:"+"; color:var(--green); font-family:var(--mono); font-size:19px; line-height:1.2; }
+  .table-wrap { overflow-x:auto; margin-top:30px; }
+  table { width:100%; min-width:610px; border-collapse:collapse; font-size:15px; background:#fff; }
+  th { padding:12px 14px; text-align:left; border-bottom:1px solid var(--ink); color:var(--muted); font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; }
+  td { padding:14px; border-bottom:1px solid var(--line); color:var(--body); vertical-align:top; line-height:1.45; }
+  td:first-child { color:var(--ink); font-weight:600; }
+  .note { margin-top:26px; padding:18px 22px; border-left:3px solid var(--green); background:var(--tint); color:#17372c; font-size:16px; line-height:1.6; }
+  .boundary { margin-top:30px; padding:25px 28px; background:#f7efe7; border-left:3px solid #a8551f; color:#5d3316; font-size:15.5px; line-height:1.62; }
+  .footer { display:flex; justify-content:space-between; gap:24px; padding:26px 0; border-top:1px solid var(--line); color:var(--muted); font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+  .footer a { color:var(--muted); text-decoration:none; }
+  @media (max-width:900px) { .hero { grid-template-columns:1fr; gap:36px; } .scoreboard,.workflow { grid-template-columns:repeat(2,minmax(0,1fr)); } .grid3 { grid-template-columns:1fr; } }
+  @media (max-width:700px) { .wrap { padding:0 20px; } .head { align-items:flex-start; } .head nav { gap:14px; flex-wrap:wrap; justify-content:flex-end; } .hero { padding:48px 0 42px; } .deck { font-size:17.5px; } .section { padding-top:64px; } .section-head { grid-template-columns:1fr; gap:0; } .num { padding-top:0; } .grid2,.scoreboard,.workflow { grid-template-columns:1fr; } .btn { width:100%; } .footer { flex-direction:column; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <a href="/">Nathan Gomes</a>
+    <nav><a href="/#projects">Projects</a><a href="https://partner-signal.onrender.com" target="_blank" rel="noreferrer">Live demo</a><a href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">GitHub</a></nav>
+  </header>
+</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Professional services · Partner operations · FastAPI</p>
+      <h1>PartnerSignal</h1>
+      <p class="deck">A fictional partner-operations workspace that helps turn discovery conversations into visible follow-up plans, specialist handoffs, and relevant professional-services conversations.</p>
+      <p class="callout"><b>The project question:</b> how can a partner-facing team keep customer context, opportunity fit, and the next helpful action clear without allowing a scoring system to replace human qualification?</p>
+      <div class="btnrow"><a class="btn primary" href="https://partner-signal.onrender.com" target="_blank" rel="noreferrer">Launch PartnerSignal</a><a class="btn ghost" href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">View source on GitHub</a></div>
+    </div>
+    <dl class="facts">
+      <div><dt>Built for</dt><dd>Professional-services and customer-success workflows</dd></div>
+      <div><dt>Data</dt><dd>Six fictional Canadian reseller partners</dd></div>
+      <div><dt>Decision model</dt><dd>Transparent, reviewable service-fit rules</dd></div>
+      <div><dt>Boundary</dt><dd>Not connected to Ingram Micro, Xvantage, or a real CRM</dd></div>
+    </dl>
+  </section>
+
+  <section class="scoreboard" aria-label="Project scope">
+    <div class="score"><p>Partners</p><strong>6</strong><span>fictional partner records</span></div>
+    <div class="score"><p>Service paths</p><strong>5</strong><span>cloud, security, networking, AI, training</span></div>
+    <div class="score"><p>Priority signal</p><strong>72-92</strong><span>visible scoring range in the seeded demo</span></div>
+    <div class="score"><p>Automation</p><strong>5</strong><span>tested application behaviours</span></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">01</div><div><p class="eyebrow">The operating problem</p><h2>Useful outreach starts with context, not a generic lead list.</h2><p class="lede">Partner-facing teams need a concise, reliable view of what was said, which customer need might be real, who should help, and what happens next. When that evidence is scattered across calls, notes, and reminders, opportunities go stale and handoffs lose context.</p></div></div>
+    <div class="grid3">
+      <article class="card"><p class="kicker">Discovery</p><h3>Capture the actual problem</h3><p>Each record preserves the partner, customer challenge, notes, region, current stage, and the date the conversation needs attention again.</p></article>
+      <article class="card"><p class="kicker">Qualification</p><h3>Show why an option fits</h3><p>Service suggestions come with the observable signals that caused them, rather than a black-box label that cannot be challenged.</p></article>
+      <article class="card"><p class="kicker">Follow-through</p><h3>Give the person a next step</h3><p>The detail view prepares a draft outreach message and names the right type of technical specialist, leaving the decision with the user.</p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">02</div><div><p class="eyebrow">Workflow design</p><h2>From a discovery note to a credible handoff.</h2><p class="lede">The application is intentionally compact. Its job is to keep the signal, evidence, and action together so a person can move a conversation forward with a clear reason.</p></div></div>
+    <div class="workflow">
+      <article class="step"><b>01 · CAPTURE</b><h3>Record context</h3><p>Store partner details, the stated customer challenge, discovery notes, current opportunity stage, and a next follow-up date.</p><div class="chips"><span>SQLite</span><span>CRM record</span></div></article>
+      <article class="step"><b>02 · INTERPRET</b><h3>Route the need</h3><p>Rules map evidence such as legacy infrastructure, ransomware concerns, or AI governance needs to an appropriate starting service.</p><div class="chips"><span>Python rules</span><span>Explainable</span></div></article>
+      <article class="step"><b>03 · REVIEW</b><h3>Check the evidence</h3><p>The user sees the fit score, rationale, discovery notes, and specialist recommendation before deciding whether the opportunity is qualified.</p><div class="chips"><span>Human review</span><span>Pipeline</span></div></article>
+      <article class="step"><b>04 · ACT</b><h3>Prepare the follow-up</h3><p>A tailored discovery draft creates a useful starting point. The associate adapts it, confirms the need, and records the outcome.</p><div class="chips"><span>JavaScript</span><span>FastAPI</span></div></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">03</div><div><p class="eyebrow">Decision support</p><h2>A score is a way to prioritize attention, not an answer.</h2><p class="lede">PartnerSignal uses a declared service-fit score. It combines the strongest observed service signals with engagement, caps the result below 100, and presents the underlying reasons beside the result. This makes the system inspectable and gives an associate a useful queue without pretending it can determine a customer need on its own.</p></div></div>
+    <div class="grid2">
+      <article class="card"><p class="kicker">What it does</p><h3>Organizes the right questions</h3><p>It raises a cloud migration discovery when a note mentions retiring legacy infrastructure; it surfaces an AI readiness workshop when the concern is AI use cases and sensitive-data governance.</p><ul class="rule-list"><li>Uses only the information stored in the partner record.</li><li>Explains which signals matched the recommended path.</li><li>Shows a specialist handoff that fits the starting conversation.</li></ul></article>
+      <article class="card"><p class="kicker">What it does not do</p><h3>Replace qualification or relationship judgment</h3><p>The score is not a probability of sale, a prediction of revenue, or a statement that a customer will buy. A real professional-services process still requires a conversation, solution design, commercial review, and accurate CRM ownership.</p><ul class="rule-list"><li>Does not send outreach automatically.</li><li>Does not access live partner information.</li><li>Does not claim an integration with a vendor platform or CRM.</li></ul></article>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Observed discovery signal</th><th>Suggested starting path</th><th>Specialist handoff</th><th>Why it is helpful</th></tr></thead><tbody><tr><td>Legacy servers and retirement timeline</td><td>Cloud migration discovery</td><td>Cloud &amp; Hybrid IT</td><td>Frames a practical scoping conversation before a proposal.</td></tr><tr><td>Ransomware recovery and renewal risk</td><td>Cybersecurity assessment</td><td>Security Solutions</td><td>Connects the partner to a risk-focused starting point.</td></tr><tr><td>Unreliable warehouse connectivity</td><td>Networking assessment</td><td>Networking Practice</td><td>Keeps the conversation anchored in the operational symptom.</td></tr><tr><td>AI use cases with sensitive-data concern</td><td>AI readiness workshop</td><td>AI Solutions</td><td>Prompts a governance-aware discovery before implementation.</td></tr></tbody></table></div>
+    <p class="note"><b>Why transparency matters:</b> a partner or technical specialist can disagree with a recommendation, see what triggered it, and correct the record. That is more trustworthy than an unexplained score.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">04</div><div><p class="eyebrow">Engineering</p><h2>A small software system with an explicit operational model.</h2><p class="lede">The front end is a focused workspace, while the API separates the data store, deterministic recommendation logic, and application routes. The test suite protects the basic contract between them.</p></div></div>
+    <div class="grid3">
+      <article class="card"><p class="kicker">Application</p><h3>FastAPI service</h3><p>Serves the dashboard, partner queue, partner detail, generated outreach draft, follow-up completion action, and a health endpoint for deployment.</p><div class="chips"><span>FastAPI</span><span>Python</span><span>Docker</span></div></article>
+      <article class="card"><p class="kicker">Data</p><h3>SQLite partner store</h3><p>A small relational schema seeds repeatable fictional records and keeps the app restartable without an external dependency.</p><div class="chips"><span>SQLite</span><span>Seed data</span><span>JSON signals</span></div></article>
+      <article class="card"><p class="kicker">Quality</p><h3>Automated checks</h3><p>Tests cover health, overview totals, partner recommendations, outreach generation, and the follow-up completion workflow. GitHub Actions runs them on each push.</p><div class="chips"><span>pytest</span><span>Ruff</span><span>CI</span></div></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">05</div><div><p class="eyebrow">Role connection</p><h2>Technology helps make partner conversations more prepared and more accountable.</h2><p class="lede">For a professional-services associate, the value is not merely a dashboard. It is the ability to understand a partner's stated problem, follow through with appropriate expertise, maintain a dependable opportunity record, and communicate the rationale behind the next move.</p></div></div>
+    <div class="grid2"><article class="card"><p class="kicker">Customer success</p><h3>Build confidence through clarity</h3><p>A stakeholder who is discussing a cybersecurity, cloud, networking, or AI initiative needs to feel that their context was heard. Clear notes, a relevant specialist, and a timely follow-up make that visible.</p></article><article class="card"><p class="kicker">Data and automation</p><h3>Use tools to strengthen, not obscure, judgment</h3><p>A structured workflow can make follow-through more consistent and help teams identify patterns across opportunities. The important constraint is that a person can inspect, question, and improve the recommendation.</p></article></div>
+    <p class="boundary"><b>Portfolio-demo boundary:</b> all people, companies, opportunities, and notes in PartnerSignal are fictional. The project is not affiliated with or integrated into Ingram Micro, Xvantage, or any live CRM. It demonstrates a general workflow pattern for professional-services partner operations.</p>
+  </section>
+
+  <section class="section" style="text-align:center;border-top:1px solid var(--line);margin-top:84px;padding-top:78px">
+    <p class="eyebrow">Explore the build</p>
+    <h2 style="margin:16px auto 0;max-width:23ch">Open the workspace and trace a partner conversation end to end.</h2>
+    <p class="lede" style="margin-left:auto;margin-right:auto">The free instance may take a minute to wake up. The application uses fictional data only.</p>
+    <div class="btnrow" style="justify-content:center"><a class="btn primary" href="https://partner-signal.onrender.com" target="_blank" rel="noreferrer">Launch PartnerSignal</a><a class="btn ghost" href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">Source on GitHub</a></div>
+  </section>
+</main>
+
+<div class="wrap"><footer class="footer"><span>PartnerSignal &middot; Nathan Gomes</span><a href="/#projects">All projects</a></footer></div>
+</body>
+</html>
