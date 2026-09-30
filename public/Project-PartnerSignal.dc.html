@@ -82,99 +82,120 @@
   .shot figcaption { padding: 12px 14px; background: var(--card); border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; color: var(--body); }
   .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
   @media (max-width: 760px) { .shots { grid-template-columns: minmax(0, 1fr); } }
+  /* ---- first-impression layout ---- */
+  .lead { padding:64px 0 34px; }
+  .lead .eyebrow { display:inline-flex; gap:8px; align-items:center; }
+  .lead h1 { margin-top:18px; font-size:clamp(40px,5.4vw,70px); line-height:1.02; letter-spacing:-.025em; }
+  .lead .deck { max-width:62ch; margin-top:22px; font-size:21px; line-height:1.5; color:var(--body); }
+  .lead .deck b { color:var(--ink); font-weight:600; }
+  .cta { display:flex; flex-wrap:wrap; align-items:center; gap:12px 16px; margin-top:30px; }
+  .btn.big { min-height:54px; padding:0 26px; font-size:16px; }
+  .cta .hint { font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .frame { margin-top:40px; border:1px solid #d9d4ca; border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 30px 60px -30px rgba(22,24,26,.35), 0 12px 24px -12px rgba(22,24,26,.18); }
+  .frame-bar { display:flex; align-items:center; gap:7px; height:36px; padding:0 14px; background:#f1eee8; border-bottom:1px solid #e3ded4; }
+  .frame-bar i { width:11px; height:11px; border-radius:50%; background:#d8d2c7; }
+  .frame-bar span { margin-left:12px; padding:3px 12px; border-radius:6px; background:#fff; font-family:var(--mono); font-size:11.5px; color:var(--muted); }
+  .frame video { display:block; width:100%; height:auto; background:#f5f6f3; }
+  .frame-cap { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:13.5px; color:var(--muted); }
+  .jobmap { margin-top:34px; border-top:2px solid var(--ink); }
+  .jobrow { display:grid; grid-template-columns:minmax(0,.9fr) 36px minmax(0,1.3fr); gap:20px; align-items:start; padding:20px 0; border-bottom:1px solid var(--line); }
+  .jobrow .ask { font-size:17px; font-weight:600; line-height:1.4; }
+  .jobrow .ask small { display:block; margin-bottom:6px; font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .jobrow .tick { display:grid; place-items:center; width:30px; height:30px; margin-top:18px; border-radius:50%; background:var(--tint); color:var(--green); font-weight:700; }
+  .jobrow .built { font-size:16px; line-height:1.55; color:var(--body); }
+  .jobrow .built b { display:block; margin-bottom:4px; color:var(--ink); font-size:17px; }
+  .jobrow .built small { display:block; margin-top:6px; font-family:var(--mono); font-size:11.5px; color:var(--green); }
+  .proof { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:1px; margin-top:56px; background:var(--line); border:1px solid var(--line); }
+  .proof div { padding:18px 16px; background:#fff; }
+  .proof strong { display:block; font-size:28px; line-height:1; letter-spacing:-.02em; }
+  .proof span { display:block; margin-top:8px; font-size:13px; line-height:1.4; color:var(--body); }
+  .shot2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:30px; }
+  .shot { border:1px solid var(--line); background:#fff; }
+  .shot img { display:block; width:100%; height:auto; }
+  .shot figcaption { padding:12px 16px; border-top:1px solid var(--line); font-size:14px; line-height:1.55; color:var(--body); }
+  @media (max-width:900px) { .proof { grid-template-columns:repeat(3,minmax(0,1fr)); } .shot2 { grid-template-columns:1fr; } }
+  @media (max-width:700px) { .lead { padding:40px 0 20px; } .lead .deck { font-size:18px; } .jobrow { grid-template-columns:1fr; gap:6px; } .jobrow .tick { display:none; } .proof { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (prefers-reduced-motion: reduce) { .frame video { display:none; } .frame .poster-fallback { display:block !important; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="head">
     <a href="/">Nathan Gomes</a>
-    <nav><a href="/#projects">Projects</a><a href="https://partner-signal-arm6.onrender.com" target="_blank" rel="noreferrer">Live demo</a><a href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">GitHub</a></nav>
+    <nav><a href="/#projects">Projects</a><a href="https://partner-signal-arm6.onrender.com/?tour=1" target="_blank" rel="noreferrer">Live demo</a><a href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">GitHub</a></nav>
   </header>
 </div>
 
 <main class="wrap">
-  <section class="hero">
-    <div>
-      <p class="eyebrow">Professional services · Partner operations · Applied AI</p>
-      <h1>PartnerSignal</h1>
-      <p class="deck">A partner prospecting, qualification and follow-up workspace for professional-services teams. It finds the reseller partner worth calling, turns rough call notes into a qualified opportunity with AI, routes the work to the right technical specialist, and keeps every follow-up on time.</p>
-      <p class="callout"><b>The project question:</b> what would a professional-services associate need to start better partner conversations every day, qualify them honestly, and follow through, using AI to do the busywork without handing it the judgement?</p>
-      <div class="btnrow"><a class="btn primary" href="https://partner-signal-arm6.onrender.com" target="_blank" rel="noreferrer">Launch PartnerSignal</a><a class="btn ghost" href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">View source on GitHub</a></div>
+  <section class="lead">
+    <p class="eyebrow">Built for professional-services and customer-success associate roles</p>
+    <h1>PartnerSignal</h1>
+    <p class="deck">I built the workspace I would use in this job. It <b>finds which reseller partner to call</b>, <b>turns a phone call into a qualified opportunity</b> with AI, <b>brings in the right specialist</b>, and <b>keeps every follow-up on time</b>. It is live, and you can try it in two minutes.</p>
+    <div class="cta">
+      <a class="btn primary big" href="https://partner-signal-arm6.onrender.com/?tour=1" target="_blank" rel="noreferrer">Try the guided demo</a>
+      <a class="btn ghost big" href="#job">See how it maps to the role</a>
+      <span class="hint">7-step tour · no sign-up · fictional data</span>
     </div>
-    <dl class="facts">
-      <div><dt>Built for</dt><dd>Professional-services and customer-success associate workflows</dd></div>
-      <div><dt>AI</dt><dd>Claude API with structured outputs, plus a deterministic fallback engine</dd></div>
-      <div><dt>Stack</dt><dd>FastAPI, SQLAlchemy, React, TypeScript</dd></div>
-      <div><dt>Quality</dt><dd>33 automated tests, 92% API coverage, CI on every push</dd></div>
-    </dl>
+    <figure class="frame">
+      <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>partner-signal-arm6.onrender.com</span></div>
+      <video autoplay muted loop playsinline preload="auto" poster="assets/partnersignal-demo-poster.jpg" aria-label="Screen recording: the daily queue, a call turned into a qualified opportunity, a specialist handoff, an outreach draft reviewed and logged, and the pipeline">
+        <source src="assets/partnersignal-demo.mp4" type="video/mp4">
+      </video>
+      <img class="poster-fallback" src="assets/partnersignal-demo-poster.jpg" alt="PartnerSignal daily queue" style="display:none;width:100%">
+    </figure>
+    <p class="frame-cap"><span>Recorded from the live app: ranked day, call capture, specialist handoff, reviewed outreach, pipeline.</span><a href="https://partner-signal-arm6.onrender.com" target="_blank" rel="noreferrer">Open it yourself</a></p>
   </section>
 
-  <section class="scoreboard" aria-label="Project scope">
-    <div class="score"><p>Partners</p><strong>18</strong><span>fictional Canadian resellers, MSPs and integrators</span></div>
-    <div class="score"><p>Prospect signals</p><strong>36</strong><span>renewals, end-of-support dates, orders, marketplace activity</span></div>
-    <div class="score"><p>Service catalog</p><strong>6 &times; 17</strong><span>practices and services, from assessments to training</span></div>
-    <div class="score"><p>Decision rules</p><strong>4</strong><span>explainable score components, each with written reasons</span></div>
-  </section>
-
-  <section class="section">
-    <div class="section-head"><div class="num">01</div><div><p class="eyebrow">The role, translated into software</p><h2>Every screen maps to a part of the job.</h2><p class="lede">I started from the day-to-day responsibilities of an early-career professional-services associate and built one working feature for each, so the project shows how I would actually do the work, not only that I can write code.</p></div></div>
-    <div class="table-wrap"><table><thead><tr><th>Responsibility</th><th>What PartnerSignal does</th></tr></thead><tbody>
-      <tr><td>Reach out to reseller partners</td><td>A signal feed built from renewal calendars, end-of-support dates, purchase patterns and cloud-marketplace activity, plus a whitespace map of where each partner sells product but attaches no services.</td></tr>
-      <tr><td>Uncover and qualify customer needs</td><td><i>Capture a call</i> structures rough notes into challenges, practice fit and BANT qualification, quoting the notes as evidence. Stage gates stop an opportunity advancing without that evidence.</td></tr>
-      <tr><td>Work with sales and technical specialists</td><td>Routing suggests the least-loaded specialist in the practice and generates a handoff brief: context, challenge, proposed scope, open questions and the ask.</td></tr>
-      <tr><td>Use AI and CRM data to personalize outreach</td><td>Drafts for introductions, follow-ups, specialist meetings and re-engagement, each explaining which record every line relies on. A person edits, checks and sends.</td></tr>
-      <tr><td>Follow through and keep an accurate pipeline</td><td>A ranked daily queue, follow-up dates set automatically from each stage's cadence, a drag-and-drop pipeline, win/loss reasons, reports and a CRM-style CSV export.</td></tr>
-      <tr><td>Learn to discuss AI and services with partners</td><td>A playbook per practice: what to listen for, what to ask, what to offer, and AI use cases worth raising.</td></tr>
-    </tbody></table></div>
-  </section>
-
-  <section class="section">
-    <div class="section-head"><div class="num">02</div><div><p class="eyebrow">The workspace</p><h2>Start the day with a ranked list, not a blank CRM.</h2><p class="lede">The Today view ranks overdue follow-ups, stalled deals, opportunities waiting for a specialist and fresh signals into one queue. Each row lists the reasons it is there, and the week's touch goal sits above it.</p></div></div>
-    <figure class="shot"><img src="assets/partnersignal-today.png" alt="Today view: weekly touch goal, due and overdue counts, and a ranked priority queue where each row lists its reasons" loading="lazy"><figcaption><b>Today.</b> Fourteen ranked conversations, each with its practice, due state, score and the reasons behind its rank.</figcaption></figure>
-    <div class="shots">
-      <figure class="shot"><img src="assets/partnersignal-whitespace.png" alt="Whitespace map: partners by practice, showing attached services and estimated services gaps shaded by size" loading="lazy"><figcaption><b>Whitespace map.</b> Where each partner sells product but has never attached services, sized at a 9% attach benchmark.</figcaption></figure>
-      <figure class="shot"><img src="assets/partnersignal-pipeline.png" alt="Pipeline board with five stage columns and opportunity cards showing value, priority strip and due state" loading="lazy"><figcaption><b>Pipeline.</b> Drag a card to change stage; gates check the qualification evidence first.</figcaption></figure>
+  <section class="section" id="job">
+    <div class="section-head"><div class="num">01</div><div><p class="eyebrow">The role, done before day one</p><h2>Every responsibility in the posting has a working feature.</h2><p class="lede">I started from the job description and built one feature for each line of it, so I could understand the work, and show it, instead of just describing it.</p></div></div>
+    <div class="jobmap">
+      <div class="jobrow"><p class="ask"><small>The job asks</small>Reach out to reseller partners and introduce services</p><span class="tick" aria-hidden="true">✓</span><p class="built"><b>Know exactly who to call, and why</b>A signal feed built from renewals, products reaching end of support and purchase patterns, plus a map of the services each partner has never sold.<small>Signals · Whitespace map</small></p></div>
+      <div class="jobrow"><p class="ask"><small>The job asks</small>Ask questions to understand challenges and qualify opportunities</p><span class="tick" aria-hidden="true">✓</span><p class="built"><b>Turn a phone call into a qualified opportunity</b>Paste rough notes; the AI assistant returns the customer's problem, the best-fit service and budget, authority, need and timeline, quoting the notes as evidence.<small>Capture a call · BANT</small></p></div>
+      <div class="jobrow"><p class="ask"><small>The job asks</small>Work with sales and technical specialists</p><span class="tick" aria-hidden="true">✓</span><p class="built"><b>Hand off to the right specialist in one click</b>Routes the deal to the least-busy specialist in that service line and writes the handoff brief: context, challenge, scope, open questions.<small>Specialist routing · Handoff brief</small></p></div>
+      <div class="jobrow"><p class="ask"><small>The job asks</small>Use AI tools and CRM data to personalize outreach and manage follow-up</p><span class="tick" aria-hidden="true">✓</span><p class="built"><b>Personal outreach, with a person in control</b>Drafts e-mails that explain which record each line came from. You edit, tick a review checklist, then log it. Every touch sets the next follow-up date.<small>AI drafts · Follow-up cadence</small></p></div>
+      <div class="jobrow"><p class="ask"><small>The job asks</small>Build knowledge of AI solutions and discuss use cases</p><span class="tick" aria-hidden="true">✓</span><p class="built"><b>A playbook for every service line</b>What to listen for, what to ask, what to offer, and which AI use cases to raise, across cybersecurity, cloud, networking, AI, lifecycle and training.<small>Playbook</small></p></div>
+      <div class="jobrow"><p class="ask"><small>The job asks</small>Track activity and maintain an accurate pipeline</p><span class="tick" aria-hidden="true">✓</span><p class="built"><b>A pipeline that can't be faked</b>A deal can't move to Qualified without the evidence. Weekly reports show pipeline, win rate and follow-through, with a CRM-ready export.<small>Pipeline · Reports</small></p></div>
+    </div>
+    <div class="proof" aria-label="Scope">
+      <div><strong>7</strong><span>workflows, from prospecting to reporting</span></div>
+      <div><strong>18</strong><span>reseller partners across Canada</span></div>
+      <div><strong>36</strong><span>prospect signals with deadlines</span></div>
+      <div><strong>6</strong><span>service lines, 17 services</span></div>
+      <div><strong>0</strong><span>messages ever sent automatically</span></div>
+      <div><strong>39</strong><span>automated tests, live on the web</span></div>
     </div>
   </section>
 
   <section class="section">
-    <div class="section-head"><div class="num">03</div><div><p class="eyebrow">AI with a person in the loop</p><h2>The model does the structuring. The associate makes the call.</h2><p class="lede">Call capture and outreach drafting use the Claude API with structured outputs validated against Pydantic models. Without an API key, or if a call fails or hits the demo limit, the same endpoints answer from a deterministic rules engine that returns the same shape, and the interface says which one ran.</p></div></div>
-    <figure class="shot"><img src="assets/partnersignal-capture.png" alt="Capture a call: call notes with evidence highlighted, and the structured result with service fit, BANT levels with quotes, follow-up questions and risks" loading="lazy"><figcaption><b>Capture a call.</b> Every judgement quotes the notes, highlighted in place. Levels can be changed before anything is saved.</figcaption></figure>
-    <div class="grid2">
-      <article class="card"><p class="kicker">Guard rails</p><h3>Evidence, not invention</h3><ul class="rule-list"><li>Quotes must be verbatim; anything not discussed stays unknown and becomes a follow-up question.</li><li>Prompts carry the service catalog and BANT definitions, and forbid invented names, numbers or dates.</li><li>Refusals, truncated responses and API errors fall back to the rules engine instead of failing.</li><li>Per-visitor and daily limits on live model calls.</li></ul></article>
-      <article class="card"><p class="kicker">Outreach</p><h3>Drafts that explain themselves</h3><p>Each draft lists which record every personalized line came from. Approving it requires ticking a review checklist, edits are recorded, and nothing is ever sent by the system: the associate sends it from their own mail client and the touch is logged.</p></article>
-    </div>
-    <figure class="shot"><img src="assets/partnersignal-composer.png" alt="Outreach drawer with purpose, tone and engine options, an editable draft, the reasons behind each line and a review checklist" loading="lazy"><figcaption><b>Outreach drawer.</b> Purpose, tone and engine options, an editable draft, the reasons behind it, and a checklist before it can be logged.</figcaption></figure>
-  </section>
-
-  <section class="section">
-    <div class="section-head"><div class="num">04</div><div><p class="eyebrow">Decision support</p><h2>A priority score anyone can argue with.</h2><p class="lede">Every opportunity carries a 0&ndash;100 priority score made of four capped parts. The breakdown lists the reason for every point, so a manager or specialist can see why something is at the top and correct the record if it is wrong. It ranks attention; it is not a probability of winning, and the interface says so.</p></div></div>
-    <div class="table-wrap"><table><thead><tr><th>Component</th><th>Max</th><th>Driven by</th></tr></thead><tbody>
-      <tr><td>Service fit</td><td>25</td><td>Signal strength, the customer's own words, whether the partner has resold this practice before</td></tr>
-      <tr><td>Qualification</td><td>30</td><td>BANT evidence: budget, authority, need and timeline, 7.5 points each at their strongest level</td></tr>
-      <tr><td>Momentum</td><td>20</td><td>Days since the last touch, minus a penalty for stalling in a stage</td></tr>
-      <tr><td>Urgency</td><td>25</td><td>Overdue or upcoming follow-ups and customer deadlines within 120 days</td></tr>
-    </tbody></table></div>
-    <div class="shots">
-      <figure class="shot"><img src="assets/partnersignal-opportunity.png" alt="Opportunity workspace: priority breakdown with reasons, BANT editor, specialist routing with load and a handoff brief" loading="lazy"><figcaption><b>Opportunity workspace.</b> Score breakdown, BANT editor, specialist routing and the handoff brief.</figcaption></figure>
-      <figure class="shot"><img src="assets/partnersignal-reports.png" alt="Reports: open pipeline, win rate, won value, stalled count, funnel by stage, pipeline by practice and weekly touches" loading="lazy"><figcaption><b>Reports.</b> Pipeline health, win rate and cycle time, and follow-through by week.</figcaption></figure>
+    <div class="section-head"><div class="num">02</div><div><p class="eyebrow">AI with judgement</p><h2>The AI does the busywork. A person makes the calls.</h2><p class="lede">Call notes are structured by the Claude API when a key is configured, or by a built-in rules engine that returns exactly the same format. Either way, every judgement quotes the notes it came from, can be changed before saving, and nothing is ever sent automatically.</p></div></div>
+    <div class="shot2">
+      <figure class="shot"><img src="assets/partnersignal-capture.png" alt="Call notes with evidence highlighted beside the structured qualification" loading="lazy"><figcaption><b>Capture a call.</b> The evidence behind each field is highlighted in the original notes.</figcaption></figure>
+      <figure class="shot"><img src="assets/partnersignal-composer.png" alt="Outreach draft with the reasons behind each line and a review checklist" loading="lazy"><figcaption><b>Outreach.</b> Each line says which record it came from; logging it requires the review checklist.</figcaption></figure>
     </div>
   </section>
 
   <section class="section">
-    <div class="section-head"><div class="num">05</div><div><p class="eyebrow">Engineering</p><h2>Built like a small production service.</h2><p class="lede">One catalog module defines the practices, services, stages and playbooks, and the scoring rules, AI prompts and interface all read from it. Business rules live in a service layer with their own tests; the HTTP layer only validates input and maps errors.</p></div></div>
+    <div class="section-head"><div class="num">03</div><div><p class="eyebrow">Decisions you can explain</p><h2>A priority score that shows its working.</h2><p class="lede">Every conversation gets a 0&ndash;100 priority made of four parts anyone can check: service fit, qualification, momentum and urgency. It ranks where attention should go first; it never pretends to be a probability of winning.</p></div></div>
+    <div class="shot2">
+      <figure class="shot"><img src="assets/partnersignal-opportunity.png" alt="Opportunity workspace with the score breakdown, qualification editor and specialist routing" loading="lazy"><figcaption><b>Opportunity.</b> The reason for every point, the qualification editor, and one-click specialist routing.</figcaption></figure>
+      <figure class="shot"><img src="assets/partnersignal-pipeline.png" alt="Pipeline board with stage columns and priority bars on each card" loading="lazy"><figcaption><b>Pipeline.</b> Drag a card forward and the stage gate checks the evidence first.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">04</div><div><p class="eyebrow">Built like real software</p><h2>A small production service, not a mock-up.</h2><p class="lede">A Python API with a React interface, tested on every change and deployed automatically. It reseeds each morning so the demo always has something due today.</p></div></div>
     <div class="grid3">
-      <article class="card"><p class="kicker">API</p><h3>FastAPI and SQLAlchemy</h3><p>Typed request models, stage-gate conflicts returned as HTTP 409 with a to-do list, relative-date seeding so the demo always has something due, and security headers.</p><div class="chips"><span>Python 3.12</span><span>Pydantic v2</span><span>SQLAlchemy 2.0</span></div></article>
-      <article class="card"><p class="kicker">Front end</p><h3>React and TypeScript</h3><p>Seven views with TanStack Query caching, drag-and-drop stages, keyboard focus and screen-reader labels, and a validated colour palette that never uses colour alone to carry meaning.</p><div class="chips"><span>React</span><span>TypeScript</span><span>Vite</span></div></article>
-      <article class="card"><p class="kicker">Quality</p><h3>Tested and shipped by CI</h3><p>pytest at 92% coverage and Vitest component tests, with Ruff, mypy and strict TypeScript. GitHub Actions builds the multi-stage Docker image and smoke-tests it before Render serves it.</p><div class="chips"><span>pytest</span><span>Vitest</span><span>Docker</span><span>GitHub Actions</span></div></article>
+      <article class="card"><p class="kicker">Application</p><h3>FastAPI + React</h3><p>Typed API, SQLAlchemy data model, and a TypeScript interface with a guided tour, keyboard support and a mobile layout.</p><div class="chips"><span>Python</span><span>FastAPI</span><span>React</span><span>TypeScript</span></div></article>
+      <article class="card"><p class="kicker">AI</p><h3>Claude API, safely</h3><p>Structured outputs validated against a schema, a fallback engine with the same format, rate limits, and evidence quoted for every judgement.</p><div class="chips"><span>Claude API</span><span>Pydantic</span></div></article>
+      <article class="card"><p class="kicker">Quality</p><h3>Tested and shipped by CI</h3><p>39 automated tests, lint and type checks on every push; a Docker image deployed to Render and kept warm during business hours.</p><div class="chips"><span>pytest</span><span>Vitest</span><span>Docker</span><span>GitHub Actions</span></div></article>
     </div>
   </section>
 
   <section class="section" style="text-align:center;border-top:1px solid var(--line);margin-top:84px;padding-top:78px">
-    <p class="eyebrow">Explore the build</p>
-    <h2 style="margin:16px auto 0;max-width:23ch">Open the workspace and work today's queue.</h2>
-    <p class="lede" style="margin-left:auto;margin-right:auto">Try <i>Capture a call</i> with a sample, drag a card past a stage gate, or draft outreach from a signal. The free instance may take a minute to wake up; all data is fictional.</p>
-    <div class="btnrow" style="justify-content:center"><a class="btn primary" href="https://partner-signal-arm6.onrender.com" target="_blank" rel="noreferrer">Launch PartnerSignal</a><a class="btn ghost" href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">Source on GitHub</a></div>
+    <p class="eyebrow">Two minutes, no sign-up</p>
+    <h2 style="margin:16px auto 0;max-width:22ch">Take the guided tour of a day in the role.</h2>
+    <p class="lede" style="margin-left:auto;margin-right:auto">Seven steps, each tied to a line of the job description. All companies and people are fictional.</p>
+    <div class="btnrow" style="justify-content:center"><a class="btn primary big" href="https://partner-signal-arm6.onrender.com/?tour=1" target="_blank" rel="noreferrer">Try the guided demo</a><a class="btn ghost big" href="https://github.com/Nathan-Gomes/partner-signal" target="_blank" rel="noreferrer">Source on GitHub</a></div>
   </section>
 </main>
 
