@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ReliabilityML | Nathan Gomes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ReliabilityML: incident detection, classification with an open-set guard, SLO burn-rate alerts, a cited RAG assistant, drift-gated retraining and a deployment gate, on synthetic telemetry. By Nathan Gomes.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReliabilityML: incident intelligence and MLOps">
+<meta property="og:description" content="Detects incidents in 2.8 minutes with no false alerts in the test week, names the cause at 0.96 macro F1 vs 0.83 for runbook rules, and routes an unseen failure type to unknown.">
+<meta property="og:url" content="https://www.nathan-gomes.com/Project-ReliabilityML.dc.html">
+<link rel="stylesheet" href="./revamp.css">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#16181a; --paper:#fbfaf8; --card:#fff; --line:#e6e2db; --body:#3d4145; --muted:#686c71; --green:#1a6f57; --tint:#edf3f0; --wash:#f4f2ee; --mono:"IBM Plex Mono",ui-monospace,monospace; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,p,ul,ol,dl,dd,figure { margin:0; text-wrap:pretty; }
+  a { color:var(--ink); }
+  a:hover { color:var(--green); }
+  .wrap { max-width:1160px; margin:0 auto; padding:0 40px; }
+  .eyebrow { font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--green); }
+  .head { display:flex; align-items:baseline; justify-content:space-between; gap:32px; padding:26px 0; border-bottom:1px solid var(--line); }
+  .head a { font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; }
+  .head nav { display:flex; gap:24px; }
+  .head nav a { color:var(--muted); }
+  .hero { display:grid; grid-template-columns:minmax(0,1fr) 250px; gap:64px; align-items:end; padding:76px 0 54px; }
+  .hero h1 { max-width:16ch; margin-top:20px; font-size:clamp(40px,5.2vw,66px); line-height:1.02; letter-spacing:-.02em; }
+  .deck { max-width:61ch; margin-top:24px; font-size:20px; line-height:1.55; color:var(--body); }
+  .callout { max-width:68ch; margin-top:25px; padding:18px 22px; border-left:3px solid var(--green); background:var(--tint); color:#17372c; font-size:17px; line-height:1.55; }
+  .btnrow { display:flex; flex-wrap:wrap; gap:10px; margin-top:28px; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 20px; border:1px solid transparent; font-size:15px; font-weight:500; text-decoration:none; }
+  .primary { background:var(--ink); color:#fff; }
+  .primary:hover { background:var(--green); color:#fff; }
+  .ghost { border-color:#d5d0c7; background:#fff; }
+  .facts { display:grid; gap:18px; font-family:var(--mono); font-size:12px; line-height:1.5; }
+  .facts dt { margin-bottom:5px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; }
+  .facts dd { color:var(--body); }
+  .scoreboard { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; border-top:2px solid var(--ink); background:var(--line); }
+  .score { padding:22px 24px; background:#fff; }
+  .score p { font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); }
+  .score strong { display:block; margin-top:10px; font-size:32px; line-height:1; letter-spacing:-.02em; }
+  .score span { display:block; margin-top:8px; font-size:13px; line-height:1.45; color:var(--body); }
+  main { padding-bottom:94px; }
+  .section { padding-top:84px; }
+  .section-head { display:grid; grid-template-columns:64px minmax(0,1fr); gap:28px; }
+  .num { padding-top:8px; font-family:var(--mono); font-size:12px; letter-spacing:.08em; color:var(--muted); }
+  .section h2 { max-width:26ch; margin-top:12px; font-size:clamp(27px,3vw,35px); line-height:1.15; letter-spacing:-.015em; }
+  .lede { max-width:74ch; margin-top:14px; font-size:17px; line-height:1.62; color:var(--body); }
+  .grid3,.grid2 { display:grid; gap:1px; margin-top:32px; border:1px solid var(--line); background:var(--line); }
+  .grid3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .grid2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .card { padding:28px 26px 30px; background:#fff; }
+  .card .kicker { font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--green); }
+  .card h3 { margin-top:14px; font-size:20px; line-height:1.25; }
+  .card p { margin-top:10px; color:var(--body); font-size:15px; line-height:1.6; }
+  .workflow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; margin-top:32px; border:1px solid var(--line); background:var(--line); }
+  .step { padding:26px 24px 28px; background:#fff; }
+  .step b { color:var(--green); font-family:var(--mono); font-size:11px; letter-spacing:.08em; }
+  .step h3 { margin-top:14px; font-size:18px; line-height:1.25; }
+  .step p { margin-top:9px; color:var(--body); font-size:14.5px; line-height:1.55; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:15px; }
+  .chips span { padding:4px 8px; background:var(--wash); font-family:var(--mono); font-size:10px; color:var(--body); }
+  .rule-list { margin-top:26px; padding:0; list-style:none; border-top:1px solid var(--line); }
+  .rule-list li { display:grid; grid-template-columns:30px minmax(0,1fr); gap:12px; padding:15px 0; border-bottom:1px solid var(--line); font-size:15.5px; line-height:1.56; color:var(--body); }
+  .rule-list li::before { content:"+"; color:var(--green); font-family:var(--mono); font-size:19px; line-height:1.2; }
+  .table-wrap { overflow-x:auto; margin-top:30px; }
+  table { width:100%; min-width:610px; border-collapse:collapse; font-size:15px; background:#fff; }
+  th { padding:12px 14px; text-align:left; border-bottom:1px solid var(--ink); color:var(--muted); font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; }
+  td { padding:14px; border-bottom:1px solid var(--line); color:var(--body); vertical-align:top; line-height:1.45; }
+  td:first-child { color:var(--ink); font-weight:600; }
+  .note { margin-top:26px; padding:18px 22px; border-left:3px solid var(--green); background:var(--tint); color:#17372c; font-size:16px; line-height:1.6; }
+  .footer { display:flex; justify-content:space-between; gap:24px; padding:26px 0; border-top:1px solid var(--line); color:var(--muted); font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+  .footer a { color:var(--muted); text-decoration:none; }
+  @media (max-width:900px) { .hero { grid-template-columns:1fr; gap:36px; } .scoreboard,.workflow { grid-template-columns:repeat(2,minmax(0,1fr)); } .grid3 { grid-template-columns:1fr; } }
+  @media (max-width:700px) { .wrap { padding:0 20px; } .head { align-items:flex-start; } .head nav { gap:14px; flex-wrap:wrap; justify-content:flex-end; } .hero { padding:48px 0 42px; } .deck { font-size:17.5px; } .section { padding-top:64px; } .section-head { grid-template-columns:1fr; gap:0; } .num { padding-top:0; } .grid2,.scoreboard,.workflow { grid-template-columns:1fr; } .btn { width:100%; } .footer { flex-direction:column; } }
+  .shot { margin: 26px 0 0; border: 1px solid var(--line); background: #fff; }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot figcaption { padding: 12px 14px; background: var(--card); border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; color: var(--body); }
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  @media (max-width: 760px) { .shots { grid-template-columns: minmax(0, 1fr); } }
+  .fig { margin-top:30px; border:1px solid var(--line); background:#fff; }
+  .fig img { display:block; width:100%; height:auto; }
+  .fig figcaption { padding:12px 16px; border-top:1px solid var(--line); font-size:14px; line-height:1.55; color:var(--body); }
+  .figs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+  .figs .fig { margin-top:30px; }
+  .arch { margin-top:30px; padding:22px; background:#fff; border:1px solid var(--line); overflow-x:auto; }
+  .arch svg { display:block; min-width:760px; width:100%; height:auto; }
+  @media (max-width:760px) { .figs { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <a href="/">Nathan Gomes</a>
+    <nav><a href="/#projects">Projects</a><a href="https://github.com/Nathan-Gomes/reliabilityml" target="_blank" rel="noreferrer">GitHub</a></nav>
+  </header>
+</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Site reliability · MLOps · Applied AI</p>
+      <h1>ReliabilityML</h1>
+      <p class="deck">An incident intelligence platform on simulated telemetry. It decides when something is wrong, names the likely cause or admits it doesn't know, tracks error budgets, answers troubleshooting questions only from approved runbooks, and gates releases and model promotions on measured evidence.</p>
+      <p class="callout"><b>The project question:</b> can a small platform shorten the path from a raw alert to a decision an engineer can trust, and show honestly where machine learning beats a well-written rulebook and where it doesn't?</p>
+      <div class="btnrow"><a class="btn primary" href="https://github.com/Nathan-Gomes/reliabilityml" target="_blank" rel="noreferrer">View source on GitHub</a><a class="btn ghost" href="https://github.com/Nathan-Gomes/reliabilityml#results-held-out-test-week-different-random-seed-from-training" target="_blank" rel="noreferrer">Read the results</a></div>
+    </div>
+    <dl class="facts">
+      <div><dt>Built for</dt><dd>Site reliability, MLOps and AI platform engineering roles</dd></div>
+      <div><dt>Stack</dt><dd>Python, scikit-learn, MLflow, FastAPI, Prometheus, Grafana, React, Terraform</dd></div>
+      <div><dt>Evaluation</dt><dd>A held-out test week on a different random seed; every model compared with a baseline</dd></div>
+      <div><dt>Data</dt><dd>Synthetic services, telemetry, incidents, runbooks and postmortems</dd></div>
+    </dl>
+  </section>
+
+  <section class="scoreboard" aria-label="Headline results">
+    <div class="score"><p>Time to detect</p><strong>2.8 min</strong><span>median, 95% of incidents caught, no false alerts in the test week</span></div>
+    <div class="score"><p>Classifier</p><strong>0.96</strong><span>macro F1 on real alerts, vs 0.83 for rules written from the runbooks</span></div>
+    <div class="score"><p>Unseen failure</p><strong>5 of 5</strong><span>held-out memory-leak alerts routed to "unknown", not guessed</span></div>
+    <div class="score"><p>Assistant</p><strong>80%</strong><span>of unanswerable questions refused, with no answerable ones refused</span></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">01</div><div><p class="eyebrow">The problem</p><h2>Alert fatigue, slow root-cause analysis, and runbooks nobody can find.</h2><p class="lede">On-call engineers lose time in three places: alerts that fire on harmless blips, the first minutes spent working out what kind of failure this is, and hunting for the runbook section that says what to do. A confident wrong answer in any of the three is worse than none, so every automated step here has to show its evidence and know when to stay quiet.</p></div></div>
+    <div class="arch"><svg viewBox="0 0 980 300" role="img" aria-label="Pipeline: telemetry generator to feature windows, then detection, classification, SLO engine and drift; results flow to the model registry, API, dashboards and assistant.">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#686c71"/></marker></defs>
+  <g font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#16181a">
+    <rect x="10" y="110" width="150" height="80" fill="#f4f2ee" stroke="#c9c4ba"/><text x="85" y="140" text-anchor="middle" font-weight="600">Telemetry generator</text><text x="85" y="160" text-anchor="middle" font-size="11.5" fill="#3d4145">5 services, 15 s signals</text><text x="85" y="176" text-anchor="middle" font-size="11.5" fill="#3d4145">faults + ground truth</text>
+    <rect x="200" y="110" width="140" height="80" fill="#f4f2ee" stroke="#c9c4ba"/><text x="270" y="145" text-anchor="middle" font-weight="600">Feature windows</text><text x="270" y="165" text-anchor="middle" font-size="11.5" fill="#3d4145">1- and 5-minute, causal</text>
+    <rect x="390" y="20" width="170" height="64" fill="#fff" stroke="#16181a"/><text x="475" y="46" text-anchor="middle" font-weight="600">Detection</text><text x="475" y="66" text-anchor="middle" font-size="10.5" fill="#3d4145">robust EWMA vs Isolation Forest</text>
+    <rect x="390" y="118" width="170" height="64" fill="#fff" stroke="#16181a"/><text x="475" y="144" text-anchor="middle" font-weight="600">Classification</text><text x="475" y="164" text-anchor="middle" font-size="10.5" fill="#3d4145">forest + open-set guard vs rules</text>
+    <rect x="390" y="216" width="170" height="64" fill="#fff" stroke="#16181a"/><text x="475" y="242" text-anchor="middle" font-weight="600">SLO engine</text><text x="475" y="262" text-anchor="middle" font-size="11.5" fill="#3d4145">budgets, burn-rate alerts</text>
+    <rect x="610" y="118" width="150" height="64" fill="#edf3f0" stroke="#1a6f57"/><text x="685" y="144" text-anchor="middle" font-weight="600">Model registry</text><text x="685" y="164" text-anchor="middle" font-size="11.5" fill="#3d4145">MLflow, drift-gated</text>
+    <rect x="810" y="20" width="160" height="64" fill="#fff" stroke="#16181a"/><text x="890" y="46" text-anchor="middle" font-weight="600">RAG assistant</text><text x="890" y="66" text-anchor="middle" font-size="11.5" fill="#3d4145">cited answers, refusals</text>
+    <rect x="810" y="118" width="160" height="64" fill="#16181a"/><text x="890" y="144" text-anchor="middle" font-weight="600" fill="#fff">FastAPI + console</text><text x="890" y="164" text-anchor="middle" font-size="11.5" fill="#c9ccd0">8 endpoints, deploy gate</text>
+    <rect x="810" y="216" width="160" height="64" fill="#fff" stroke="#16181a"/><text x="890" y="242" text-anchor="middle" font-weight="600">Prometheus + Grafana</text><text x="890" y="262" text-anchor="middle" font-size="11.5" fill="#3d4145">4 dashboards, OTel traces</text>
+  </g>
+  <g stroke="#686c71" stroke-width="1.5" fill="none" marker-end="url(#a)">
+    <path d="M160 150 H196"/><path d="M340 140 L386 60"/><path d="M340 150 H386"/><path d="M340 160 L386 240"/>
+    <path d="M475 84 V114"/><path d="M560 150 H606"/><path d="M760 150 H806"/><path d="M560 248 H700 L806 248"/><path d="M890 118 V88"/><path d="M890 182 V212"/>
+  </g>
+</svg></div>
+    <div class="grid3">
+      <article class="card"><p class="kicker">Foundation</p><h3>Telemetry hard enough to mean something</h3><p>Five services emit latency, errors, load, logs and traces every 15 seconds. Faults propagate through the call graph, so database saturation raises upstream errors and a traffic spike looks like saturation. 88% of deploys are harmless, and short noise spikes are not incidents.</p><div class="chips"><span>NumPy</span><span>pandas</span><span>Seeded</span></div></article>
+      <article class="card"><p class="kicker">Honest evaluation</p><h3>Four datasets, four jobs</h3><p>30 training days, a 7-day test week on a different seed, a 30-day production replay with a realistic incident rate for SLOs, and a post-upgrade period for drift. One failure type is kept out of training entirely.</p><div class="chips"><span>Held-out test</span><span>Time splits</span></div></article>
+      <article class="card"><p class="kicker">Engineering</p><h3>Built like a small production service</h3><p>28 tests at 90% coverage, including leakage tests and API contract tests. CI runs lint, types, tests, the deployment gate, Terraform validation and a Docker smoke test on every push.</p><div class="chips"><span>pytest</span><span>GitHub Actions</span><span>Docker</span></div></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">02</div><div><p class="eyebrow">Detection</p><h2>Alerting faster usually means more false alarms. The curve makes the trade-off explicit.</h2><p class="lede">Each signal gets a robust EWMA baseline built only from earlier minutes. A first version missed large error spikes because the incident inflated its own baseline; clipping each value before it updates the baseline fixed that. The operating point was chosen on the training days, then scored once on the test week.</p></div></div>
+    <figure class="fig"><img src="assets/reliabilityml-detection.png" alt="Precision against median time to detect for three consecutive-minute settings, with the chosen operating point marked, and a comparison with an Isolation Forest" loading="lazy"><figcaption><b>Precision vs. time to detect.</b> At z &gt; 10 for 3 minutes: 18 of 19 incidents caught, 2.8-minute median, no false alerts in the test week. The Isolation Forest caught every incident slightly sooner but raised about one false alert a day.</figcaption></figure>
+    <p class="note"><b>The weak spot, stated plainly:</b> memory leaks climb slowly enough that an adapting baseline treats them as normal. They are caught only when containers start restarting, hours in. A trend detector on memory is the next improvement.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">03</div><div><p class="eyebrow">Classification</p><h2>The model beats the rulebook, and says "unknown" for the failure it never saw.</h2><p class="lede">A random forest trained on four failure types, compared with if/then rules written from the runbooks. The rules even include a memory-leak rule the model never had. Confidence alone was not enough to catch the unseen type: the forest labelled most leak windows as traffic spikes with high confidence. A novelty guard, which measures distance to the nearest training examples, fixed it.</p></div></div>
+    <div class="figs">
+      <figure class="fig"><img src="assets/reliabilityml-classifier.png" alt="Per-class F1 for model and rules, confusion matrix and feature importance" loading="lazy"><figcaption><b>Model vs. rules.</b> Macro F1 0.98 vs 0.74 on incident windows, 0.96 vs 0.83 on real alerts. The rules struggle where traffic spikes and saturation share symptoms.</figcaption></figure>
+      <figure class="fig"><img src="assets/reliabilityml-incident-unknown.png" alt="An incident routed to unknown, with class probabilities, evidence, ground truth memory leak and a cited runbook answer" loading="lazy"><figcaption><b>An unseen failure.</b> Routed to unknown because it is far from every training example; the assistant then points to the unclassified-alert triage runbook.</figcaption></figure>
+    </div>
+    <ul class="rule-list">
+      <li>Every run is tracked in MLflow with parameters, metrics, the confusion matrix, feature importance, the model file, the git commit and the dataset version.</li>
+      <li>Promotion uses registry aliases (staging and production). The API serves whichever version holds production.</li>
+      <li>Features at time <i>t</i> use only data up to <i>t</i>, and a test rewrites the future to prove it.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">04</div><div><p class="eyebrow">SLOs and error budgets</p><h2>Page on fast budget burn, not on every blip.</h2><p class="lede">99.9% availability and 99% of requests under 300 ms, each over 30 days. Alerts use the multi-window burn-rate rules from the Google SRE Workbook: a page fires only when both the long and the short window burn faster than the threshold. The budget also drives release policy: below 25% remaining, only urgent fixes ship.</p></div></div>
+    <figure class="fig"><img src="assets/reliabilityml-slos.png" alt="SLO cards per service, burn-rate chart with page thresholds, remaining budget and the alerts that fired" loading="lazy"><figcaption><b>Error budgets over a 30-day production replay.</b> 60–93% of budget left across services; 16 burn-rate alerts fired, every one during an incident. The same numbers are exported to Prometheus and four Grafana dashboards.</figcaption></figure>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">05</div><div><p class="eyebrow">Troubleshooting assistant</p><h2>Cited answers from approved runbooks, or a plain refusal.</h2><p class="lede">Seventeen synthetic runbooks, postmortems and policies are split by section. Every sentence of an answer cites the section it came from, and code rejects any answer that cites something it did not retrieve. When the evidence is weak it replies "I couldn't find this in the approved runbooks or postmortems."</p></div></div>
+    <figure class="fig"><img src="assets/reliabilityml-assistant.png" alt="Assistant answering how to tell a traffic spike from database saturation, with numbered citations, and the evaluation results" loading="lazy"><figcaption><b>Evaluation on 30 questions.</b> The right document ranked in the top 3 every time; 4 of 5 unanswerable questions refused and no answerable ones refused. A manual check found 21 of 25 answers fully answer the question.</figcaption></figure>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">06</div><div><p class="eyebrow">Drift and deployment</p><h2>Retrain when the data moves, and promote only on evidence.</h2><p class="lede">A simulated platform upgrade shifted latency by 20% and changed the request mix. Drift detection flagged it immediately (PSI 7.9), the pipeline retrained, and the candidate tied the production model, so it was not promoted. The reason is measurable: the model's inputs are relative to each window's own baseline, and they barely moved.</p></div></div>
+    <div class="figs">
+      <figure class="fig"><img src="assets/reliabilityml-drift.png" alt="Drift cycle: drift detected, retrained, compared, rejected; largest PSI shifts and the promotion rule" loading="lazy"><figcaption><b>One full cycle.</b> Detected, retrained, compared on the same held-out windows, rejected. Promotion needs better macro F1 and no rise in false alarms.</figcaption></figure>
+      <figure class="fig"><img src="assets/reliabilityml-gate.png" alt="Deployment gate blocking a release whose canary replay shows a 19% p95 latency increase" loading="lazy"><figcaption><b>A blocked release.</b> The canary replay shows p95 latency up about 19% against a 10% limit, so the deploy job stops. CI also asserts that this bad release is blocked.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="num">07</div><div><p class="eyebrow">Limitations and next steps</p><h2>What synthetic data can and cannot show.</h2><p class="lede">The same person wrote the simulator and the models, so the scores are optimistic, and 19 test incidents make each per-class number fragile. The results demonstrate the method, not real-world accuracy.</p></div></div>
+    <div class="grid2">
+      <article class="card"><p class="kicker">Known gaps</p><h3>Where it falls short today</h3><ul class="rule-list"><li>Memory leaks are detected late, at container restarts.</li><li>The key-less assistant quotes sentences but cannot synthesize; 4 of 25 answers were relevant but incomplete.</li><li>The GCP deployment is defined in Terraform and validated in CI but has not been applied.</li></ul></article>
+      <article class="card"><p class="kicker">With real telemetry</p><h3>What would change</h3><ul class="rule-list"><li>Labels from real postmortems, and human feedback on every prediction.</li><li>Per-service baselines with seasonality, and a memory trend detector.</li><li>The LLM answer engine evaluated per prompt version on the same questions.</li></ul></article>
+    </div>
+  </section>
+
+  <section class="section" style="text-align:center;border-top:1px solid var(--line);margin-top:84px;padding-top:78px">
+    <p class="eyebrow">Explore the build</p>
+    <h2 style="margin:16px auto 0;max-width:24ch">Clone it, run one command, and every number on this page is regenerated.</h2>
+    <p class="lede" style="margin-left:auto;margin-right:auto">The pipeline takes about a minute and writes the data, models, reports and dashboards. docker compose brings up the console, Prometheus, Grafana, Jaeger and MLflow.</p>
+    <div class="btnrow" style="justify-content:center"><a class="btn primary" href="https://github.com/Nathan-Gomes/reliabilityml" target="_blank" rel="noreferrer">Source on GitHub</a></div>
+  </section>
+</main>
+
+<div class="wrap"><footer class="footer"><span>ReliabilityML &middot; Nathan Gomes</span><a href="/#projects">All projects</a></footer></div>
+</body>
+</html>

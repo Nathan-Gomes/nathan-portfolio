@@ -101,6 +101,8 @@ function enhance(root: HTMLElement) {
     'Structured portfolio access for Claude with deterministic calculations.',
     'Invoice review, expense trends, and explainable anomaly detection.',
     'Mobile Python lessons, practice, and progress tracking.',
+    'Partner prospecting, BANT qualification, and AI-drafted outreach a person reviews.',
+    'Incident detection in 2.8 minutes, cause classification, SLO burn rates, and a cited runbook assistant.',
   ];
   items.forEach((item, i) => {
     item.classList.add('project-tile');
